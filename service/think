@@ -1,6 +1,10 @@
+#!/usr/bin/env php
+<?php
 
+  use think\Console;
   use think\Container;
 
-  require __DIR__ . '/../thinkphp/base.php';
+  require __DIR__ . '/thinkphp/base.php';
 
-  Container::get( 'console')->run();
+  Container::get( 'app')->initialize();
+  Console::init();
