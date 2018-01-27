@@ -5,4 +5,4 @@
 
   require __DIR__ . '/../thinkphp/base.php';
 
-  Container::get( 'app')->path()->run()->send();
+  Container::get( 'app')->run()->send();

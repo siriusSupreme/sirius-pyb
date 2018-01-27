@@ -2,4 +2,4 @@
 
   use think\facade\Route;
 
-  Route::get( '/', 'api/index/index');
+  Route::get( '/', 'admin/index/index');
