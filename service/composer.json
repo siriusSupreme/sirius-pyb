@@ -1,0 +1,21 @@
+{
+    "name": "sirius/service",
+    "type":"project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "siriusSupreme",
+            "email": "guoplc@163.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "topthink/framework": "^5.1"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    }
+}
