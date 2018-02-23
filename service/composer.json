@@ -26,7 +26,8 @@
         "riverslei/payment": "^4.1",
         "stripe/stripe-php": "^5.9",
         "swiftmailer/swiftmailer": "^6.0",
-        "topthink/framework": "^5.1"
+        "topthink/framework": "^5.1",
+        "topthink/think-migration": "^2.0"
     },
     "repositories": {
         "packagist": {
