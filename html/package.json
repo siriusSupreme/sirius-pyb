@@ -18,7 +18,12 @@
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^3.3.7",
     "vue": "^2.5.2",
+    "vue-multiselect": "^2.1.0",
     "vue-router": "^3.0.1",
+    "vue-tabs": "^0.3.1",
+    "vue-upload-component": "^2.8.5",
+    "vuelidate": "^0.6.2",
+    "vuetable": "^1.5.12",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
