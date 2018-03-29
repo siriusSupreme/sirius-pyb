@@ -4,6 +4,8 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
+const mpa=require('./mpa')
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -21,9 +23,10 @@ const createLintingRule = () => ({
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
-  entry: {
-    app: './src/main.js'
-  },
+    entry:mpa.getEntries(),
+  // entry: {
+  //   app: './src/main.js'
+  // },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -36,6 +39,10 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+        'pages': resolve('src/pages'),
+        'components': resolve('src/components'),
+        'static': resolve('static'),
+        'assets': resolve('src/assets'),
     }
   },
   module: {
@@ -56,7 +63,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('images/[name].[hash:7].[ext]')
         }
       },
       {
