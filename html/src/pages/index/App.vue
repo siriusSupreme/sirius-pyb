@@ -7,6 +7,10 @@
 
 <script >
 import toastr from 'toastr'
+const layer = require('assets/vendors/layer/layer')
+// import layer from 'assets/vendors/layer/layer'
+const Webuploader = require('assets/vendors/webuploader/webuploader')
+// import Webuploader from 'assets/vendors/webuploader/webuploader'
 
 export default {
   name: 'App',
@@ -17,6 +21,8 @@ export default {
   },
   mounted () {
     console.log(toastr)
+    console.log(layer)
+    console.log(Webuploader)
   },
   methods: {
     demo (e) {
