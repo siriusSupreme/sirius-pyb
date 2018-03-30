@@ -78,9 +78,17 @@ function getPlugins ( optimize = false ) {
 
   const commonsChunkPlugin = new webpack.optimize.CommonsChunkPlugin( {
                                                                         name     : 'common',
-                                                                        filename : 'common',
-                                                                        chunks   : pages,
-                                                                        minChunks: pages.length
+                                                                        // filename : 'common',
+                                                                        // chunks   : pages,
+                                                                        // minChunks: pages.length
+                                                                        minChunks: function ( module, count ) {
+                                                                          if ( /(assets|static)/.test(module.resource) && !/node_modules/.test(module.resource) ){
+                                                                            console.log(module.context);
+                                                                            console.log(module.resource+'========'+count);
+                                                                          }
+
+                                                                          return module.context && module.resource && /(assets|static)/.test(module.resource) && !/node_modules/.test(module.resource);
+                                                                        }
                                                                       } );
   const asyncCommonsChunkPlugin=new webpack.optimize.CommonsChunkPlugin({
                                                                      names: pages,
