@@ -66,7 +66,7 @@ function getPlugins(optimize=false) {
 
         options.filename=page+'.html';
         options.template=dirname+'/index.html';
-        options.chunks.concat(['common',page]);
+        options.chunks.push.apply(options.chunks,['common',page]);
 
         const htmlWebpackPlugin=new HtmlWebpackPlugin(options);
 

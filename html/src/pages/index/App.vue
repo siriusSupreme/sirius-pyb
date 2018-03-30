@@ -1,13 +1,17 @@
-<template>
-    
-</template>
+<template >
+  <div class="container" >
+    Hello World
+  </div >
+</template >
 
-<script>
-    export default {
-        name: "app"
-    }
-</script>
+<script >
+export default {
+  name: 'App'
+}
+</script >
 
-<style lang="stylus" scoped>
-
-</style>
+<style lang="stylus" scoped >
+  .container{
+    background-color: red
+  }
+</style >
