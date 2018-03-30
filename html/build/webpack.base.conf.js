@@ -45,7 +45,7 @@ module.exports = {
         'assets': resolve('src/assets'),
     }
   },
-  external:{
+  externals:{
     jquery:'jQuery'
   },
   module: {
