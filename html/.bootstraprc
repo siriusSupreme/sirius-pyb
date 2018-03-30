@@ -1,0 +1,40 @@
+#Default: disabled
+loglevel: disabled
+
+#Major version of Bootstrap. Can be 3 or 4
+bootstrapVersion: 3
+
+
+# It depends on value of NODE_ENV environment variable
+env:
+  development:
+    styleLoaders:
+      - style-loader
+      - css-loader
+      - resolve-url-loader
+      - sass-loader
+    extractStyles: false
+  production:
+    styleLoaders:
+      - style-loader
+      - css-loader
+      - sass-loader
+    extractStyles: true
+
+# preBootstrapCustomizations: disabled
+
+# bootstrapCustomizations: disabled
+
+#Import your custom styles here. Usually this endpoint-file contains list of @imports of your application styles.
+# appStyles: disabled
+
+styles:
+  mixins: true
+  normalize: true
+  print: true
+
+scripts:
+  transition: true
+  alert: true
+
+useCustomIconFontPath: false
