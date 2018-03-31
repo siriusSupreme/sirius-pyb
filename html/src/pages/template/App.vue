@@ -7,8 +7,8 @@
 
 <script >
 import toastr from 'toastr'
-import 'static/vendors/layer/theme/default/layer.css'
-const layer = require('static/vendors/layer/layer')
+import 'assets/vendors/layer/theme/default/layer.css'
+const layer = require('assets/vendors/layer/layer')
 // import layer from 'assets/vendors/layer/layer'
 const Webuploader = require('assets/vendors/webuploader/webuploader')
 // import Webuploader from 'assets/vendors/webuploader/webuploader'
