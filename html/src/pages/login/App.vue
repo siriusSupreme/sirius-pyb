@@ -1,13 +1,49 @@
-<template>
-    
-</template>
+<template >
+  <div class="container" >
+    <span @click="demo">demo</span>
+   {{msg}}
+  </div >
+</template >
 
-<script>
-    export default {
-        name: "app"
+<script >
+import toastr from 'toastr'
+import 'static/vendors/layer/theme/default/layer.css'
+const layer = require('static/vendors/layer/layer')
+// import layer from 'assets/vendors/layer/layer'
+const Webuploader = require('assets/vendors/webuploader/webuploader')
+// import Webuploader from 'assets/vendors/webuploader/webuploader'
+
+export default {
+  name: 'App',
+  data () {
+    return {
+      msg: 'hello sirius ' + process.env.NODE_ENV
     }
-</script>
+  },
+  mounted () {
+    console.log(toastr)
+    console.log(layer)
+    console.log(Webuploader)
+  },
+  methods: {
+    demo (e) {
+      console.log(e)
+    }
+  }
+}
+</script >
 
-<style lang="stylus" scoped>
+<style lang="stylus" >
+  .container{
+    background-color: red
+    span {
+      cursor : pointer
+    }
+  }
+</style >
 
-</style>
+<style lang="stylus" scoped >
+  .container{
+    background-color: red
+  }
+</style >
