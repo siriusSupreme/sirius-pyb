@@ -16,6 +16,9 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
+    "bootstrap-table": "^1.12.1",
+    "datatables.net": "^1.10.16",
+    "datatables.net-dt": "^1.10.16",
     "echarts": "^4.0.4",
     "jquery": "^3.3.1",
     "nice-validator": "^1.1.3",
