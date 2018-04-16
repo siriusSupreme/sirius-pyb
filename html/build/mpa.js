@@ -14,7 +14,7 @@ function getEntries () {
 
   files.forEach( function ( file, index ) {
     const page = path.basename( path.dirname( file ) );
-    entries[ page ] = [ 'babel-polyfill', 'bootstrap-loader' ].concat( file );
+    entries[ page ] = [ 'babel-polyfill', 'bootstrap-loader','font-awesome-loader' ].concat( file );
   } );
 
   return entries;
