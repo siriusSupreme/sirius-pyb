@@ -13,6 +13,7 @@ export default {
 <style lang="stylus" scoped>
   .dsw-container{
     height: 100%;
+    max-height :100%;
     position: relative;
   }
 </style>

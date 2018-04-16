@@ -7,6 +7,7 @@ const webpack = require( 'webpack' );
 const webpackMerge = require( 'webpack-merge' );
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 
+const metaConfig =  require('../src/assets/js/meta-config');
 const files = glob.sync( './src/pages/*/*.js' );
 
 function getEntries () {
@@ -26,6 +27,7 @@ function getPlugins ( optimize = false ) {
   let pages = [];
 
   let options = {
+    title:'',
     filename: '',
     template: '',
     // chunks:['manifest','vendor','app'],
@@ -64,9 +66,11 @@ function getPlugins ( optimize = false ) {
     const basename = path.basename( file, '.js' );
     const dirname = path.dirname( file );
     const page = path.basename( dirname );
+    const pageHtml= dirname + '/index.html';
 
-    options.filename = page + '.html';
-    options.template = dirname + '/index.html';
+    options.title = (metaConfig[page] && metaConfig[page].title) || 'demo';
+    options.filename =page + '.html';
+    options.template = fs.existsSync(pageHtml)?pageHtml:'src/pages/index.html';
     // options.chunks.push.apply(options.chunks,['common',page]);
     options.chunks = [ 'manifest', 'vendor', 'common' ].concat( page );
 

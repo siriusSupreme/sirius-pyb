@@ -1,8 +1,10 @@
 <template >
   <dsw-container>
     <h1>公安机关执法办案——案卷管理平台</h1>
-    <aisde></aisde>
-
+    <aside>
+      <nav></nav>
+    </aside>
+    <article></article>
   </dsw-container>
 </template >
 
