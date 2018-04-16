@@ -2,6 +2,12 @@
 
 > A Vue.js project
 
+## 命名规范
+
+```
+
+```
+
 ## Build Setup
 
 ``` bash
