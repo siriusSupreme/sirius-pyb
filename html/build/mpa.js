@@ -41,14 +41,14 @@ function getPlugins ( optimize = false ) {
     options = webpackMerge( options, {
       minify: {
         collapseBooleanAttributes  : true,
-        //collapseWhitespace: true,
+        collapseWhitespace: true,
         collapseInlineTagWhitespace: true,
         keepClosingSlash           : true,
         minifyCSS                  : true,
         minifyJS                   : true,
         minifyURLs                 : true,
         removeAttributeQuotes      : true,
-        //removeComments:true,
+        removeComments:true,
         removeEmptyAttributes      : true,
         removeRedundantAttributes  : true,
         sortAttributes             : true,
