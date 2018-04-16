@@ -31,16 +31,9 @@ export default {
 </script >
 
 <style lang="stylus" >
-  .container{
-    background-color: red
-    span {
-      cursor : pointer
-    }
-  }
+
 </style >
 
 <style lang="stylus" scoped >
-  .container{
-    background-color: red
-  }
+
 </style >
