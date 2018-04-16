@@ -1,19 +1,18 @@
 <template>
-    <div class="dsw-container">
+    <div class="dsw-better-scroll-wrapper">
       <slot></slot>
     </div>
 </template>
 
 <script>
-export default {
-  name: 'Container'
-}
+    export default {
+        name: "BetterScroll"
+    }
 </script>
 
 <style lang="stylus" scoped>
-  .dsw-container{
-    height: 100%;
-    position: relative;
+  .dsw-better-scroll-wrapper{
+
   }
 </style>
 

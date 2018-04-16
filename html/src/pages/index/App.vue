@@ -1,17 +1,13 @@
 <template >
-  <div class="container" >
-    <span @click="demo">demo</span>
-   {{msg}}
-  </div >
+  <dsw-container>
+    <h1>公安机关执法办案——案卷管理平台</h1>
+    <aisde></aisde>
+
+  </dsw-container>
 </template >
 
 <script >
-import toastr from 'toastr'
-import 'assets/vendors/layer/theme/default/layer.css'
-const layer = require('assets/vendors/layer/layer')
-// import layer from 'assets/vendors/layer/layer'
-const Webuploader = require('assets/vendors/webuploader/webuploader')
-// import Webuploader from 'assets/vendors/webuploader/webuploader'
+import DswContainer from 'components/container'
 
 export default {
   name: 'App',
@@ -20,15 +16,14 @@ export default {
       msg: 'hello sirius ' + process.env.NODE_ENV
     }
   },
+  components: {
+    DswContainer
+  },
   mounted () {
-    console.log(toastr)
-    console.log(layer)
-    console.log(Webuploader)
+
   },
   methods: {
-    demo (e) {
-      console.log(e)
-    }
+
   }
 }
 </script >
