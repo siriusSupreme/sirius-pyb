@@ -2,27 +2,36 @@
   <dsw-container>
     <h1>公安机关执法办案——案卷管理平台</h1>
     <aside>
-      <nav></nav>
+      <nav>
+        <dsw-menu :menuLists="menuLists"></dsw-menu>
+      </nav>
     </aside>
-    <article></article>
+    <article>
+      <nav></nav>
+    </article>
   </dsw-container>
 </template >
 
 <script >
 import DswContainer from 'components/container'
+import DswMenu from 'components/menu'
+import axios from 'axios'
 
 export default {
   name: 'App',
   data () {
     return {
-      msg: 'hello sirius ' + process.env.NODE_ENV
+      menuLists: []
     }
   },
   components: {
-    DswContainer
+    DswContainer,
+    DswMenu
   },
   mounted () {
-
+    axios.get('http://rap2api.taobao.org/app/mock/data/60574').then((response) => {
+      this.$set(this, 'menuLists', response.data.data.lists)
+    })
   },
   methods: {
 

@@ -46,7 +46,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       poll: config.dev.poll,
     }
   },
-  plugins: mpa.getPlugins(false).concat([
+  plugins: [
+    ...mpa.getPlugins(false),
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),
@@ -67,7 +68,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       }
     ])
-  ])
+  ]
 })
 
 module.exports = new Promise((resolve, reject) => {

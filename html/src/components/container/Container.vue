@@ -19,5 +19,6 @@ export default {
     height: 100%;
     max-height :100%;
     position: relative;
+    overflow : hidden;
   }
 </style>

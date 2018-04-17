@@ -42,6 +42,10 @@ module.exports = {
       'assets': resolve('src/assets'),
       'components': resolve('src/components'),
       'directives': resolve('src/directives'),
+      'mixins': resolve('src/mixins'),
+      'filters': resolve('src/filters'),
+      'router': resolve('src/router'),
+      'store': resolve('src/store'),
       'plugins': resolve('src/plugins'),
       'pages': resolve('src/pages'),
       'static': resolve('static')
