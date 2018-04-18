@@ -1,19 +1,19 @@
 'use strict'
 
-+function (win,doc,undefined) {
++function (global,undefined) {
     var vendors=['webkit','moz','ms','o'];
 
-    win.cancelAnimationFrame = win.cancelAnimationFrame || win.cancelRequestAnimationFrame;
+    global.cancelAnimationFrame = global.cancelAnimationFrame || global.cancelRequestAnimationFrame;
 
-    for (var i=0; !win.requestAnimationFrame && i<vendors.length ; i++ ){
-        win.requestAnimationFrame=win[vendors[i]+'RequestAnimationFrame'];
-        win.cancelAnimationFrame=win[vendors[i]+'CancelAnimationFrame'] || win[vendors[i]+'CancelRequestAnimationFrame'];
+    for (var i=0; !global.requestAnimationFrame && i<vendors.length ; i++ ){
+        global.requestAnimationFrame=win[vendors[i]+'RequestAnimationFrame'];
+        global.cancelAnimationFrame=win[vendors[i]+'CancelAnimationFrame'] || win[vendors[i]+'CancelRequestAnimationFrame'];
     }
 
-    if (!win.requestAnimationFrame){
+    if (!global.requestAnimationFrame){
         var lastTime=0;
 
-        win.requestAnimationFrame=function (callback,refreshRate) {
+        global.requestAnimationFrame=function (callback,refreshRate) {
             var currentTime=(new Date()).getTime();
 
             var deltaTime=Math.max(0,16.67-(currentTime-lastTime));
@@ -25,8 +25,8 @@
             },deltaTime);
         };
 
-        win.cancelAnimationFrame=function (id) {
+        global.cancelAnimationFrame=function (id) {
             clearTimeout(id);
         };
     }
-}(window,document);
+}(window || this);

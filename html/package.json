@@ -53,7 +53,7 @@
     "bootstrap-loader": "^2.2.0",
     "bootstrap-sass": "^3.3.7",
     "chai": "^4.1.2",
-    "chalk": "^2.0.1",
+    "chalk": "^2.4.0",
     "chromedriver": "^2.27.2",
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.0.1",
