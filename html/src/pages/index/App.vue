@@ -7,33 +7,11 @@
     <!--内容 start-->
     <div class="dsw-content-wrapper clearfix">
       <!--左侧菜单 start-->
-      <aside class="dsw-left-menu pull-left">
-        <nav class="dsw-left-menu-nav">
-          <dsw-menu :menuLists="menuLists"></dsw-menu>
-        </nav>
-      </aside>
+      <left-menu></left-menu>
       <!--左侧菜单 end-->
 
       <!--右侧页面 start-->
-      <div class="dsw-right-page">
-        <!--页面辅助工具 start-->
-        <div></div>
-        <!--页面辅助工具 end-->
-        <!--tab 容器 start-->
-        <div class="dsw-tab-container">
-          <!--tab 项 start-->
-          <nav class="dsw-tab-lists-wrapper">
-            <ul></ul>
-          </nav>
-          <!--tab 项 end-->
-          <!--tab 页 start-->
-          <div class="dsw-tab-page-wrapper">
-            <ul></ul>
-          </div>
-          <!--tab 页 end-->
-        </div>
-        <!--tab 容器 end-->
-      </div>
+      <right-page></right-page>
       <!--右侧页面 end-->
     </div>
     <!--内容 end-->
@@ -42,28 +20,16 @@
 </template >
 
 <script >
-import DswContainer from 'components/container'
-import DswMenu from 'components/menu'
-import axios from 'axios'
+import DswContainer from 'components/common/container'
+import LeftMenu from 'components/business/left-menu'
+import RightPage from 'components/business/right-page'
 
 export default {
   name: 'App',
-  data () {
-    return {
-      menuLists: []
-    }
-  },
   components: {
     DswContainer,
-    DswMenu
-  },
-  mounted () {
-    axios.get('http://rap2api.taobao.org/app/mock/data/60574').then((response) => {
-      this.$set(this, 'menuLists', response.data.data.lists)
-    })
-  },
-  methods: {
-
+    LeftMenu,
+    RightPage
   }
 }
 </script >
@@ -74,7 +40,7 @@ export default {
   background : url("./images/bg.png") no-repeat scroll 0 0/100% 100%;
   .dsw-title{
     position : absolute;
-    top :-0.12rem;
+    top :-10px;
     left :50%;
     transform : translate(-50%, 0);
     font-size :0.36rem;
@@ -88,15 +54,6 @@ export default {
     padding: 78px 25px 24px;
     height: 100%;
     overflow: hidden;
-    .dsw-left-menu{
-      height :100%;
-      padding :5px;
-      .dsw-left-menu-nav{
-        width : 327px;
-        height : 100%;
-        background : url("./images/left-menu-bg.png") no-repeat scroll 0 0/100% 100%;
-      }
-    }
   }
 }
 </style >
