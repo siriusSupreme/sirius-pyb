@@ -7,7 +7,7 @@ const webpack = require( 'webpack' );
 const webpackMerge = require( 'webpack-merge' );
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 
-const metaConfig =  require('../src/assets/js/meta-config');
+const {config,seo} =  require('./mpa-config');
 const files = glob.sync( './src/pages/*/*.js' );
 
 function getEntries () {
@@ -15,7 +15,11 @@ function getEntries () {
 
   files.forEach( function ( file, index ) {
     const page = path.basename( path.dirname( file ) );
-    entries[ page ] = [ 'babel-polyfill', 'bootstrap-loader','font-awesome-loader' ].concat( file );
+    let pageEntry=seo[page] && seo[page]['entry'];
+
+    pageEntry=Array.isArray(pageEntry)?pageEntry:[];
+
+    entries[ page ] = config.commonEntry.concat(pageEntry, file );
   } );
 
   return entries;
@@ -66,11 +70,13 @@ function getPlugins ( optimize = false ) {
     const basename = path.basename( file, '.js' );
     const dirname = path.dirname( file );
     const page = path.basename( dirname );
-    const pageHtml= dirname + '/index.html';
 
-    options.title = (metaConfig[page] && metaConfig[page].title) || 'demo';
-    options.filename =page + '.html';
-    options.template = fs.existsSync(pageHtml)?pageHtml:'src/pages/index.html';
+    const templateName=(seo[page] && seo[page]['templateName']) && config.defaultTemplateName;
+    const pageTemplateHtml= dirname + templateName;
+
+    options.title = (seo[page] && seo[page].title) || config.defaultTitle;
+    options.filename = (seo[page] && seo[page].fileName) || (page + '.html');
+    options.template = fs.existsSync(pageTemplateHtml)?pageTemplateHtml:config.defaultTemplateFile;
     // options.chunks.push.apply(options.chunks,['common',page]);
     options.chunks = [ 'manifest', 'vendor', 'common' ].concat( page );
 
