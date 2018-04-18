@@ -1,3 +1,3 @@
-import BetterScroll from './BetterScroll'
+import UEditor from './UEditor'
 
-export default BetterScroll
+export default UEditor
