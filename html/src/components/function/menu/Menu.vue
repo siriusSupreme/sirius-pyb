@@ -2,13 +2,13 @@
     <ul class="dsw-menu-folder">
       <slot v-for="(item,index) in menuLists" :item="item" :index="index">
         <li class="dsw-menu-file" :key="index">
-          <a class="dsw-menu-file-wrapper" @click.stop.prevent="clickHandler($event,item)" :href="item.url" >
+          <a class="dsw-menu-file-wrapper" @click.stop.prevent="clickHandler($event,item,index)" :href="item.url" >
             <i class="fa fa-cogs dsw-menu-file-icon"></i>
             <span class="dsw-menu-file-title">{{ item.title }}</span>
-            <i class="fa fa-angle-double-right dsw-menu-file-arrow" v-if="item.children && item.children.length > 0"></i>
+            <i class="fa dsw-menu-file-arrow" :class="{'fa-angle-double-right':!item.dsw_opened, 'fa-angle-double-down':item.dsw_opened}" v-if="item.children && item.children.length > 0"></i>
           </a>
-          <dsw-menu v-if="item.children && item.children.length > 0" :menuLists="item.children" class="dsw-sub-menu"></dsw-menu>
-        </li >
+          <dsw-menu v-if="item.children && item.children.length > 0" :menuLists="item.children" class="dsw-sub-menu hidden"></dsw-menu>
+        </li>
       </slot>
     </ul>
 </template>
@@ -28,8 +28,24 @@ export default {
     }
   },
   methods: {
-    clickHandler (e, menu) {
-      console.log(menu)
+    clickHandler (e, item, index) {
+      const nextSibling = e.currentTarget.nextElementSibling
+      // 有子菜单，则打开
+      if (nextSibling) {
+        const className = nextSibling.className
+        if (className.includes('hidden')) {
+          nextSibling.className = className.replace(/\s+hidden\s*/, '')
+          // this.menuLists[index]['dsw_opened'] = true
+          this.$set(this.menuLists[index], 'dsw_opened', true)
+        } else {
+          nextSibling.className += ' hidden'
+          // this.menuLists[index]['dsw_opened'] = false
+          this.$set(this.menuLists[index], 'dsw_opened', false)
+        }
+      } else {
+        //  否则触发事件
+        this.$emit('dsw-open-tab', {e, item, index})
+      }
     }
   }
 }

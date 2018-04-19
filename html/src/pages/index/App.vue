@@ -51,7 +51,7 @@ export default {
     line-height :60px;
   }
   .dsw-content-wrapper{
-    padding: 78px 25px 24px;
+    padding: 78px 0.35rem 24px;
     height: 100%;
     overflow: hidden;
   }

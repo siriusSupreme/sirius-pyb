@@ -1,49 +1,68 @@
 <template >
-  <div class="container" >
-    <span @click="demo">demo</span>
-   {{msg}}
-  </div >
+  <dsw-container>
+    <!--登录框 start-->
+    <div class="dsw-login-container">
+      <img src="./images/logo.png" alt="" class="dsw-login-logo" />
+      <div class="dsw-login-wrapper"></div>
+      <span class="dsw-login-copyright">技术支持：武汉迪赛威智能科技有限公司</span>
+    </div>
+    <!--登录框 end-->
+
+    <!--背景 start-->
+    <dsw-video :src="src"></dsw-video>
+    <!--背景 end-->
+  </dsw-container>
 </template >
 
 <script >
-import toastr from 'toastr'
-import 'assets/vendors/layer/theme/default/layer.css'
-const layer = require('assets/vendors/layer/layer')
-// import layer from 'assets/vendors/layer/layer'
-const Webuploader = require('assets/vendors/webuploader/webuploader')
-// import Webuploader from 'assets/vendors/webuploader/webuploader'
+import DswContainer from 'components/common/container'
+import DswVideo from 'components/common/video'
 
 export default {
   name: 'App',
   data () {
     return {
-      msg: 'hello sirius ' + process.env.NODE_ENV
+      src: './videos/bg.mp4'
     }
   },
   mounted () {
-    console.log(toastr)
-    console.log(layer)
-    console.log(Webuploader)
+
+  },
+  components: {
+    DswContainer,
+    DswVideo
   },
   methods: {
-    demo (e) {
-      console.log(e)
-    }
+
   }
 }
 </script >
 
 <style lang="stylus" >
-  .container{
-    background-color: red
-    span {
-      cursor : pointer
-    }
+.dsw-login-container{
+  position : relative;
+  text-align : center;
+  height :100%;
+  overflow : hidden;
+  .dsw-login-logo{
+    width :8rem;
+    margin :50px 0 0;
   }
+  .dsw-login-wrapper{
+    width : 423px;
+    height: 281px;
+    margin : 120px auto 0;
+    background : url("./images/login-box.png") no-repeat scroll 0 0/100% 100%;
+  }
+  .dsw-login-copyright{
+    position : absolute;
+    bottom :50px;
+    left :50%;
+    transform :translate(-50%,0);
+  }
+}
 </style >
 
 <style lang="stylus" scoped >
-  .container{
-    background-color: red
-  }
+
 </style >
