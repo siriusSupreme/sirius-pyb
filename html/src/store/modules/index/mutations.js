@@ -1,5 +1,7 @@
-import mutations from 'mutation-types'
+import {DEMO} from './mutation-types'
 
 export default {
+  [DEMO] () {
 
+  }
 }

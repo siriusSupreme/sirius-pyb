@@ -4,18 +4,18 @@ import Vuex from 'vuex'
 import state from './state'
 import getters from './getters'
 import mutations from './mutations'
+import actions from './actions'
 import plugins from './plugins'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
-const store = new Vuex.Store( {
-                          strict   : true,
-                          state,
-                          getters,
-                          mutations,
-                          actions,
-                          modules : {},
-                          plugins
-                        } );
+const store = new Vuex.Store({
+  strict: true,
+  state,
+  getters,
+  mutations,
+  actions,
+  plugins
+})
 
 export default store
