@@ -1,5 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import state from './state'
+import getters from './getters'
+import mutations from './mutations'
+import plugins from './plugins'
 
-const store = new Vuex();
-
+export default {
+  state,
+  getters,
+  mutations,
+  actions,
+  plugins
+}
