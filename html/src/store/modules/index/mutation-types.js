@@ -1,2 +1,2 @@
 
-export const DEMO = 'demo'
+export const CLICK_MENU = Symbol('click_menu')

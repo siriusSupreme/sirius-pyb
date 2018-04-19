@@ -2,15 +2,17 @@
   <aside class="dsw-left-menu pull-left">
     <nav class="dsw-left-menu-nav" ref="dsw-left-menu-nav">
         <dsw-menu :menuLists="menuLists" @dsw-open-tab="openTab"></dsw-menu>
-    </nav>
+    </nav>{{currentMenuIndex}}
   </aside>
 </template>
 
 <script>
-import axios from 'axios'
+import {createNamespacedHelpers} from 'vuex'
 import BScroll from 'better-scroll'
 
 import DswMenu from 'components/function/menu'
+
+const {mapState} = createNamespacedHelpers('index')
 
 export default {
   name: 'LeftMenu',
@@ -24,7 +26,7 @@ export default {
     DswMenu
   },
   mounted () {
-    axios.get('http://rap2api.taobao.org/app/mock/data/60574').then((response) => {
+    this.$axiosInstance.get('http://rap2api.taobao.org/app/mock/data/60574').then((response) => {
       this.$set(this, 'menuLists', response.data.data.lists)
       this.$nextTick(() => {
         this.betterScroll = new BScroll(this.$refs['dsw-left-menu-nav'], {
@@ -37,6 +39,9 @@ export default {
     openTab (e) {
       console.log(e)
     }
+  },
+  computed: {
+    ...mapState(['currentMenuIndex'])
   }
 }
 </script>

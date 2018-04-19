@@ -1,7 +1,7 @@
-import {DEMO} from './mutation-types'
+import * as types from './mutation-types'
 
 export default {
-  [DEMO] () {
+  [types.CLICK_MENU] (state) {
 
   }
 }

@@ -5,7 +5,7 @@
           <a class="dsw-menu-file-wrapper" @click.stop.prevent="clickHandler($event,item,index)" :href="item.url" >
             <i class="fa fa-cogs dsw-menu-file-icon"></i>
             <span class="dsw-menu-file-title">{{ item.title }}</span>
-            <i class="fa dsw-menu-file-arrow" :class="{'fa-angle-double-right':!item.dsw_opened, 'fa-angle-double-down':item.dsw_opened}" v-if="item.children && item.children.length > 0"></i>
+            <i class="fa dsw-menu-file-arrow" :class="[item.dsw_opened===true? 'fa-angle-double-down':'fa-angle-double-right']" v-if="item.children && item.children.length > 0"></i>
           </a>
           <dsw-menu v-if="item.children && item.children.length > 0" :menuLists="item.children" class="dsw-sub-menu hidden"></dsw-menu>
         </li>
@@ -20,11 +20,6 @@ export default {
     menuLists: {
       type: Array,
       required: true
-    }
-  },
-  data () {
-    return {
-
     }
   },
   methods: {
