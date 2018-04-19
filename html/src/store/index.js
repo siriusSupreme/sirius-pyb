@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createLogger from 'vuex/dist/logger'
 
 import state from './state'
 import getters from './getters'
@@ -12,15 +13,16 @@ Vue.use(Vuex)
 
 // eslint-disable-next-line
 const glob = require('glob')
+const logger = process.env === 'production' ? [] : [createLogger()]
 
 const store = new Vuex.Store({
-  strict: true,
+  strict: process.env !== 'production',
   state,
   getters,
   mutations,
   actions,
   modules,
-  plugins
+  plugins: logger.concat(plugins)
 })
 
 // glob.sync('modules/*').forEach((file) => {
