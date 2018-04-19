@@ -1,6 +1,6 @@
 module.exports = {
   config: {
-    commonEntry        : [ 'babel-polyfill', 'bootstrap-loader', 'font-awesome-loader','assets/stylus/common.styl','assets/js/common.js' ],
+    commonEntry        : [ 'babel-polyfill', 'bootstrap-loader', 'font-awesome-loader','assets/js/common.js','assets/stylus/common.styl' ],
     defaultTitle       : 'demo',
     defaultTemplateName: 'index.html',
     defaultTemplateFile: 'src/pages/index.html'
