@@ -9,6 +9,10 @@ import plugins from './plugins'
 
 Vue.use(Vuex)
 
+// eslint-disable-next-line
+const fs = require('fs')
+const glob = require('glob')
+
 const store = new Vuex.Store({
   strict: true,
   state,
@@ -17,5 +21,10 @@ const store = new Vuex.Store({
   actions,
   plugins
 })
+
+// glob.sync('modules/*').forEach((file) => {
+//   console.log(file)
+// })
+console.log(glob.sync('./modules/*'))
 
 export default store

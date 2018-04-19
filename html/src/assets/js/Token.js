@@ -1,25 +1,25 @@
+
+// eslint-disable-next-line
 import config from './config'
 
 class Token {
   constructor () {
-
+    this.getTokenFromLocal()
   }
 
-  getTokenFromServer(){
+  getTokenFromServer () {
 
   }
 
   getTokenFromLocal () {
+    const token = localStorage.getItem('dsw-token')
 
-    const token = localStorage.getItem('dsw-token');
-
-    return token;
+    return token
   }
 
   verifyToken () {
 
   }
 }
-
 
 export default Token

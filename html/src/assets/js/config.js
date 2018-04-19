@@ -1,4 +1,4 @@
 
 export default {
-  tokenName:'dsw-token'
+  tokenName: 'dsw-token'
 }
