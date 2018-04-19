@@ -3,8 +3,13 @@
 </template>
 
 <script>
+import Echarts from '../Echarts'
+
+import bar from 'echarts/src/chart/bar'
+
 export default {
-  name: "Demo"
+  name: "Bar",
+  extends: Echarts
 }
 </script>
 

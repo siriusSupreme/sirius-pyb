@@ -6,7 +6,8 @@ import modules from './modules'
 import plugins from './plugins'
 
 export default {
-  strict: true,
+  strict: process.env !== 'production',
+  namespaced: true,
   state,
   getters,
   mutations,

@@ -28,6 +28,6 @@ const store = new Vuex.Store({
 // glob.sync('modules/*').forEach((file) => {
 //   console.log(file)
 // })
-// console.log(glob.sync('./modules/*'))
+// console.log(glob.sync('./modules/**/index.js'))
 
 export default store
