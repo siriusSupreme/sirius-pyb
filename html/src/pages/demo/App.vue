@@ -6,12 +6,8 @@
 </template >
 
 <script >
-import toastr from 'toastr'
-import 'assets/vendors/layer/theme/default/layer.css'
-const layer = require('assets/vendors/layer/layer')
-// import layer from 'assets/vendors/layer/layer'
-const Webuploader = require('assets/vendors/webuploader/webuploader')
-// import Webuploader from 'assets/vendors/webuploader/webuploader'
+
+import Webuploader from 'webuploader'
 
 export default {
   name: 'App',
@@ -21,8 +17,6 @@ export default {
     }
   },
   mounted () {
-    console.log(toastr)
-    console.log(layer)
     console.log(Webuploader)
   },
   methods: {

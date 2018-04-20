@@ -1,8 +1,8 @@
 <template>
   <aside class="dsw-left-menu pull-left">
     <nav class="dsw-left-menu-nav" ref="dsw-left-menu-nav">
-        <dsw-menu :menuLists="menuLists" @dsw-open-tab="openTab"></dsw-menu>
-    </nav>{{currentMenuIndex}}
+        <dsw-menu :menuLists="menuLists" ></dsw-menu>
+    </nav>
   </aside>
 </template>
 
@@ -12,13 +12,12 @@ import BScroll from 'better-scroll'
 
 import DswMenu from 'components/function/menu'
 
-const {mapState} = createNamespacedHelpers('index')
+const {mapState, mapActions} = createNamespacedHelpers('index')
 
 export default {
   name: 'LeftMenu',
   data () {
     return {
-      menuLists: [],
       betterScroll: null
     }
   },
@@ -26,8 +25,11 @@ export default {
     DswMenu
   },
   mounted () {
-    this.$axiosInstance.get('http://rap2api.taobao.org/app/mock/data/60574').then((response) => {
-      this.$set(this, 'menuLists', response.data.data.lists)
+    console.log(this.$toastr)
+    console.log(this.$layer)
+    console.log(this.$layui)
+    this.$toastr.success('回复撒刚更多发挥双方')
+    this.getMenuLists({vm: this}).then((result) => {
       this.$nextTick(() => {
         this.betterScroll = new BScroll(this.$refs['dsw-left-menu-nav'], {
           mouseWheel: true
@@ -36,12 +38,10 @@ export default {
     })
   },
   methods: {
-    openTab (e) {
-      console.log(e)
-    }
+    ...mapActions(['getMenuLists'])
   },
   computed: {
-    ...mapState(['currentMenuIndex'])
+    ...mapState(['menuLists'])
   }
 }
 </script>

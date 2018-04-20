@@ -1,18 +1,21 @@
+import axios from 'axios'
 
-// eslint-disable-next-line
-import config from './config'
-
+// 定义一个类
 class Token {
-  constructor () {
-    this.getTokenFromLocal()
+  constructor (tokenName) {
+    this.tokenName = tokenName
   }
 
   getTokenFromServer () {
+    axios.get('').then(function (result) {
 
+    }).catch(function (reason) {
+
+    })
   }
 
-  getTokenFromLocal () {
-    const token = localStorage.getItem('dsw-token')
+  getToken () {
+    const token = localStorage.getItem(this.tokenName)
 
     return token
   }
@@ -22,4 +25,5 @@ class Token {
   }
 }
 
+// 导出该类
 export default Token

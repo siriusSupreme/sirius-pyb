@@ -5,7 +5,7 @@
           <a class="dsw-menu-file-wrapper" @click.stop.prevent="clickHandler($event,item,index)" :href="item.url" >
             <i class="fa fa-cogs dsw-menu-file-icon"></i>
             <span class="dsw-menu-file-title">{{ item.title }}</span>
-            <i class="fa dsw-menu-file-arrow" :class="[item.dsw_opened===true? 'fa-angle-double-down':'fa-angle-double-right']" v-if="item.children && item.children.length > 0"></i>
+            <i class="fa dsw-menu-file-arrow" :class="[item.dswOpened===true? 'fa-angle-double-down':'fa-angle-double-right']" v-if="item.children && item.children.length > 0"></i>
           </a>
           <dsw-menu v-if="item.children && item.children.length > 0" :menuLists="item.children" class="dsw-sub-menu hidden"></dsw-menu>
         </li>
@@ -14,6 +14,10 @@
 </template>
 
 <script>
+import {createNamespacedHelpers} from 'vuex'
+
+const {mapMutations} = createNamespacedHelpers('index')
+
 export default {
   name: 'DswMenu',
   props: {
@@ -23,6 +27,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['clickMenu']),
     clickHandler (e, item, index) {
       const nextSibling = e.currentTarget.nextElementSibling
       // 有子菜单，则打开
@@ -30,12 +35,10 @@ export default {
         const className = nextSibling.className
         if (className.includes('hidden')) {
           nextSibling.className = className.replace(/\s+hidden\s*/, '')
-          // this.menuLists[index]['dsw_opened'] = true
-          this.$set(this.menuLists[index], 'dsw_opened', true)
+          this.clickMenu({index, status: true})
         } else {
           nextSibling.className += ' hidden'
-          // this.menuLists[index]['dsw_opened'] = false
-          this.$set(this.menuLists[index], 'dsw_opened', false)
+          this.clickMenu({index, status: false})
         }
       } else {
         //  否则触发事件

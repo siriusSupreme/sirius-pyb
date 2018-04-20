@@ -1,4 +1,3 @@
 export default {
-  menuLists: [],
-  currentMenuIndex: 0
+  menuLists: []
 }

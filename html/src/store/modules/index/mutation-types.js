@@ -1,2 +1,3 @@
 
-export const CLICK_MENU = Symbol('click_menu')
+export const CLICK_MENU = 'clickMenu'
+export const MENU_LISTS = 'menuLists'
