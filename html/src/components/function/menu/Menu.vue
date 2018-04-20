@@ -40,9 +40,10 @@ export default {
           nextSibling.className += ' hidden'
           this.clickMenu({index, status: false})
         }
+        this.$emit('dswRefreshBScroll', {e, item, index})
       } else {
         //  否则触发事件
-        this.$emit('dsw-open-tab', {e, item, index})
+        this.$emit('dswOpenTab', {e, item, index})
       }
     }
   }

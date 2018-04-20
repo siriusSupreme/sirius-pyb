@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import config from './config'
 import Token from './Token'
+import toastr from './toastr'
 
 const token = new Token(config.tokenKey)
 const source = axios.CancelToken.source()
@@ -26,7 +27,7 @@ axiosInstance.interceptors.request.use((options) => {
 
   return options
 }, (reason) => {
-  alert('request reject')
+  toastr.error('Request Error')
   return Promise.reject(reason)
 })
 
@@ -35,7 +36,7 @@ axiosInstance.interceptors.response.use((response) => {
 
   return data
 }, (reason) => {
-  alert('response reject')
+  toastr.error('Response Error')
   return Promise.reject(reason)
 })
 

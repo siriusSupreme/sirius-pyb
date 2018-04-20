@@ -5,13 +5,13 @@
     <!--标题 end-->
 
     <!--内容 start-->
-    <div class="dsw-content-wrapper clearfix">
+    <div class="dsw-content-wrapper clearfix" ref="dsw-content-wrapper">
       <!--左侧菜单 start-->
-      <left-menu></left-menu>
+      <left-menu ref="dsw-left-menu"></left-menu>
       <!--左侧菜单 end-->
 
       <!--右侧页面 start-->
-      <right-page></right-page>
+      <right-page ref="dsw-right-page"></right-page>
       <!--右侧页面 end-->
     </div>
     <!--内容 end-->
@@ -34,6 +34,11 @@ export default {
     DswContainer,
     LeftMenu,
     RightPage
+  },
+  mounted () {
+    // const leftMenuWidth = this.$refs['dsw-left-menu'].$el.clientWidth
+    //
+    // this.$refs['dsw-right-page'].$el.style.marginLeft = leftMenuWidth + 'px'
   },
   computed: {
     ...mapState

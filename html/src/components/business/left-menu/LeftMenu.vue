@@ -1,8 +1,10 @@
 <template>
   <aside class="dsw-left-menu pull-left">
     <nav class="dsw-left-menu-nav" ref="dsw-left-menu-nav">
-        <dsw-menu :menuLists="menuLists" ></dsw-menu>
+        <dsw-menu :menuLists="menuLists" @dswRefreshBScroll="refreshBScroll"></dsw-menu>
     </nav>
+    <img class="dsw-menu-toggle-btn" @click.stop="toggleHandler" v-show="opened" src="./images/arrow-left.png" />
+    <img class="dsw-menu-toggle-btn" @click.stop="toggleHandler" v-show="!opened" src="./images/arrow-right.png" />
   </aside>
 </template>
 
@@ -18,17 +20,14 @@ export default {
   name: 'LeftMenu',
   data () {
     return {
-      betterScroll: null
+      betterScroll: null,
+      opened: true
     }
   },
   components: {
     DswMenu
   },
   mounted () {
-    console.log(this.$toastr)
-    console.log(this.$layer)
-    console.log(this.$layui)
-    this.$toastr.success('回复撒刚更多发挥双方')
     this.getMenuLists({vm: this}).then((result) => {
       this.$nextTick(() => {
         this.betterScroll = new BScroll(this.$refs['dsw-left-menu-nav'], {
@@ -38,7 +37,13 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['getMenuLists'])
+    ...mapActions(['getMenuLists']),
+    refreshBScroll (payload) {
+      this.betterScroll.refresh()
+    },
+    toggleHandler (e) {
+      this.opened = !this.opened
+    }
   },
   computed: {
     ...mapState(['menuLists'])
@@ -50,11 +55,21 @@ export default {
   .dsw-left-menu{
     height :100%;
     padding :5px 10px;
+    position : relative;
     .dsw-left-menu-nav{
       width : 3.27rem;
       height : 100%;
       overflow : hidden;
       background : url("./images/left-menu-bg.png") no-repeat scroll 0 0/100% 100%;
+    }
+    .dsw-menu-toggle-btn{
+      width : 30px;
+      height : 30px;
+      cursor : pointer;
+      position : absolute;
+      top :50%;
+      left :-20px;
+      transform :translate(0,-50%);
     }
   }
 </style>
