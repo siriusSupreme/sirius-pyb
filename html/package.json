@@ -17,7 +17,7 @@
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "better-scroll": "^1.10.0",
-    "codemirror": "^5.36.0",
+    "codemirror": "^5.37.0",
     "echarts": "^4.0.4",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.2",

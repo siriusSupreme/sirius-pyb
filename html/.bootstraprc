@@ -26,7 +26,6 @@ env:
   production:
     extractStyles: true
 
-
 # Customize Bootstrap variables that get imported before the original Bootstrap variables.
 # Thus, derived Bootstrap variables can depend on values from here.
 # See the Bootstrap _variables.scss file for examples of derived Bootstrap variables.
@@ -38,7 +37,7 @@ env:
 # Thus, you may customize Bootstrap variables
 # based on the values established in the Bootstrap _variables.scss file
 #
-# bootstrapCustomizations: ./path/to/bootstrap/customizations.scss
+# bootstrapCustomizations: ./src/assets/sass/_variable.scss
 
 
 # Import your custom styles here
@@ -63,9 +62,9 @@ styles:
   type: true
   code: true
   grid: true
-  tables: true
+  # tables: true
   forms: true
-  buttons: true
+  # buttons: true
 
   # Components
   component-animations: true

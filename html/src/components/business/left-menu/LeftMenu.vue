@@ -56,8 +56,8 @@ export default {
     height :100%;
     padding :5px 10px;
     position : relative;
+    width : 3.27rem;
     .dsw-left-menu-nav{
-      width : 3.27rem;
       height : 100%;
       overflow : hidden;
       background : url("./images/left-menu-bg.png") no-repeat scroll 0 0/100% 100%;

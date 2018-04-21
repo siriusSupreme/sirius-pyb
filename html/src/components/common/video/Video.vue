@@ -1,5 +1,5 @@
 <template>
-  <video :src="src" :width="width" :height="height" loop >
+  <video :src="src" :width="width" :height="height" loop autoplay>
     <object classid="clsid:F08DF954-8592-11D1-B16A-00C0F0283628" :id="id" :width="width" :height="height">
       <param name="BorderStyle" value="1" />
       <param name="MousePointer" value="0" />

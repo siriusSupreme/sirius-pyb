@@ -95,7 +95,7 @@ export default {
 .dsw-right-page{
   height : 100%;
   overflow : hidden;
-  padding :0 10px;
+  padding :0 10px 0 0;
   .dsw-assist-container{
     .dsw-assist-wrapper{
       height :36px;
@@ -124,13 +124,17 @@ export default {
         .dsw-tab-lists-item{
           display : inline-block;
           background : url("./images/tab-bg.png") no-repeat scroll 0 0/100% 100%;
-          padding :0 10px;
+          padding :0 20px 0 10px;
           &:hover,&.active{
             background : url("./images/tab-hover-bg.png") no-repeat scroll 0 0/100% 100%;
           }
           .dsw-tab-lists-item-a{
+            position : relative;
             .dsw-tab-lists-item-a-icon{
-
+              position : absolute;
+              top :50%;
+              right :-16px;
+              transform :translate(0,-50%);
             }
             .dsw-tab-lists-item-a-title{
 
