@@ -6,14 +6,14 @@
       <div class="dsw-login-wrapper">
         <ul class="dsw-login-lists">
           <li class="dsw-login-item">
-            <input class="dsw-login-item-input" v-validate="required|numeric" type="text" name="username" v-model="username" placeholder="请输入用户名" />
+            <input class="dsw-login-item-input" v-validate="'required'" type="text" name="username" ref="username" v-model="username" placeholder="请输入用户名" />
           </li>
           <li class="dsw-login-item">
-            <input class="dsw-login-item-input" type="password" name="password" v-model="password" placeholder="请输入密码" />
+            <input class="dsw-login-item-input" v-validate="'required'" type="password" name="password" ref="password" v-model="password" placeholder="请输入密码" />
           </li>
         </ul>
 
-        <a href="javascript:void(0);" class="dsw-login-btn" @click="loginHandler" >登录</a >
+        <button type="button" class="dsw-login-btn" @click="loginHandler" disabled ref="login-btn">登录</button >
       </div>
       <span class="dsw-login-copyright">技术支持：武汉迪赛威智能科技有限公司</span>
     </div>
@@ -27,11 +27,10 @@
 </template >
 
 <script >
+import 'assets/js/vee-validate'
 
 import DswContainer from 'components/common/container'
 import DswVideo from 'components/common/video'
-
-import 'assets/js/vee-validate'
 
 export default {
   name: 'App',
@@ -45,10 +44,40 @@ export default {
     DswContainer,
     DswVideo
   },
+  watch: {
+    errors: {
+      deep: true,
+      immediate: true,
+      handler (val, oldVal) {
+        if (val.any()) {
+          console.log(val.all())
+          console.log(val.collect())
+        }
+      }
+    },
+    username (val, oldVal) {
+      this.$validator.validate('username', val).then((result) => {
+        if (!result) {
+          this.$toastr.warning('请输入用户名')
+        }
+      })
+    },
+    password (val, oldVal) {
+      this.$validator.validate('password', val).then((result) => {
+        if (!result) {
+          this.$toastr.error('请输入密码')
+        }
+      })
+    }
+  },
   methods: {
     loginHandler (e) {
-      this.$validator.validateAll().then(function (result) {
-        console.log(result)
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+
+        } else {
+          this.errors.first()
+        }
       })
     }
   }

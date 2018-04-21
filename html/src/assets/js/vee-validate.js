@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import VeeValidate from 'vee-validate'
 
+import zhCN from 'vee-validate/dist/locale/zh_CN'
+
 const config = {
   errorBagName: 'errors', // change if property conflicts
   fieldsBagName: 'fields',
   delay: 0,
-  locale: 'zh_CN',
+  locale: 'zh-CN',
   // dictionary: null,
   strict: true,
   classes: false,
@@ -25,6 +27,8 @@ const config = {
   i18nRootKey: 'validations' // the nested key under which the validation messsages will be located
 }
 
+VeeValidate.Validator.localize('zh-CN', zhCN)
+
 Vue.use(VeeValidate, config)
 
-export default VeeValidate
+export default {...VeeValidate}
