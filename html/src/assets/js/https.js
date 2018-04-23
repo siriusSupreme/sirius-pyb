@@ -6,4 +6,4 @@ const https = axios
 
 Vue.prototype.$https = https
 
-export default https
+export default {...https}

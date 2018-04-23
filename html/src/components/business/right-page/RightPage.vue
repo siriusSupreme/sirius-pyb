@@ -1,60 +1,40 @@
 <template>
-  <div class="dsw-right-page">
+  <div class="dsw-right-page" ref="dsw-right-page">
     <!--页面辅助工具 start-->
-    <div class="dsw-assist-container">
-      <nav class="dsw-assist-wrapper clearfix">
-        <ul class="dsw-assist-lists pull-right">
-          <li class="dsw-assist-item">
-            <a href="javascript:void(0);" class="dsw-assist-item-a">
-              <i class="dsw-assist-item-a-icon fa fa-bell"></i>
-              <span class="dsw-assist-item-a-title">消息提醒</span>
-            </a>
-          </li>
-          <li class="dsw-assist-item">
-            <a href="javascript:void(0);" class="dsw-assist-item-a">
-              <i class="dsw-assist-item-a-icon fa fa-user"></i>
-              <span class="dsw-assist-item-a-title">admin</span>
-            </a>
-          </li>
-          <li class="dsw-assist-item">
-            <a href="javascript:void(0);" class="dsw-assist-item-a">
-              <i class="dsw-assist-item-a-icon fa fa-question-circle"></i>
-              <span class="dsw-assist-item-a-title">帮助</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
+    <assist-nav ref="dsw-assist-container"></assist-nav>
     <!--页面辅助工具 end-->
     <!--tab 容器 start-->
-    <div class="dsw-tab-container" ref="dsw-tab-container">
+    <div class="dsw-tab-container">
       <!--tab 项 start-->
       <nav class="dsw-tab-lists-wrapper" ref="dsw-tab-lists-wrapper">
-        <ul class="dsw-tab-lists">
-          <li class="dsw-tab-lists-item active">
-            <a href="javascript:void(0);" class="dsw-tab-lists-item-a">
-              <span class="dsw-tab-lists-item-a-title">首页</span>
-            </a>
-          </li>
-          <li class="dsw-tab-lists-item">
-            <a href="javascript:void(0);" class="dsw-tab-lists-item-a">
-              <span class="dsw-tab-lists-item-a-title">标签 tab-01</span>
-              <i class="dsw-tab-lists-item-a-icon fa fa-close"></i>
-            </a>
-          </li>
-          <li class="dsw-tab-lists-item">
-            <a href="javascript:void(0);" class="dsw-tab-lists-item-a">
-              <span class="dsw-tab-lists-item-a-title">标签 tab-02</span>
-              <i class="dsw-tab-lists-item-a-icon fa fa-close"></i>
-            </a>
-          </li>
-          <li class="dsw-tab-lists-item">
-            <a href="javascript:void(0);" class="dsw-tab-lists-item-a">
-              <span class="dsw-tab-lists-item-a-title">标签 tab-03</span>
-              <i class="dsw-tab-lists-item-a-icon fa fa-close"></i>
-            </a>
-          </li>
-        </ul>
+        <i class="fa fa-backward dsw-tab-wizard dsw-tab-prev" @click.stop="prevHandler" ref="dsw-tab-prev"></i>
+        <div class="dsw-tab-lists-box" ref="dsw-tab-lists-box">
+          <ul class="dsw-tab-lists" ref="dsw-tab-lists" :style="{width: tabListsWidth+'px'}">
+            <li class="dsw-tab-lists-item" :class="{'active':currentMenuID===0}" @click.stop="selectTabHandler($event,0)" ref="dsw-tab-lists-item-0">
+              <a href="javascript:void(0);" class="dsw-tab-lists-item-a">
+                <span class="dsw-tab-lists-item-a-title">首页</span>
+              </a>
+            </li>
+            <li class="dsw-tab-lists-item"  v-for="(tab,index) in navTabs" v-bind:key="index" :class="{'active':currentMenuID===tab.id}" @click.stop="selectTabHandler($event,tab.id)" :ref="'dsw-tab-lists-item-'+tab.id">
+              <a href="javascript:void(0);" class="dsw-tab-lists-item-a">
+                <span class="dsw-tab-lists-item-a-title">{{tab.title}}</span>
+                <i class="dsw-tab-lists-item-a-icon fa fa-close" @click.stop="closeHandler($event,tab.id)"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <i class="fa fa-forward dsw-tab-wizard dsw-tab-next" @click.stop="nextHandler" ref="dsw-tab-next"></i>
+        <div class="dsw-tab-more-wrapper" @mouseenter="mouseEnterHandler" @mouseleave="mouseLeaveHandler" ref="dsw-tab-more-wrapper">
+          <i class="fa fa-caret-down dsw-tab-wizard dsw-tab-more"></i>
+          <ul class="dsw-tab-more-lists" :class="{'hidden':!isShowMore}">
+            <li class="dsw-tab-more-item" :class="{'active':currentMenuID===0}" @click.stop="selectTabHandler($event,0)" ref="dsw-tab-more-item-0">
+              <a href="javascript:void(0);" class="dsw-tab-more-item-title">首页</a >
+            </li>
+            <li class="dsw-tab-more-item" v-for="(tab,index) in navTabs" v-bind:key="index" :class="{'active':currentMenuID===tab.id}" @click.stop="selectTabHandler($event,tab.id)" :ref="'dsw-tab-more-item-'+tab.id">
+              <a href="javascript:void(0);" class="dsw-tab-more-item-title">{{tab.title}}</a >
+            </li>
+          </ul>
+        </div>
       </nav>
       <!--tab 项 end-->
       <!--tab 页 start-->
@@ -72,21 +52,122 @@
 </template>
 
 <script>
+import {createNamespacedHelpers} from 'vuex'
+import BScroll from 'better-scroll'
+
+import AssistNav from 'components/business/assist-nav'
+
+const {mapState, mapMutations} = createNamespacedHelpers('index')
+
 export default {
   name: 'RightPage',
   data () {
     return {
-
+      isShowMore: false,
+      tabListsWidth: '100%',
+      betterScroll: null
     }
   },
-  methods: {
+  computed: {
+    ...mapState({
+      currentMenuID: 'currentMenuID',
+      previousMenuID: 'previousMenuID',
+      navTabs (state) {
+        const tabId = state.navTabs.tabId
+        let results = []
 
+        state.navTabs.data.forEach((val, key) => {
+          results.push(val)
+        })
+
+        this.$nextTick(() => {
+          let width = 0
+          Array.from(this.$refs['dsw-tab-lists'].children).forEach((element, index) => {
+            width += element.clientWidth
+          })
+          // 修复只有两个 tab 时，显示错位
+          if (width === 116) {
+            width += 200
+          }
+          if (results.length === 0) {
+            this.currentTab = 0
+          } else if (this.tabListsWidth > width) {
+            this.currentTab = this.prevTab
+          } else {
+            this.currentTab = tabId
+          }
+          this.tabListsWidth = width
+        })
+
+        return results
+      }
+    })
+  },
+  components: {
+    AssistNav
+  },
+  methods: {
+    ...mapMutations(['navTabsHandler', 'setCurrentMenuID']),
+    mouseEnterHandler (e) {
+      this.isShowMore = true
+    },
+    mouseLeaveHandler (e) {
+      this.isShowMore = false
+    },
+    setPageWrapperHeight () {
+      const rightPageHeight = this.$refs['dsw-right-page'].clientHeight
+      const assistHeight = this.$refs['dsw-assist-container'].$el.clientHeight
+      const tabListsHeight = this.$refs['dsw-tab-lists-wrapper'].clientHeight
+
+      this.$refs['dsw-tab-pages-wrapper'].style.height = (rightPageHeight - assistHeight - tabListsHeight) + 'px'
+    },
+    setTabListsBoxWidth () {
+      const tabListsWidth = this.$refs['dsw-tab-lists-wrapper'].clientWidth
+      const tabPrevWidth = this.$refs['dsw-tab-prev'].clientWidth
+      const tabNextWidth = this.$refs['dsw-tab-next'].clientWidth
+      const tabMoreWrapperWidth = this.$refs['dsw-tab-more-wrapper'].clientWidth
+
+      this.$refs['dsw-tab-lists-box'].style.width = (tabListsWidth - tabPrevWidth - tabNextWidth - tabMoreWrapperWidth - 1) + 'px'
+    },
+    mountedInit () {
+      this.setPageWrapperHeight()
+      this.setTabListsBoxWidth()
+      this.$nextTick(() => {
+        this.betterScroll && this.betterScroll.destory()
+
+        this.betterScroll = new BScroll(this.$refs['dsw-tab-lists-box'], {
+          scrollX: true,
+          scrollY: false,
+          mouseWheel: true
+        })
+      })
+    },
+    closeHandler (e, id) {
+      this.navTabsHandler({id, isAdd: false})
+    },
+    selectTabHandler (e, id) {
+      this.setCurrentMenuID(id)
+      this.betterScroll.scrollToElement(e.currentTarget)
+    },
+    prevHandler (e) {
+      const target = e.currentTarget.prevElementSibling
+
+      if (target) {
+        this.betterScroll.scrollToElement(target)
+      }
+    },
+    nextHandler (e) {
+      const target = e.currentTarget.nextElementSibling
+
+      if (target) {
+        this.betterScroll.scrollToElement(target)
+      }
+    }
   },
   mounted () {
-    const containerHeight = this.$refs['dsw-tab-container'].clientHeight
-    const tabListsHeight = this.$refs['dsw-tab-lists-wrapper'].clientHeight
+    this.mountedInit()
 
-    this.$refs['dsw-tab-pages-wrapper'].style.height = (containerHeight - tabListsHeight) + 'px'
+    window.addEventListener('resize', this.mountedInit)
   }
 }
 </script>
@@ -96,57 +177,95 @@ export default {
   height : 100%;
   overflow : hidden;
   padding :0 10px 0 0;
-  .dsw-assist-container{
-    .dsw-assist-wrapper{
-      height :36px;
-      line-height :36px;
-      .dsw-assist-lists{
-        .dsw-assist-item{
-          display : inline-block;
-          padding :0 10px 0 0;
-          .dsw-assist-item-a{
-            .dsw-assist-item-a-icon{
-
-            }
-            .dsw-assist-item-a-title{
-
-            }
-          }
-        }
-      }
-    }
-  }
   .dsw-tab-container{
     .dsw-tab-lists-wrapper{
-      .dsw-tab-lists{
+      position : relative;
+      height :36px;
+      line-height :36px;
+      padding : 0 36px 0 0;
+      background-color :#191b52;
+      .dsw-tab-wizard{
+        width :24px;
         height :36px;
         line-height :36px;
-        .dsw-tab-lists-item{
-          display : inline-block;
-          background : url("./images/tab-bg.png") no-repeat scroll 0 0/100% 100%;
-          padding :0 20px 0 10px;
-          &:hover,&.active{
-            background : url("./images/tab-hover-bg.png") no-repeat scroll 0 0/100% 100%;
-          }
-          .dsw-tab-lists-item-a{
-            position : relative;
-            .dsw-tab-lists-item-a-icon{
-              position : absolute;
-              top :50%;
-              right :-16px;
-              transform :translate(0,-50%);
+        text-align : center;
+        cursor:pointer;
+        color : #337ab7;
+      }
+      .dsw-tab-prev{
+        float :left;
+      }
+      .dsw-tab-next{
+        float : right;
+      }
+      .dsw-tab-lists-box{
+        float :left;
+        overflow : hidden;
+        .dsw-tab-lists{
+          overflow : hidden;
+          .dsw-tab-lists-item{
+            float : left;
+            background : url("./images/tab-bg.png") no-repeat scroll 0 0/100% 100%;
+            padding :0 20px 0 10px;
+            &:hover,&.active{
+              background : url("./images/tab-hover-bg.png") no-repeat scroll 0 0/100% 100%;
             }
-            .dsw-tab-lists-item-a-title{
+            .dsw-tab-lists-item-a{
+              position : relative;
+              .dsw-tab-lists-item-a-icon{
+                position : absolute;
+                top :50%;
+                right :-16px;
+                transform :translate(0,-50%);
+              }
+              .dsw-tab-lists-item-a-title{
 
+              }
+            }
+          }
+        }
+      }
+      .dsw-tab-more-wrapper{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 36px;
+        height: 36px;
+        text-align: center;
+        .dsw-tab-wizard{
+
+        }
+        .dsw-tab-more{
+          width :100%;
+        }
+        .dsw-tab-more-lists{
+          position : absolute;
+          right :0;
+          top :36px;
+          background-color :#020c35;
+          line-height :normal;
+          padding :10px;
+          text-align : left;
+          .dsw-tab-more-item{
+            padding: 3px 5px;
+            border-radius: 5px;
+            margin :5px 0;
+            &.active{
+              background-color: #191b52;
+            }
+            .dsw-tab-more-item-title{
+              white-space :nowrap;
+              display :block;
             }
           }
         }
       }
     }
-    .dsw-tab->pages-wrapper{
-      .dsw-tab->pages{
+    .dsw-tab-pages-wrapper{
+      padding :0 0 6px 0;
+      .dsw-tab-pages{
         height :100%
-        .dsw-tab->pages-item{
+        .dsw-tab-pages-item{
           height :100%
           .dsw-tab-pages-item-iframe{
 

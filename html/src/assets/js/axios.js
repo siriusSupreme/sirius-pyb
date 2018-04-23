@@ -32,7 +32,7 @@ axiosInstance.interceptors.request.use((options) => {
 })
 
 axiosInstance.interceptors.response.use((response) => {
-  const data = response.data
+  const data = response.data || JSON.parse(response.request.responseText)
 
   return data
 }, (reason) => {
@@ -40,4 +40,4 @@ axiosInstance.interceptors.response.use((response) => {
   return Promise.reject(reason)
 })
 
-export default axiosInstance
+export default {...axiosInstance}

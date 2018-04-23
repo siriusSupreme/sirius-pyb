@@ -20,13 +20,10 @@
 </template >
 
 <script >
-import { createNamespacedHelpers } from 'vuex'
 
 import DswContainer from 'components/common/container'
 import LeftMenu from 'components/business/left-menu'
 import RightPage from 'components/business/right-page'
-
-const {mapState} = createNamespacedHelpers('index')
 
 export default {
   name: 'App',
@@ -34,14 +31,6 @@ export default {
     DswContainer,
     LeftMenu,
     RightPage
-  },
-  mounted () {
-    // const leftMenuWidth = this.$refs['dsw-left-menu'].$el.clientWidth
-    //
-    // this.$refs['dsw-right-page'].$el.style.marginLeft = leftMenuWidth + 'px'
-  },
-  computed: {
-    ...mapState
   }
 }
 </script >

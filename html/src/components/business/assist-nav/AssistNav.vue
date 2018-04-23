@@ -1,0 +1,112 @@
+<template>
+  <div class="dsw-assist-container">
+    <nav class="dsw-assist-wrapper clearfix">
+      <ul class="dsw-assist-lists pull-right">
+        <li class="dsw-assist-item">
+          <a href="javascript:void(0);" class="dsw-assist-item-a">
+            <i class="dsw-assist-item-a-icon fa fa-bell"></i>
+            <span class="dsw-assist-item-a-title">消息提醒</span>
+          </a>
+        </li>
+        <li class="dsw-assist-item" @mouseenter="mouseEnterHandler" @mouseleave="mouseOutHandler">
+          <a href="javascript:void(0);" class="dsw-assist-item-a">
+            <i class="dsw-assist-item-a-icon fa fa-user"></i>
+            <span class="dsw-assist-item-a-title">admin</span>
+          </a>
+          <ul class="dsw-assist-lists dsw-sub-assist-lists" :class="{'hidden':!isShowAdminProfile}">
+            <li class="dsw-assist-item">
+              <a href="javascript:void(0);" class="dsw-assist-item-a" >修改密码</a>
+            </li>
+            <li class="dsw-assist-item">
+              <a href="javascript:void(0);" class="dsw-assist-item-a" >退出登录</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dsw-assist-item">
+          <a href="javascript:void(0);" class="dsw-assist-item-a">
+            <i class="dsw-assist-item-a-icon fa fa-question-circle"></i>
+            <span class="dsw-assist-item-a-title">帮助</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'AssistNav',
+  data () {
+    return {
+      isShowAdminProfile: false
+    }
+  },
+  methods: {
+    mouseEnterHandler (e) {
+      this.isShowAdminProfile = true
+    },
+    mouseOutHandler (e) {
+      this.isShowAdminProfile = false
+    }
+  }
+}
+</script>
+
+<style lang="stylus">
+  .dsw-assist-container{
+    .dsw-assist-wrapper{
+      height :36px;
+      line-height :36px;
+      .dsw-assist-lists{
+        .dsw-assist-item{
+          position : relative;
+          display : inline-block;
+          padding :0 10px 0 0;
+          .dsw-assist-item-a{
+            .dsw-assist-item-a-icon{
+
+            }
+            .dsw-assist-item-a-title{
+
+            }
+          }
+          .dsw-sub-assist-lists{
+            position : absolute;
+            top :36px;
+            left :0;
+            z-index : 2;
+            background-color : #020c35;
+            &::before{
+              content : '';
+              position : absolute;
+              top :-20px;
+              left :10px;
+              width :0;
+              height :0;
+              border-width :10px;
+              border-style :solid;
+              border-color : transparent transparent #020c35 transparent;
+            }
+            .dsw-assist-item{
+              display : block;
+              line-height : normal;
+              padding :5px;
+              .dsw-assist-item-a{
+                .dsw-assist-item-a-icon{
+
+                }
+                .dsw-assist-item-a-title{
+
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+</style>
+
+<style lang="stylus" scoped>
+
+</style>

@@ -1,22 +1,20 @@
 <template>
     <ul class="dsw-menu-folder">
-      <slot v-for="(item,index) in menuLists" :item="item" :index="index">
-        <li class="dsw-menu-file" :key="index">
-          <a class="dsw-menu-file-wrapper" @click.stop.prevent="clickHandler($event,item,index)" :href="item.url" >
-            <i class="fa fa-cogs dsw-menu-file-icon"></i>
-            <span class="dsw-menu-file-title">{{ item.title }}</span>
-            <i class="fa dsw-menu-file-arrow" :class="[item.dswOpened===true? 'fa-angle-double-down':'fa-angle-double-right']" v-if="item.children && item.children.length > 0"></i>
-          </a>
-          <dsw-menu v-if="item.children && item.children.length > 0" :menuLists="item.children" class="dsw-sub-menu hidden"></dsw-menu>
-        </li>
-      </slot>
+      <li class="dsw-menu-file" v-for="(menu,index) in menuLists" :key="menu.id">
+        <a class="dsw-menu-file-wrapper" @click.stop.prevent="menuClickHandler($event,menu,index,path)" :href="menu.url" :ref="'dsw-menu-file-wrapper-'+menu.id" :data-path="path" :class="{'active':currentMenuID===menu.id}">
+          <i class="fa fa-cogs dsw-menu-file-icon"></i>
+          <span class="dsw-menu-file-title">{{ menu.title }}</span>
+          <i class="fa dsw-menu-file-arrow" :class="[menu.isExpanded===true? 'fa-angle-double-down':'fa-angle-double-right']" v-if="menu.children && menu.children.length > 0"></i>
+        </a>
+        <dsw-menu v-if="menu.children && menu.children.length > 0" :menuLists="menu.children" :path="path+'-'+index" class="dsw-sub-menu-folder" :class="{'hidden':!menu.isExpanded}"></dsw-menu>
+      </li>
     </ul>
 </template>
 
 <script>
 import {createNamespacedHelpers} from 'vuex'
 
-const {mapMutations} = createNamespacedHelpers('index')
+const {mapState, mapMutations} = createNamespacedHelpers('index')
 
 export default {
   name: 'DswMenu',
@@ -24,26 +22,53 @@ export default {
     menuLists: {
       type: Array,
       required: true
+    },
+    path: {
+      type: String,
+      required: true
     }
   },
+  computed: {
+    ...mapState({
+      currentMenuID (state) {
+        const currentMenuID = state.currentMenuID
+
+        let currentMenu = this.$refs['dsw-menu-file-wrapper-' + currentMenuID]
+
+        if (currentMenu) {
+          currentMenu = currentMenu[0]
+          console.log(currentMenu.dataset)
+          const ancestorMenu = currentMenu.parentNode.parentNode
+          const ancestorMenuClassName = ancestorMenu.className
+
+          if (ancestorMenuClassName.includes('hidden')) {
+            ancestorMenu.className = ancestorMenuClassName.replace(/\s+hidden\s*/, ' ')
+          }
+        }
+
+        return currentMenuID
+      }
+    })
+  },
   methods: {
-    ...mapMutations(['clickMenu']),
-    clickHandler (e, item, index) {
+    ...mapMutations(['clickMenuHandler', 'navTabsHandler', 'setCurrentMenuID']),
+
+    menuClickHandler (e, menu, index, path) {
       const nextSibling = e.currentTarget.nextElementSibling
       // 有子菜单，则打开
       if (nextSibling) {
-        const className = nextSibling.className
-        if (className.includes('hidden')) {
-          nextSibling.className = className.replace(/\s+hidden\s*/, '')
-          this.clickMenu({index, status: true})
-        } else {
-          nextSibling.className += ' hidden'
-          this.clickMenu({index, status: false})
-        }
-        this.$emit('dswRefreshBScroll', {e, item, index})
+        this.clickMenuHandler(index)
+        this.$emit('dswMenuFolder')
       } else {
         //  否则触发事件
-        this.$emit('dswOpenTab', {e, item, index})
+        const id = menu.id
+        const tab = {
+          id: menu.id,
+          title: menu.title,
+          href: menu.url
+        }
+        this.navTabsHandler({id, tab, isAdd: true})
+        this.setCurrentMenuID(id)
       }
     }
   }
@@ -55,7 +80,6 @@ export default {
   $color=#23c7ed;
 
   .dsw-menu-folder{
-    padding :0;
     .dsw-menu-file{
       &:not(:last-child){
         border-bottom :1px solid $borderColor;
@@ -71,6 +95,9 @@ export default {
         &:not(:last-child){
           border-bottom :1px solid $borderColor;
         }
+        &.active{
+          background : url("./images/active.png") no-repeat scroll 0 0/100% 100%;
+        }
         .dsw-menu-file-icon{
           font-size :0.3rem
         }
@@ -83,17 +110,17 @@ export default {
           top :50%;
           transform :translate(0,-50%);
         }
-        ^[0].dsw-sub-menu .dsw-menu-file{
+        ^[0].dsw-sub-menu-folder .dsw-menu-file{
           border-bottom : none;
           .dsw-menu-file-wrapper{
             border-bottom : none;
             padding :0 0 0 0.4rem;
-          }
-          .dsw-menu-file-icon{
-            font-size :0.24rem
-          }
-          .dsw-menu-file-title{
-            font-size :0.2rem;
+            .dsw-menu-file-icon{
+              font-size :0.24rem
+            }
+            .dsw-menu-file-title{
+              font-size :0.2rem;
+            }
           }
         }
       }

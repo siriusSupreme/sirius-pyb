@@ -8,4 +8,4 @@ import 'layui-src/src/css/modules/layer/default/layer.css'
 Vue.prototype.$layer = layer
 
 // 导出该类
-export default layer
+export default {...layer}

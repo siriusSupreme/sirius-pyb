@@ -8,9 +8,17 @@ html{
   body{
     dswHeight();
     font-family : 'Microsoft YaHei'
-    ul,ol{
-      list-style :none;
+    // 重置默认 padding 和 margin
+    div,span,i,img,ul,ol,li,dl,dt,dd{
       padding :0;
+      margin :0;
+    }
+    // 重置 border
+    button{
+      border: none;
+    }
+    ul,ol,li{
+      list-style :none;
     }
     a:link, a:visited, a:hover, a:active{
       text-decoration : none;

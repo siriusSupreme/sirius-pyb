@@ -1,10 +1,9 @@
 <template>
-  <aside class="dsw-left-menu pull-left">
+  <aside class="dsw-left-menu pull-left" :class="{'dsw-left-menu-collapsed':!IsExpanded}">
     <nav class="dsw-left-menu-nav" ref="dsw-left-menu-nav">
-        <dsw-menu :menuLists="menuLists" @dswRefreshBScroll="refreshBScroll"></dsw-menu>
+      <dsw-menu :menuLists="menuLists" path="0" @dswMenuFolder="menuFolderHandler"></dsw-menu>
     </nav>
-    <img class="dsw-menu-toggle-btn" @click.stop="toggleHandler" v-show="opened" src="./images/arrow-left.png" />
-    <img class="dsw-menu-toggle-btn" @click.stop="toggleHandler" v-show="!opened" src="./images/arrow-right.png" />
+    <span class="dsw-menu-toggle-btn" :class="{'dsw-menu-toggle-expanded':IsExpanded}" @click="toggleExpandedHandler"></span>
   </aside>
 </template>
 
@@ -21,8 +20,11 @@ export default {
   data () {
     return {
       betterScroll: null,
-      opened: true
+      IsExpanded: true
     }
+  },
+  computed: {
+    ...mapState(['menuLists'])
   },
   components: {
     DswMenu
@@ -38,25 +40,28 @@ export default {
   },
   methods: {
     ...mapActions(['getMenuLists']),
-    refreshBScroll (payload) {
+
+    menuFolderHandler () {
       this.betterScroll.refresh()
     },
-    toggleHandler (e) {
-      this.opened = !this.opened
+    toggleExpandedHandler (e) {
+      this.isExpanded = !this.isExpanded
     }
-  },
-  computed: {
-    ...mapState(['menuLists'])
   }
 }
 </script>
 
 <style lang="stylus">
   .dsw-left-menu{
-    height :100%;
-    padding :5px 10px;
     position : relative;
     width : 3.27rem;
+    height :100%;
+    padding :5px 0 5px 10px;
+    margin : 0 10px 0 0;
+    &.dsw-left-menu-collapsed{
+      width :0;
+      margin :0;
+    }
     .dsw-left-menu-nav{
       height : 100%;
       overflow : hidden;
@@ -70,6 +75,10 @@ export default {
       top :50%;
       left :-20px;
       transform :translate(0,-50%);
+      background : url("./images/arrow-left.png") no-repeat scroll 0 0/100% 100%;
+      &.dsw-menu-toggle-expanded{
+        background : url("./images/arrow-right.png") no-repeat scroll 0 0/100% 100%;
+      }
     }
   }
 </style>
