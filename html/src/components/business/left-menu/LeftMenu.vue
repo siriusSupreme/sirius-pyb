@@ -33,7 +33,8 @@ export default {
     this.getMenuLists({vm: this}).then((result) => {
       this.$nextTick(() => {
         this.betterScroll = new BScroll(this.$refs['dsw-left-menu-nav'], {
-          mouseWheel: true
+          mouseWheel: true,
+          scrollbar: true
         })
       })
     })

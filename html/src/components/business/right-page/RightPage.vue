@@ -10,15 +10,10 @@
         <i class="fa fa-backward dsw-tab-wizard dsw-tab-prev" @click.stop="prevHandler" ref="dsw-tab-prev"></i>
         <div class="dsw-tab-lists-box" ref="dsw-tab-lists-box">
           <ul class="dsw-tab-lists" ref="dsw-tab-lists" :style="{width: tabListsWidth+'px'}">
-            <li class="dsw-tab-lists-item" :class="{'active':currentMenuID===0}" @click.stop="selectTabHandler($event,0)" ref="dsw-tab-lists-item-0">
-              <a href="javascript:void(0);" class="dsw-tab-lists-item-a">
-                <span class="dsw-tab-lists-item-a-title">首页</span>
-              </a>
-            </li>
-            <li class="dsw-tab-lists-item"  v-for="(tab,index) in navTabs" v-bind:key="index" :class="{'active':currentMenuID===tab.id}" @click.stop="selectTabHandler($event,tab.id)" :ref="'dsw-tab-lists-item-'+tab.id">
+            <li class="dsw-tab-lists-item"  v-for="(tab,index) in navTabs" v-bind:key="index" :class="{'active':currentMenuID===tab.id}" :data-tab-id="tab.id" @click.stop="selectTabHandler($event,tab.id)" :ref="'dsw-tab-lists-item-'+tab.id">
               <a href="javascript:void(0);" class="dsw-tab-lists-item-a">
                 <span class="dsw-tab-lists-item-a-title">{{tab.title}}</span>
-                <i class="dsw-tab-lists-item-a-icon fa fa-close" @click.stop="closeHandler($event,tab.id)"></i>
+                <i class="dsw-tab-lists-item-a-icon fa fa-close" @click.stop="closeHandler($event,tab.id)" v-if="tab.id!==0"></i>
               </a>
             </li>
           </ul>
@@ -27,9 +22,6 @@
         <div class="dsw-tab-more-wrapper" @mouseenter="mouseEnterHandler" @mouseleave="mouseLeaveHandler" ref="dsw-tab-more-wrapper">
           <i class="fa fa-caret-down dsw-tab-wizard dsw-tab-more"></i>
           <ul class="dsw-tab-more-lists" :class="{'hidden':!isShowMore}">
-            <li class="dsw-tab-more-item" :class="{'active':currentMenuID===0}" @click.stop="selectTabHandler($event,0)" ref="dsw-tab-more-item-0">
-              <a href="javascript:void(0);" class="dsw-tab-more-item-title">首页</a >
-            </li>
             <li class="dsw-tab-more-item" v-for="(tab,index) in navTabs" v-bind:key="index" :class="{'active':currentMenuID===tab.id}" @click.stop="selectTabHandler($event,tab.id)" :ref="'dsw-tab-more-item-'+tab.id">
               <a href="javascript:void(0);" class="dsw-tab-more-item-title">{{tab.title}}</a >
             </li>
@@ -73,33 +65,34 @@ export default {
       currentMenuID: 'currentMenuID',
       previousMenuID: 'previousMenuID',
       navTabs (state) {
-        const tabId = state.navTabs.tabId
-        let results = []
+        const navTabs = state.navTabs
+        const currentMenuID = state.currentMenuID
 
-        state.navTabs.data.forEach((val, key) => {
-          results.push(val)
-        })
-
+        // 在下一轮开始计算宽度，以确保新添加的元素已经渲染完毕
         this.$nextTick(() => {
+          // 获取菜单宽度
           let width = 0
           Array.from(this.$refs['dsw-tab-lists'].children).forEach((element, index) => {
             width += element.clientWidth
           })
+
           // 修复只有两个 tab 时，显示错位
           if (width === 116) {
-            width += 200
+            width <<= 1
           }
-          if (results.length === 0) {
-            this.currentTab = 0
-          } else if (this.tabListsWidth > width) {
-            this.currentTab = this.prevTab
-          } else {
-            this.currentTab = tabId
+
+          // 获取当前元素，并且使其可见
+          let currentTab = this.$refs['dsw-tab-lists-item-' + currentMenuID]
+          if (currentTab && (currentTab = currentTab[0]) && this.betterScroll) {
+            this.betterScroll.on('refresh', () => {
+              this.betterScroll.scrollToElement(currentTab)
+            })
           }
+
           this.tabListsWidth = width
         })
 
-        return results
+        return navTabs
       }
     })
   },
@@ -107,7 +100,8 @@ export default {
     AssistNav
   },
   methods: {
-    ...mapMutations(['navTabsHandler', 'setCurrentMenuID']),
+    ...mapMutations(['navTabsHandler', 'setCurrentMenuID', 'setPreviousMenuID']),
+
     mouseEnterHandler (e) {
       this.isShowMore = true
     },
@@ -127,40 +121,69 @@ export default {
       const tabNextWidth = this.$refs['dsw-tab-next'].clientWidth
       const tabMoreWrapperWidth = this.$refs['dsw-tab-more-wrapper'].clientWidth
 
+      // 减一，是为了修复小数引起的错位
       this.$refs['dsw-tab-lists-box'].style.width = (tabListsWidth - tabPrevWidth - tabNextWidth - tabMoreWrapperWidth - 1) + 'px'
     },
     mountedInit () {
       this.setPageWrapperHeight()
       this.setTabListsBoxWidth()
       this.$nextTick(() => {
-        this.betterScroll && this.betterScroll.destory()
+        this.betterScroll && this.betterScroll.destroy()
 
         this.betterScroll = new BScroll(this.$refs['dsw-tab-lists-box'], {
           scrollX: true,
           scrollY: false,
-          mouseWheel: true
+          mouseWheel: true,
+          scrollbar: true
         })
       })
     },
     closeHandler (e, id) {
+      const currentMenuID = this.currentMenuID
+
+      if (currentMenuID === id) {
+        let currentTab = this.$refs['dsw-tab-lists-item-' + currentMenuID]
+
+        if (currentTab && (currentTab = currentTab[0])) {
+          const previousTab = currentTab.previousElementSibling
+          if (previousTab) {
+            const tabId = Number.parseInt(previousTab.getAttribute('data-tab-id'), 10)
+            this.betterScroll.scrollToElement(previousTab)
+            this.setCurrentMenuID({id: tabId, isUpdatePrevious: true})
+          }
+        }
+      }
+
       this.navTabsHandler({id, isAdd: false})
     },
     selectTabHandler (e, id) {
-      this.setCurrentMenuID(id)
+      this.setCurrentMenuID({id, isUpdatePrevious: true})
       this.betterScroll.scrollToElement(e.currentTarget)
     },
     prevHandler (e) {
-      const target = e.currentTarget.prevElementSibling
+      const currentMenuID = this.currentMenuID
+      let currentTab = this.$refs['dsw-tab-lists-item-' + currentMenuID]
 
-      if (target) {
-        this.betterScroll.scrollToElement(target)
+      if (currentTab && (currentTab = currentTab[0])) {
+        const previousTab = currentTab.previousElementSibling
+        if (previousTab) {
+          const tabId = Number.parseInt(previousTab.getAttribute('data-tab-id'), 10)
+          this.betterScroll.scrollToElement(previousTab)
+          this.setCurrentMenuID({id: tabId, isUpdatePrevious: true})
+        }
       }
     },
     nextHandler (e) {
-      const target = e.currentTarget.nextElementSibling
+      const currentMenuID = this.currentMenuID
+      let currentTab = this.$refs['dsw-tab-lists-item-' + currentMenuID]
 
-      if (target) {
-        this.betterScroll.scrollToElement(target)
+      if (currentTab && (currentTab = currentTab[0])) {
+        const nextTab = currentTab.nextElementSibling
+        if (nextTab) {
+          const tabId = Number.parseInt(nextTab.getAttribute('data-tab-id'), 10)
+          this.betterScroll.scrollToElement(nextTab)
+          this.setCurrentMenuID({id: tabId, isUpdatePrevious: true})
+        }
       }
     }
   },
@@ -241,7 +264,7 @@ export default {
         .dsw-tab-more-lists{
           position : absolute;
           right :0;
-          top :36px;
+          top :34px;
           background-color :#020c35;
           line-height :normal;
           padding :10px;

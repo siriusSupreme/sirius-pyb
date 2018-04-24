@@ -1,7 +1,7 @@
 <template>
     <ul class="dsw-menu-folder">
       <li class="dsw-menu-file" v-for="(menu,index) in menuLists" :key="menu.id">
-        <a class="dsw-menu-file-wrapper" @click.stop.prevent="menuClickHandler($event,menu,index,path)" :href="menu.url" :ref="'dsw-menu-file-wrapper-'+menu.id" :data-path="path" :class="{'active':currentMenuID===menu.id}">
+        <a class="dsw-menu-file-wrapper" @click.stop.prevent="menuClickHandler($event,menu,index,path)" :href="menu.url" :ref="'dsw-menu-file-wrapper-'+menu.id" :data-path="path" :data-menu-index="index" :class="{'active':currentMenuID===menu.id}">
           <i class="fa fa-cogs dsw-menu-file-icon"></i>
           <span class="dsw-menu-file-title">{{ menu.title }}</span>
           <i class="fa dsw-menu-file-arrow" :class="[menu.isExpanded===true? 'fa-angle-double-down':'fa-angle-double-right']" v-if="menu.children && menu.children.length > 0"></i>
@@ -35,15 +35,19 @@ export default {
 
         let currentMenu = this.$refs['dsw-menu-file-wrapper-' + currentMenuID]
 
-        if (currentMenu) {
-          currentMenu = currentMenu[0]
-          console.log(currentMenu.dataset)
+        if (currentMenu && (currentMenu = currentMenu[0])) {
           const ancestorMenu = currentMenu.parentNode.parentNode
-          const ancestorMenuClassName = ancestorMenu.className
-
-          if (ancestorMenuClassName.includes('hidden')) {
-            ancestorMenu.className = ancestorMenuClassName.replace(/\s+hidden\s*/, ' ')
+          // 展开菜单
+          if (ancestorMenu && ancestorMenu.className.includes('hidden')) {
+            // console.log(currentMenu.dataset)
+            let path = currentMenu.getAttribute('data-path')
+            const menuIndex = currentMenu.getAttribute('data-menu-index')
+            path = path + '-' + menuIndex
+            const index = path.split('-')[1]
+            this.clickMenuHandler(index)
           }
+          // 滚动，使该菜单可见
+          // this.betterScroll.scrollToElement(currentMenu)
         }
 
         return currentMenuID
@@ -68,7 +72,7 @@ export default {
           href: menu.url
         }
         this.navTabsHandler({id, tab, isAdd: true})
-        this.setCurrentMenuID(id)
+        this.setCurrentMenuID({id, isUpdatePrevious: true})
       }
     }
   }
