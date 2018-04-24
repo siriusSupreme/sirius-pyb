@@ -140,8 +140,7 @@ export default {
         this.betterScroll = new BScroll(this.$refs['dsw-tab-lists-box'], {
           scrollX: true,
           scrollY: false,
-          mouseWheel: true,
-          scrollbar: true
+          mouseWheel: true
         })
       })
     },
@@ -274,7 +273,8 @@ export default {
           position : absolute;
           right :0;
           top :34px;
-          background-color :#020c35;
+          min-width : 100px;
+          background : url("./images/more-bg.jpg") no-repeat scroll 0 0/100% 100%;
           line-height :normal;
           padding :10px;
           text-align : left;

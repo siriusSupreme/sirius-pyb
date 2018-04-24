@@ -1,5 +1,5 @@
 <template>
-  <div class="dsw-loading-wrapper" v-if="type === 1" v-show="isShow">
+  <div class="dsw-loading-wrapper" v-show="isShow">
     <img class="dsw-loading-icon" src="./images/loading-001.gif" alt="数据加载中……" v-if="type === 1"/>
 
     <span class="dsw-loading-icon" v-else-if="type === 2">
@@ -14,18 +14,10 @@
 <script>
 export default {
   name: 'Loading',
-  props: {
-    title: {
-      type: String,
-      default: '数据加载中……'
-    },
-    type: {
-      type: Number,
-      default: 1
-    }
-  },
   data () {
     return {
+      type: 1,
+      title: '数据加载中……',
       isShow: false
     }
   }

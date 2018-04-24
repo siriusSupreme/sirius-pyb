@@ -1,6 +1,6 @@
 <template >
   <dsw-container>
-    <dsw-loading></dsw-loading>
+
   </dsw-container>
 </template >
 
@@ -13,7 +13,10 @@ export default {
     DswContainer
   },
   mounted () {
-    this.$showLoading(1)
+    this.$showLoading(2)
+    setTimeout(() => {
+      this.$hideLoading()
+    }, 3000)
   }
 }
 </script >

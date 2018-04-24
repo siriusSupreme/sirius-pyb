@@ -4,7 +4,6 @@
       <dsw-menu :menuLists="menuLists" path="0" @dswMenuFolder="menuFolderHandler"></dsw-menu>
     </nav>
     <span class="dsw-menu-toggle-btn" :class="{'dsw-menu-toggle-expanded':isExpanded}" @click="toggleExpandedHandler"></span>
-    <dsw-loading></dsw-loading>
   </aside>
 </template>
 
@@ -30,7 +29,9 @@ export default {
     DswMenu
   },
   mounted () {
+    this.$showLoading(3)
     this.getMenuLists({vm: this}).then((result) => {
+      this.$hideLoading()
       this.$nextTick(() => {
         this.betterScroll = new BScroll(this.$refs['dsw-left-menu-nav'], {
           mouseWheel: true,
@@ -74,9 +75,9 @@ export default {
       top :50%;
       left :-20px;
       transform :translate(0,-50%);
-      background : url("./images/arrow-left.png") no-repeat scroll 0 0/100% 100%;
+      background : url("./images/arrow-right.png") no-repeat scroll 0 0/100% 100%;
       &.dsw-menu-toggle-expanded{
-        background : url("./images/arrow-right.png") no-repeat scroll 0 0/100% 100%;
+        background : url("./images/arrow-left.png") no-repeat scroll 0 0/100% 100%;
       }
     }
   }

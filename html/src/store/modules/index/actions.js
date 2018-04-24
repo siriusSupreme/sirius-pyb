@@ -12,7 +12,7 @@ function initMenuLists (menuLists) {
 
 export default {
   getMenuLists ({commit}, {vm}) {
-    return vm.$https.get('MenuRpc/getMenuList').then((result) => {
+    return vm.$https.get('Menu/getMenuTreeForIndex').then((result) => {
       let menuLists = result.data.lists
 
       menuLists.forEach((menu, index) => {

@@ -81,7 +81,7 @@ export default {
             z-index: 2;
             width: 80px;
             text-align: center;
-            background : url("./images/pop-bg.jpg") no-repeat scroll 0 0/100% 100%;
+            background : url("./images/pop-bg.png") no-repeat scroll 0 0/100% 100%;
             .dsw-assist-item{
               display : block;
               line-height : normal;

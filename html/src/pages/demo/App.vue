@@ -1,19 +1,16 @@
 <template >
   <div class="container" >
     <span>demo</span>
-   <dsw-loading></dsw-loading>
   </div >
 </template >
 
 <script >
 import DswContainer from 'components/common/container'
-import DswLoading from 'components/common/loading'
 
 export default {
   name: 'App',
   components: {
-    DswContainer,
-    DswLoading
+    DswContainer
   }
 }
 </script >
