@@ -32,6 +32,7 @@ axiosInstance.interceptors.request.use((options) => {
 })
 
 axiosInstance.interceptors.response.use((response) => {
+  console.log(response)
   const data = response.data || JSON.parse(response.request.responseText)
 
   return data
