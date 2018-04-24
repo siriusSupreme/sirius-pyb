@@ -20,7 +20,7 @@
         metaEl.setAttribute( 'name', 'viewport' );
         doc.head.appendChild( metaEl );
       }
-      metaEl.setAttribute( 'content', 'width=device-width,user-scalable=no,initial-scale=' + scale + ',maximum-scale=' + scale + ',minimum-scale=' + scale + '' );
+      metaEl.setAttribute( 'content', 'width=device-width,user-scalable=no,initial-scale=' + scale + ',maximum-scale=' + scale + ',minimum-scale=' + scale );
 
       if ( clientWidth >= designWidth ) {
         docEl.style.fontSize = baseFontSize+'px';

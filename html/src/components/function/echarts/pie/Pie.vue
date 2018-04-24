@@ -5,10 +5,10 @@
 <script>
 import Echarts from '../Echarts'
 
-import pie from 'echarts/src/chart/pie'
+import pie from 'echarts/lib/chart/pie'
 
 export default {
-  name: "Pie",
+  name: 'Pie',
   extends: Echarts
 }
 </script>

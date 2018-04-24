@@ -6,14 +6,14 @@
       <div class="dsw-login-wrapper">
         <ul class="dsw-login-lists">
           <li class="dsw-login-item">
-            <input class="dsw-login-item-input" v-validate="'required'" type="text" name="username" ref="username" v-model="username" placeholder="请输入用户名" />
+            <input class="dsw-login-item-input" v-validate="'required'" type="text" name="username" ref="username" data-vv-as="用户名" v-model="username" placeholder="请输入用户名" />
           </li>
           <li class="dsw-login-item">
-            <input class="dsw-login-item-input" v-validate="'required'" type="password" name="password" ref="password" v-model="password" placeholder="请输入密码" />
+            <input class="dsw-login-item-input" v-validate="'required'" type="password" name="password" ref="password" data-vv-as="密码" v-model="password" placeholder="请输入密码" />
           </li>
         </ul>
 
-        <button type="button" class="dsw-login-btn" @click="loginHandler" disabled ref="login-btn">登录</button >
+        <button type="button" class="dsw-login-btn" @click="loginHandler" ref="dsw-login-btn">登录</button >
       </div>
       <span class="dsw-login-copyright">技术支持：武汉迪赛威智能科技有限公司</span>
     </div>
@@ -49,10 +49,13 @@ export default {
       deep: true,
       immediate: true,
       handler (val, oldVal) {
-        if (val.any()) {
-          console.log(val.all())
-          console.log(val.collect())
-        }
+        this.$nextTick(() => {
+          if (val.any()) {
+            this.$refs['dsw-login-btn'].setAttribute('disabled', 'disabled')
+          } else {
+            this.$refs['dsw-login-btn'].removeAttribute('disabled')
+          }
+        })
       }
     },
     username (val, oldVal) {
@@ -70,13 +73,27 @@ export default {
       })
     }
   },
+  mounted () {
+    this.$validator.validateAll().then((result) => {
+      if (result) {
+        this.$refs['dsw-login-btn'].removeAttribute('disabled')
+      } else {
+        this.$refs['dsw-login-btn'].setAttribute('disabled', 'disabled')
+      }
+    })
+  },
   methods: {
     loginHandler (e) {
       this.$validator.validateAll().then((result) => {
         if (result) {
-
-        } else {
-          this.errors.first()
+          const username = this.username
+          const password = this.password
+          this.$https.post('/LoginRpc/login', {username, password}).then((result) => {
+            localStorage.setItem('dsw-token-info', JSON.stringify(result.data))
+            location.href = '/index.html'
+          }).catch(() => {
+            this.$toastr.error('登录失败')
+          })
         }
       })
     }

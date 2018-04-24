@@ -77,7 +77,7 @@ export default {
           })
 
           // 修复只有两个 tab 时，显示错位
-          if (width === 116) {
+          if (navTabs.length === 2) {
             width <<= 1
           }
 

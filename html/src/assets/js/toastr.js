@@ -15,4 +15,4 @@ toastr.options = {
 Vue.prototype.$toastr = toastr
 
 // 导出该类
-export default toastr
+export default {...toastr}

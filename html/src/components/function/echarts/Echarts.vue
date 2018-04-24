@@ -1,20 +1,19 @@
 <template>
-    <div :id="id" :style="style"></div>
+  <div :id="id" class="dsw-echarts-wrapper"></div>
 </template>
 
 <script>
-import echarts from 'echarts/src/echarts'
+import echarts from 'echarts/lib/echarts'
+
+import 'echarts/lib/chart/pie'
 
 export default {
-  name: "Echarts",
+  name: 'Echarts',
   props: {
-    style: {
+    options: {
       type: Object,
-      default: {
-        width: '100%',
-        height: '100%'
-      }
-    },
+      required: true
+    }
   },
   data () {
     return {
@@ -23,15 +22,19 @@ export default {
     }
   },
   mounted () {
-    if ( this.echartsInstance === null ){
+    if (this.echartsInstance === null) {
       this.echartsInstance = echarts.init(document.getElementById(this.id))
+      this.echartsInstance.setOption(this.options)
     }
   }
 }
 </script>
 
 <style lang="stylus">
-
+.dsw-echarts-wrapper{
+    width :100%;
+    height : 100%;
+}
 </style>
 
 <style lang="stylus" scoped>

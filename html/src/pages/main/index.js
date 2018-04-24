@@ -1,5 +1,7 @@
 import Vue from 'vue'
 
+import checkToken from 'mixins/check-token'
+
 import App from './App'
 import DswLoading from 'plugins/loading'
 
@@ -12,5 +14,6 @@ Vue.use(DswLoading)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  mixins: [checkToken],
   render: (h) => h(App)
 })

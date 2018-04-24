@@ -10,19 +10,21 @@ const source = axios.CancelToken.source()
 
 const axiosInstance = axios.create({
   baseURL: config.baseURL,
-  // timeout: 5000,
+  timeout: 10000,
   withCredentials: true,
   responseType: 'json'
 })
 
 axiosInstance.interceptors.request.use((options) => {
-  const _token = token.getToken()
+  let _token = token.getToken()
 
-  if (!_token) {
-    // window.location.href = '/login.html'
-    source.cancel('请先登录')
-  } else {
-    options.headers[config.tokenName] = _token
+  // token 不存在 且 不是登录页发出的请求
+  if (!_token && !/\/login.html$/.test(window.location.href)) {
+    window.location.href = '/login.html'
+    source.cancel('尚未登录')
+  } else if (_token) {
+    _token = JSON.parse(_token)
+    options.headers[config.tokenName] = _token['token']
   }
 
   return options
@@ -34,6 +36,11 @@ axiosInstance.interceptors.request.use((options) => {
 axiosInstance.interceptors.response.use((response) => {
   console.log(response)
   const data = response.data || JSON.parse(response.request.responseText)
+
+  // TODO 登录失效处理
+  // if (data.code === -1) {
+  //
+  // }
 
   return data
 }, (reason) => {
