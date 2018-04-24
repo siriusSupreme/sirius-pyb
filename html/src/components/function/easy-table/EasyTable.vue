@@ -1,21 +1,22 @@
 <template>
-    <div class="dsw-better-scroll-wrapper">
+    <div class="dsw-easy-table-wrapper">
       <slot></slot>
     </div>
 </template>
 
 <script>
     export default {
-        name: "BetterScroll"
+        name: "EasyTable"
     }
 </script>
 
-<style lang="stylus" scoped>
-  .dsw-better-scroll-wrapper{
-
-  }
-</style>
-
 <style lang="stylus">
+.dsw-easy-table-wrapper{
+
+}
+</style>
+
+<style lang="stylus" scoped>
 
 </style>
+

@@ -5,8 +5,10 @@ export default {
   previousMenuID: 0,
   // 打开的 tabs 集合
   navTabs: [
-    {id: 0, title: '首页', href: '/login.html'}
+    {id: 0, title: '首页', href: '/main.html'}
   ],
   // 菜单集合
-  menuLists: []
+  menuLists: [],
+  // 左侧菜单展开标志
+  isExpanded: true
 }

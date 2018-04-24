@@ -1,9 +1,10 @@
 <template>
-  <aside class="dsw-left-menu pull-left" :class="{'dsw-left-menu-collapsed':!IsExpanded}">
+  <aside class="dsw-left-menu pull-left" :class="{'dsw-left-menu-collapsed':!isExpanded}">
     <nav class="dsw-left-menu-nav" ref="dsw-left-menu-nav">
       <dsw-menu :menuLists="menuLists" path="0" @dswMenuFolder="menuFolderHandler"></dsw-menu>
     </nav>
-    <span class="dsw-menu-toggle-btn" :class="{'dsw-menu-toggle-expanded':IsExpanded}" @click="toggleExpandedHandler"></span>
+    <span class="dsw-menu-toggle-btn" :class="{'dsw-menu-toggle-expanded':isExpanded}" @click="toggleExpandedHandler"></span>
+    <dsw-loading></dsw-loading>
   </aside>
 </template>
 
@@ -13,18 +14,17 @@ import BScroll from 'better-scroll'
 
 import DswMenu from 'components/function/menu'
 
-const {mapState, mapActions} = createNamespacedHelpers('index')
+const {mapState, mapMutations, mapActions} = createNamespacedHelpers('index')
 
 export default {
   name: 'LeftMenu',
   data () {
     return {
-      betterScroll: null,
-      IsExpanded: true
+      betterScroll: null
     }
   },
   computed: {
-    ...mapState(['menuLists'])
+    ...mapState(['menuLists', 'isExpanded'])
   },
   components: {
     DswMenu
@@ -41,12 +41,10 @@ export default {
   },
   methods: {
     ...mapActions(['getMenuLists']),
+    ...mapMutations(['toggleExpandedHandler']),
 
     menuFolderHandler () {
       this.betterScroll.refresh()
-    },
-    toggleExpandedHandler (e) {
-      this.isExpanded = !this.isExpanded
     }
   }
 }

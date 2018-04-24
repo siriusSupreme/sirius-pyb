@@ -54,6 +54,10 @@ export default {
 
 <style lang="stylus">
   .dsw-assist-container{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 0.35rem 0 0;
     .dsw-assist-wrapper{
       height :36px;
       line-height :36px;
@@ -71,22 +75,13 @@ export default {
             }
           }
           .dsw-sub-assist-lists{
-            position : absolute;
-            top :36px;
-            left :0;
-            z-index : 2;
-            background-color : #020c35;
-            &::before{
-              content : '';
-              position : absolute;
-              top :-20px;
-              left :10px;
-              width :0;
-              height :0;
-              border-width :10px;
-              border-style :solid;
-              border-color : transparent transparent #020c35 transparent;
-            }
+            position: absolute;
+            top: 36px;
+            left: 0;
+            z-index: 2;
+            width: 80px;
+            text-align: center;
+            background : url("./images/pop-bg.jpg") no-repeat scroll 0 0/100% 100%;
             .dsw-assist-item{
               display : block;
               line-height : normal;

@@ -28,5 +28,8 @@ export default {
   },
   [types.PREVIOUS_MENU_ID] (state, id) {
     state.previousMenuID = id
+  },
+  [types.TOGGLE_EXPANDED] (state) {
+    state.isExpanded = !state.isExpanded
   }
 }

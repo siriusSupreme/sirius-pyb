@@ -1,5 +1,5 @@
 <template>
-  <div class="dsw-right-page" ref="dsw-right-page">
+  <div class="dsw-right-page" ref="dsw-right-page" :data-is-expanded="isExpanded">
     <!--页面辅助工具 start-->
     <assist-nav ref="dsw-assist-container"></assist-nav>
     <!--页面辅助工具 end-->
@@ -32,8 +32,8 @@
       <!--tab 页 start-->
       <div class="dsw-tab-pages-wrapper" ref="dsw-tab-pages-wrapper">
         <ul class="dsw-tab-pages">
-          <li class="dsw-tab-pages-item">
-            <iframe src="/login.html" frameborder="0" scrolling="no" width="100%" height="100%" name="demo" class="dsw-tab-pages-item-iframe"></iframe>
+          <li class="dsw-tab-pages-item" v-for="(tab,index) in navTabs" :key="index" v-if="tab.href" v-show="tab.id===currentMenuID">
+            <iframe :src="tab.href" frameborder="0" scrolling="no" width="100%" height="100%" :name="'dsw-iframe-'+tab.id" class="dsw-tab-pages-item-iframe"></iframe>
           </li>
         </ul>
       </div>
@@ -93,6 +93,13 @@ export default {
         })
 
         return navTabs
+      },
+      isExpanded (state) {
+        this.$nextTick(() => {
+          this.mountedInit()
+        })
+
+        return state.isExpanded
       }
     })
   },
@@ -110,10 +117,10 @@ export default {
     },
     setPageWrapperHeight () {
       const rightPageHeight = this.$refs['dsw-right-page'].clientHeight
-      const assistHeight = this.$refs['dsw-assist-container'].$el.clientHeight
+      // const assistHeight = this.$refs['dsw-assist-container'].$el.clientHeight
       const tabListsHeight = this.$refs['dsw-tab-lists-wrapper'].clientHeight
 
-      this.$refs['dsw-tab-pages-wrapper'].style.height = (rightPageHeight - assistHeight - tabListsHeight) + 'px'
+      this.$refs['dsw-tab-pages-wrapper'].style.height = (rightPageHeight - 25 - tabListsHeight) + 'px'
     },
     setTabListsBoxWidth () {
       const tabListsWidth = this.$refs['dsw-tab-lists-wrapper'].clientWidth
@@ -206,6 +213,7 @@ export default {
       height :36px;
       line-height :36px;
       padding : 0 36px 0 0;
+      margin : 25px 0 0 0;
       background-color :#191b52;
       .dsw-tab-wizard{
         width :24px;
@@ -223,6 +231,7 @@ export default {
       }
       .dsw-tab-lists-box{
         float :left;
+        height : 100%;
         overflow : hidden;
         .dsw-tab-lists{
           overflow : hidden;
