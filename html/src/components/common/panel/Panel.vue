@@ -31,7 +31,7 @@ export default {
     }
   }
   .dsw-panel-body{
-
+    min-height :50px;
   }
 }
 </style>

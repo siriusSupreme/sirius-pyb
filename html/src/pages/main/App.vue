@@ -1,11 +1,14 @@
 <template >
   <dsw-container>
-    <dsw-echarts :options="options"></dsw-echarts>
+    <dsw-panel style="width: 40vw; height: 50vh;">
+      <dsw-echarts slot="dsw-panel-body" :options="options"></dsw-echarts>
+    </dsw-panel>
   </dsw-container>
 </template >
 
 <script >
 import DswContainer from 'components/common/container'
+import DswPanel from 'components/common/panel'
 import DswEcharts from 'components/function/echarts'
 
 export default {
@@ -69,6 +72,7 @@ export default {
   },
   components: {
     DswContainer,
+    DswPanel,
     DswEcharts
   },
   mounted () {

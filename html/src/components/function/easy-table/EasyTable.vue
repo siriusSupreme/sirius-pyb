@@ -1,4 +1,5 @@
 <template>
+
   <div class="dsw-easy-table-wrapper">
     <v-table
       is-vertical-resize

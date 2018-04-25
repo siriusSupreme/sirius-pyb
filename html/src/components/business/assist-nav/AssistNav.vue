@@ -11,14 +11,14 @@
         <li class="dsw-assist-item" @mouseenter="mouseEnterHandler" @mouseleave="mouseOutHandler">
           <a href="javascript:void(0);" class="dsw-assist-item-a">
             <i class="dsw-assist-item-a-icon fa fa-user"></i>
-            <span class="dsw-assist-item-a-title">admin</span>
+            <span class="dsw-assist-item-a-title">{{userInfo.account}}</span>
           </a>
           <ul class="dsw-assist-lists dsw-sub-assist-lists" :class="{'hidden':!isShowAdminProfile}">
             <li class="dsw-assist-item">
-              <a href="javascript:void(0);" class="dsw-assist-item-a" >修改密码</a>
+              <a href="javascript:void(0);" class="dsw-assist-item-a" @click="modifyPasswordHandler">修改密码</a>
             </li>
             <li class="dsw-assist-item">
-              <a href="javascript:void(0);" class="dsw-assist-item-a" >退出登录</a>
+              <a href="javascript:void(0);" class="dsw-assist-item-a" @click="logoutHandler">退出登录</a>
             </li>
           </ul>
         </li>
@@ -38,8 +38,17 @@ export default {
   name: 'AssistNav',
   data () {
     return {
-      isShowAdminProfile: false
+      isShowAdminProfile: false,
+      userInfo: {}
     }
+  },
+  mounted () {
+    const token = JSON.parse(localStorage.getItem('dsw-token-info'))
+    this.$https.get('User/getUserInfo', {params: {id: token.userId}}).then((result) => {
+      this.userInfo = result.data
+    }).catch((reason) => {
+      this.$toastr.error('获取用户信息失败')
+    })
   },
   methods: {
     mouseEnterHandler (e) {
@@ -47,6 +56,13 @@ export default {
     },
     mouseOutHandler (e) {
       this.isShowAdminProfile = false
+    },
+    logoutHandler (e) {
+      localStorage.removeItem('dsw-token-info')
+      location.href = '/login.html'
+    },
+    modifyPasswordHandler (e) {
+
     }
   }
 }
@@ -81,6 +97,7 @@ export default {
             z-index: 2;
             width: 80px;
             text-align: center;
+            padding : 10px 0;
             background : url("./images/pop-bg.png") no-repeat scroll 0 0/100% 100%;
             .dsw-assist-item{
               display : block;
