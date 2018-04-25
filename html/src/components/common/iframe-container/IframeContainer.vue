@@ -1,12 +1,20 @@
 <template>
     <div class="container-fluid dsw-iframe-container" id="dsw-iframe-container">
-      <slot></slot>
+      <dsw-panel>
+        <template slot="panel-heading"><slot name="panel-heading"></slot></template>
+        <template slot="panel-body"><slot></slot></template>
+      </dsw-panel>
     </div>
 </template>
 
 <script>
+import DswPanel from 'components/common/panel'
+
 export default {
-  name: 'IframeContainer'
+  name: 'IframeContainer',
+  components: {
+    DswPanel
+  }
 }
 </script>
 

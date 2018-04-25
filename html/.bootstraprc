@@ -64,12 +64,12 @@ styles:
   grid: true
   # tables: true
   forms: true
-  # buttons: true
+  buttons: true
 
   # Components
   component-animations: true
   # dropdowns: true
-  # button-groups: true
+  button-groups: true
   input-groups: true
   # navs: true
   # navbar: true
@@ -77,20 +77,20 @@ styles:
   # pagination: true
   # pager: true
   labels: true
-  # badges: true
+  badges: true
   # jumbotron: true
   thumbnails: true
   # alerts: true
   progress-bars: true
   # media: true
-  # list-group: true
+  list-group: true
   panels: true
   # wells: true
   responsive-embed: true
   close: true
 
   # Components w/ JavaScript
-  # modals: true
+  modals: true
   # tooltip: true
   # popovers: true
   # carousel: true
