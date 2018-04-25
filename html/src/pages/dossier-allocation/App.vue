@@ -1,14 +1,18 @@
 <template >
-  <iframe-container></iframe-container>
+  <iframe-container>
+    <dsw-table></dsw-table>
+  </iframe-container>
 </template >
 
 <script >
 import IframeContainer from 'components/common/iframe-container'
+import DswTable from  'components/function/easy-table'
 
 export default {
   name: 'App',
   components: {
-    IframeContainer
+    IframeContainer,
+    DswTable
   }
 }
 </script >

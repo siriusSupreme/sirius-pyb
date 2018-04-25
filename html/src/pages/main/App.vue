@@ -1,13 +1,13 @@
 <template >
-  <dsw-container>
+  <iframe-container>
     <dsw-panel style="width: 40vw; height: 50vh;">
       <dsw-echarts slot="dsw-panel-body" :options="options"></dsw-echarts>
     </dsw-panel>
-  </dsw-container>
+  </iframe-container>
 </template >
 
 <script >
-import DswContainer from 'components/common/container'
+import IframeContainer from 'components/common/iframe-container'
 import DswPanel from 'components/common/panel'
 import DswEcharts from 'components/function/echarts'
 
@@ -71,7 +71,7 @@ export default {
     }
   },
   components: {
-    DswContainer,
+    IframeContainer,
     DswPanel,
     DswEcharts
   },
