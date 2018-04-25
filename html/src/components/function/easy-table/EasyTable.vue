@@ -83,6 +83,10 @@ $borderColor = #18445a
     .v-table-title-cell,
     .v-table-body-cell{
       border-color : $borderColor;
+      .v-checkbox-inner {
+        border: 1px solid #3264a0;
+        background-color: #23277b;
+      }
     }
   }
   // 分页样式

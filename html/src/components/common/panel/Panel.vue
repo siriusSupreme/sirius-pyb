@@ -23,10 +23,10 @@
     </div>
 
     <div class="panel-body">
-      <slot name="panel-body"></slot>
+      <slot></slot>
     </div>
 
-    <!--<div class="panel-footer"></div>-->
+    <div class="panel-footer"><slot name="panel-footer"></slot></div>
   </div>
 </template>
 
@@ -41,7 +41,7 @@ export default {
   width :100%;
   height : 100%;
   border : none;
-  background : url("./images/panel-bg.png") no-repeat scroll 0 0/100% 100%;
+  /*background : url("./images/panel-bg.png") no-repeat scroll 0 0/100% 100%;*/
   .panel-title{
     .dsw-panel-title{
 

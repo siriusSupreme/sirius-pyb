@@ -1,7 +1,7 @@
 <template >
   <iframe-container>
     <dsw-panel style="width: 40vw; height: 50vh;">
-      <dsw-echarts slot="dsw-panel-body" :options="options"></dsw-echarts>
+      <dsw-echarts slot="panel-body" :options="options"></dsw-echarts>
     </dsw-panel>
   </iframe-container>
 </template >

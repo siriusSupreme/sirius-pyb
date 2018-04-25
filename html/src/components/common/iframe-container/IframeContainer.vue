@@ -2,7 +2,8 @@
     <div class="container-fluid dsw-iframe-container" id="dsw-iframe-container">
       <dsw-panel>
         <template slot="panel-heading"><slot name="panel-heading"></slot></template>
-        <template slot="panel-body"><slot></slot></template>
+        <template><slot></slot></template>
+        <template slot="panel-footer"><slot name="panel-footer"></slot></template>
       </dsw-panel>
     </div>
 </template>
