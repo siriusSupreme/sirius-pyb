@@ -8,7 +8,7 @@ import 'layui-src/src/css/layui.css'
 const layui = window.layui
 
 layui.use(['layer'], function () {
-  console.log('aaa')
+  console.log('import layui')
   console.log(arguments)
 })
 
