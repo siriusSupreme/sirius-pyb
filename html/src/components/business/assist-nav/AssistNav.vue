@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import getUserInfo from 'mixins/get-user-info'
+
 export default {
   name: 'AssistNav',
   data () {
@@ -42,9 +44,10 @@ export default {
       userInfo: {}
     }
   },
+  mixins: [getUserInfo],
   mounted () {
-    this.$https.jsonp(this.$api.getUserInfo).then((result) => {
-      this.userInfo = result.data
+    this.getUserInfo.then((result) => {
+      this.userInfo = result
     }).catch((reason) => {
       this.$toastr.error('获取用户信息失败')
     })

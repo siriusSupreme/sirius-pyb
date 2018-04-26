@@ -29,8 +29,10 @@ export default {
   },
   mounted () {
     if (this.echartsInstance === null) {
-      this.echartsInstance = echarts.init(document.getElementById(this.id))
-      this.echartsInstance.setOption(this.options)
+      this.$nextTick(() => {
+        this.echartsInstance = echarts.init(document.getElementById(this.id))
+        this.echartsInstance.setOption(this.options)
+      })
     }
   }
 }

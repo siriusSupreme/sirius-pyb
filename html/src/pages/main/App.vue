@@ -1,30 +1,30 @@
 <template >
   <iframe-container>
     <div class="dsw-first-line">
-      <dsw-panel class="dsw-total-case-count" style="width: 40vw; height: 50vh;">
+      <dsw-panel class="dsw-total-case-count">
         <div slot="panel-heading">
           <span>累计案件数</span>
         </div>
-        <dsw-echarts :options="totalCaseOptions" style="width: 40vw; height: 50vh;"></dsw-echarts>
+        <dsw-echarts :options="totalCaseOptions"></dsw-echarts>
       </dsw-panel>
 
-      <dsw-panel class="dsw-case-trendency" style="width: 40vw; height: 50vh;">
+      <dsw-panel class="dsw-case-trendency">
         <div slot="panel-heading">
           <span>案件趋势图</span>
         </div>
-        <dsw-echarts :options="caseTrendenyOptions" style="width: 40vw; height: 50vh;"></dsw-echarts>
+        <dsw-echarts :options="caseTrendenyOptions"></dsw-echarts>
       </dsw-panel>
     </div>
 
     <div class="dsw-second-line">
-      <dsw-panel class="dsw-various-case-distribution" style="width: 40vw; height: 50vh;">
+      <dsw-panel class="dsw-various-case-distribution">
         <div slot="panel-heading">
           <span>各类型案件分布</span>
         </div>
-        <dsw-echarts :options="caseDistributionOptions" style="width: 40vw; height: 50vh;"></dsw-echarts>
+        <dsw-echarts :options="caseDistributionOptions"></dsw-echarts>
       </dsw-panel>
 
-      <dsw-panel class="dsw-sponsor-case-count" style="width: 40vw; height: 50vh;">
+      <dsw-panel class="dsw-sponsor-case-count">
         <div slot="panel-heading">
           <span>民警主办案件数</span>
         </div>
@@ -48,81 +48,65 @@ export default {
     return {
       totalCaseOptions: {
         title: {
-          text: '某站点用户访问来源',
-          subtext: '纯属虚构',
-          x: 'center'
+          show: true,
+          text: '案件总数：200',
+          textStyle: {
+            color: '#23c7ed'
+          }
         },
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
+          formatter: '{b}: {c} ({d}%)'
         },
         legend: {
-          orient: 'horizontal',
-          x: 'rigth',
-          bottom: 10,
-          data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-        },
-        toolbox: {
-          show: true,
-          feature: {
-            mark: { show: true },
-            dataView: { show: true, readOnly: false },
-            magicType: {
-              show: true,
-              type: ['pie', 'funnel'],
-              option: {
-                funnel: {
-                  x: '25%',
-                  width: '50%',
-                  funnelAlign: 'left',
-                  max: 1548
-                }
-              }
-            },
-            restore: {show: true},
-            saveAsImage: {show: true}
-          }
+          align: 'left',
+          right: 20,
+          bottom: 20,
+          textStyle: {
+            color: '#fff'
+          },
+          data: ['在办', '已结', '未破']
         },
         calculable: true,
         series: [
           {
-            name: '访问来源',
+            name: '案卷数据',
             type: 'pie',
-            radius: '55%',
-            center: ['50%', '60%'],
+            center: ['50%', '50%'],
+            label: {
+              show: true,
+              formatter: '{d}%\n\n{c}起',
+              position: 'inside',
+              fontSize: 14
+            },
             data: [
-              {value: 335, name: '直接访问'},
-              {value: 310, name: '邮件营销'},
-              {value: 234, name: '联盟广告'},
-              {value: 135, name: '视频广告'},
-              {value: 1548, name: '搜索引擎'}
+              {value: 335, name: '在办', itemStyle: {color: '#1734c4'}},
+              {value: 310, name: '已结', itemStyle: {color: '#13d734'}},
+              {value: 234, name: '未破', itemStyle: {color: '#db4300'}}
             ]
           }
         ]
       },
       caseTrendenyOptions: {
         tooltip: {
-          trigger: 'axis'
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          }
         },
         legend: {
-          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-        },
-        toolbox: {
-          show: true,
-          feature: {
-            mark: {show: true},
-            dataView: {show: true, readOnly: false},
-            magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
-            restore: {show: true},
-            saveAsImage: {show: true}
-          }
+          right: 10,
+          top: 10,
+          textStyle: {
+            color: '#fff'
+          },
+          data: ['全部', '在办', '已结', '未破']
         },
         calculable: true,
         xAxis: [
           {
             type: 'category',
-            boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            data: ['2018-04-26', '2018-04-27', '2018-04-28', '2018-04-29', '2018-04-30', '2018-05-01', '2018-05-02']
           }
         ],
         yAxis: [
@@ -132,25 +116,25 @@ export default {
         ],
         series: [
           {
-            name: '邮件营销',
+            name: '全部',
             type: 'line',
             stack: '总量',
             data: [120, 132, 101, 134, 90, 230, 210]
           },
           {
-            name: '联盟广告',
+            name: '在办',
             type: 'line',
             stack: '总量',
             data: [220, 182, 191, 234, 290, 330, 310]
           },
           {
-            name: '视频广告',
+            name: '已结',
             type: 'line',
             stack: '总量',
             data: [150, 232, 201, 154, 190, 330, 410]
           },
           {
-            name: '直接访问',
+            name: '未破',
             type: 'line',
             stack: '总量',
             data: [320, 332, 301, 334, 390, 330, 320]
@@ -271,20 +255,30 @@ export default {
 
 <style lang="stylus" >
 .dsw-first-line{
+  height : 45%;
   overflow: hidden;
   .dsw-total-case-count{
+    width : 40%;
+    height : 100%;
     float: left;
   }
   .dsw-case-trendency{
+    width : 60%;
+    height : 100%;
     float: right;
   }
 }
 .dsw-second-line{
+  height : 55%;
   overflow: hidden;
   .dsw-various-case-distribution{
+    width : 60%;
+    height : 100%;
     float: left;
   }
   .dsw-sponsor-case-count{
+    width : 40%;
+    height : 100%;
     float: right;
   }
 }

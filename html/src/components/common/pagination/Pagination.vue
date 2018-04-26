@@ -1,6 +1,6 @@
 <template>
   <div class="dsw-pagination-wrapper">
-    <v-pagination :layout="layout" size="small" :total="totalRecords" :pageIndex="currentPage" :showPagingCount="pagerCount" :pageSize="recordsPerPage" :pageSizeOption="pageSizeOption" @page-change="pageChangeHandler" @page-size-change="pageSizeChangeHandler"></v-pagination>
+    <v-pagination :layout="layout" size="small" :total="totalRecords" :pageIndex="pageIndex" :showPagingCount="pagerCount" :pageSize="pageSize" :pageSizeOption="pageSizeOption" @page-change="pageChangeHandler" @page-size-change="pageSizeChangeHandler"></v-pagination>
   </div>
 </template>
 
@@ -44,16 +44,38 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      pageIndex: 1,
+      pageSize: 10
+    }
+  },
+  watch: {
+    pageIndex: {
+      deep: false,
+      immediate: true,
+      handler (val, oldVal) {
+        return this.currentPage
+      }
+    },
+    pageSize: {
+      deep: false,
+      immediate: true,
+      handler (val, oldVal) {
+        return this.recordsPerPage
+      }
+    }
+  },
   methods: {
-    pageChangeHandler (pageIndex) {
-      this.$emit('dswPagerChange', pageIndex)
+    pageChangeHandler (pageIndex, recordsPerPage = this.pageSize) {
+      this.$emit('dswPagerChange', {pageIndex, recordsPerPage})
     },
     pageSizeChangeHandler (newPageSize) {
-      if (this.currentPage * newPageSize > this.totalRecords) {
-        this.currentPage = Math.ceil(this.totalRecords / newPageSize)
+      if (this.pageIndex * newPageSize > this.totalRecords) {
+        this.pageIndex = Math.ceil(this.totalRecords / newPageSize)
       }
-      this.recordsPerPage = newPageSize
-      this.pageChangeHandler(this.currentPage)
+      this.pageSize = newPageSize
+      this.pageChangeHandler(this.pageIndex, newPageSize)
     }
   }
 }

@@ -1,17 +1,18 @@
 <template>
-  <div class="dsw-easy-table-wrapper">
-    <v-table
-      style="width: 100%;"
-      :is-horizontal-resize="true"
-      :vertical-resize-offset="60"
-      :table-data="tableData"
-      :columns="columns"
-      :show-horizontal-border="true"
-      :show-vertical-border="true"
-      :table-bg-color="'#16173e'"
-      @on-custom-comp="customComponentHandler"
-    ></v-table>
-  </div>
+  <v-table
+    class="dsw-easy-table-wrapper"
+    :is-horizontal-resize="true"
+    :column-width-drag="columnWidthDrag"
+    :is-loading="isLoadingForTable"
+    :table-data="tableData"
+    :columns="columns"
+    :paging-index="pagingIndex"
+    :show-horizontal-border="isShowHorizontalBorder"
+    :show-vertical-border="isShowVerticalBorder"
+    :table-bg-color="tableBgColor"
+    @on-custom-comp="customComponentHandler"
+    v-bind="$attrs"
+  ></v-table>
 </template>
 
 <script>
@@ -32,6 +33,30 @@ export default {
     columns: {
       type: Array,
       required: true
+    },
+    pagingIndex: {
+      type: Number,
+      default: 0
+    },
+    columnWidthDrag: {
+      type: Boolean,
+      default: false
+    },
+    isLoadingForTable: {
+      type: Boolean,
+      default: false
+    },
+    isShowHorizontalBorder: {
+      type: Boolean,
+      default: true
+    },
+    isShowVerticalBorder: {
+      type: Boolean,
+      default: true
+    },
+    tableBgColor: {
+      type: String,
+      default: '#16173e'
     }
   },
   methods: {
@@ -47,14 +72,26 @@ $fontColor = #108ee9
 $borderColor = #18445a
 
 .dsw-easy-table-wrapper{
+  width : 100%;
+  height : 100%;
   color : $fontColor;
-  .v-table-views{
-    border : 1px solid $borderColor;
+  border : 1px solid $borderColor;
+  &.v-table-class{
+    .v-table-title-class{
+      background : url("./images/title-bg.png") no-repeat scroll 0 0/100% 100%;
+      background-color : transparent !important;
+    }
+    .v-table-body-class{
+
+    }
+    .v-scrollbar-wrap{
+
+    }
+    .v-table-footer-class{
+
+    }
   }
-  .v-table-title-class{
-    background : url("./images/title-bg.png") no-repeat scroll 0 0/100% 100%;
-    background-color : transparent !important;
-  }
+
   .v-table-title-cell,
   .v-table-body-cell{
     border-color : $borderColor;
