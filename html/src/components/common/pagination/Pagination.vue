@@ -46,10 +46,14 @@ export default {
   },
   methods: {
     pageChangeHandler (pageIndex) {
-
+      this.$emit('dswPagerChange', pageIndex)
     },
     pageSizeChangeHandler (newPageSize) {
-
+      if (this.currentPage * newPageSize > this.totalRecords) {
+        this.currentPage = Math.ceil(this.totalRecords / newPageSize)
+      }
+      this.recordsPerPage = newPageSize
+      this.pageChangeHandler(this.currentPage)
     }
   }
 }

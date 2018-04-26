@@ -1,38 +1,5 @@
 <template>
-  <nav class="dsw-pagination-wrapper">
-    <span class="dsw-pagination-info">{{totalRecords}}</span>
-    <a href="javascript:void(0);" class="dsw-pagination-first" @click="setCurrentPage($event,1)">首页</a >
-    <a href="javascript:void(0);" class="dsw-pagination-prev" @click="setCurrentPage($event,currentPage-1)">上一页</a >
-    <ul class="dsw-pagination-pagers">
-      <li class="dsw-pagination-pager" @click="setCurrentPage($event,1)">
-        <a class="dsw-pagination-pager-a" href="javascript:void(0);" >1</a >
-      </li>
-      <li class="dsw-pagination-pager active" v-show="isShowJumpPrev" @click="setCurrentPage($event,currentPage-5)">
-        <a class="dsw-pagination-pager-a" href="javascript:void(0);" >...</a >
-      </li>
-      <li class="dsw-pagination-pager" v-for="pager in pagers" :key="pager" @click="setCurrentPage($event,pager)">
-        <a class="dsw-pagination-pager-a" href="javascript:void(0);" >{{pager}}</a >
-      </li>
-      <li class="dsw-pagination-pager" v-show="isShowJumpNext" @click="setCurrentPage($event,currentPage+5)">
-        <a class="dsw-pagination-pager-a" href="javascript:void(0);" >...</a >
-      </li>
-      <li class="dsw-pagination-pager" @click="setCurrentPage($event,totalPage)" v-if="totalPage > 0">
-        <a class="dsw-pagination-pager-a" href="javascript:void(0);" >{{totalPage}}</a >
-      </li>
-    </ul>
-    <a href="javascript:void(0);" class="dsw-pagination-next" @click="setCurrentPage($event,currentPage+1)">下一页</a >
-    <a href="javascript:void(0);" class="dsw-pagination-last" @click="setCurrentPage($event,totalPage)">最后一页</a >
-    <span class="dsw-pagination-select-wrapper">
-      每页显示
-      <select class="dsw-pagination-select" @change="pageSizeChangeHandler">
-        <option :value="option" v-for="(option,index) in pageSizeOption" :key="index">{{option}}</option >
-      </select >
-      条
-    </span>
-    <span class="dsw-pagination-jump-wrapper">
-      跳转到第 <input type="text" class="dsw-pagination-jump-input" @keyup.enter="jumpHandler"/> 页 <button type="button" @click="jumpHandler">跳转</button>
-    </span>
-  </nav>
+  <nav class="dsw-pagination-wrapper"></nav>
 </template>
 
 <script>
@@ -135,13 +102,20 @@ export default {
       deep: false,
       immediate: true,
       handler (val, oldVal) {
-        this.$emit('dswPagerChange', val)
+        // this.$emit('dswPagerChange', val)
       }
     }
   },
+  mounted () {
+
+  },
   methods: {
-    pageSizeChangeHandler (e) {
-      this.$emit('dswPageSizeChange')
+    pageSizeChangeHandler (e, newPageSize) {
+      if (this.currentPage * newPageSize > this.totalRecords) {
+        this.currentPage = Math.ceil(this.totalRecords / newPageSize)
+      }
+      this.recordsPerPage = newPageSize
+      this.jumpHandler(e, this.currentPage)
     },
     setCurrentPage (e, currentPage) {
       if (currentPage < 1) {
@@ -152,8 +126,8 @@ export default {
         this.currentPage = currentPage
       }
     },
-    jumpHandler (e) {
-
+    jumpHandler (e, pageIndex) {
+      this.$emit('dswPagerChange', pageIndex)
     }
   }
 }
