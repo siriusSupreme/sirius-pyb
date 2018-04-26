@@ -1,28 +1,35 @@
 <template >
   <iframe-container>
-    <dsw-panel>
-      <div slot="panel-heading" class="dsw-search-wrapper">
-        <form class="form-inline row">
-          <div class="form-group form-group-sm">
-            <label class="control-label" >用户名</label >
-            <input type="text" class="form-control" />
-          </div>
+    <dsw-panel class="dsw-cabinet-container">
+      <div slot="panel-heading" class="dsw-cabinet-container-title"></div>
+      <div class="dsw-content-wrapper">
+        <div class="dsw-left-cabinet">
+          <dsw-panel class="dsw-left-cabinet-wrapper">
+            <div slot="panel-heading" class="dsw-left-cabinet-wrapper-title">物证柜一</div>
+            <div class="dsw-cabinet-wrapper">
+              <ul class="dsw-cabinet-lists">
+                <li class="dsw-cabinet-item"></li>
+              </ul>
+            </div>
+          </dsw-panel>
+        </div>
+        <div class="dsw-right-content">
+          <dsw-panel class="dsw-right-content-wrapper">
+            <div slot="panel-heading" class="dsw-right-content-wrapper-title">
+              黄石市公安局西塞山分局刑侦大队
+            </div>
 
-          <div class="form-group form-group-sm">
-            <label class="control-label" >状态</label >
-            <select name="" class="form-control">
-              <option value="0" >启用</option >
-              <option value="1" >停用</option >
-            </select >
-          </div>
-        </form >
+            <dsw-table style="width: 100%;" :tableData="tableData" :columns="columns" :paginateInfo="paginateInfo"></dsw-table>
+
+            <dsw-pagination slot="panel-footer">
+              <button type="button">新增</button>
+            </dsw-pagination>
+
+          </dsw-panel>
+        </div>
       </div>
-
-      <dsw-table style="width: 100%;" :tableData="tableData" :columns="columns" :paginateInfo="paginateInfo"></dsw-table>
-
-      <dsw-pagination slot="panel-footer"></dsw-pagination>
-
     </dsw-panel>
+
   </iframe-container>
 </template >
 
@@ -65,7 +72,9 @@ export default {
 </script >
 
 <style lang="stylus" >
+.dsw-cabinet-container{
 
+}
 </style >
 
 <style lang="stylus" scoped >

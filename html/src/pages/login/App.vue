@@ -27,7 +27,6 @@
 </template >
 
 <script >
-
 import config from 'assets/js/config'
 import 'assets/js/vee-validate'
 
@@ -90,8 +89,7 @@ export default {
         if (result) {
           const userName = this.username
           const passWord = this.password
-          this.$https.jsonp(config.api.login, {params: {userName, passWord}}).then((result) => {
-            console.log(result)
+          this.$https.jsonp(this.$api.login, {params: {userName, passWord}}).then((result) => {
             localStorage.setItem(config.tokenKey, result.data.token)
             location.href = '/index.html'
           })

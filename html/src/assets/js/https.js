@@ -1,8 +1,10 @@
+
 import Vue from 'vue'
 import jsonp from 'jsonp'
 
 import config from './config'
 import axios from './axios'
+import toastr from './toastr'
 
 let https = axios
 
@@ -23,6 +25,7 @@ https.jsonp = (url, options) => {
   if (!url.startsWith('http')) {
     url = axios.defaults.baseURL + url
   }
+
   // 处理参数
   if (options.params) {
     for (let k in options.params) {
@@ -36,7 +39,7 @@ https.jsonp = (url, options) => {
     url += ('?' + queryString.substr(1))
   }
 
-  return new Promise((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     // eslint-disable-next-line
     const cancel = jsonp(url, {
       prefix: options.prefix, // 前缀
@@ -51,6 +54,13 @@ https.jsonp = (url, options) => {
       }
     })
   })
+
+  promise.catch(reason => {
+    toastr.error('JSONP Request Error')
+    return Promise.reject(reason)
+  })
+
+  return promise
 }
 
 Vue.prototype.$https = https

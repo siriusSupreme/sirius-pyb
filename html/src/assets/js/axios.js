@@ -16,7 +16,7 @@ const axiosInstance = axios.create({
   responseType: 'json'
 })
 
-if (process.env === 'developments') {
+if (process.env === 'development') {
   axiosInstance.defaults.baseURL = 'http://rap2api.taobao.org/app/mock/10074/'
 }
 
@@ -43,12 +43,11 @@ axiosInstance.interceptors.response.use((response) => {
   // TODO 登录失效处理
   if (data.code !== 0) {
     toastr.error(data.msg || '非法请求，响应异常')
-    Promise.reject(data)
   }
 
   return data
 }, (reason) => {
-  toastr.error('Response Error')
+  toastr.error('JSON Response Error')
   return Promise.reject(reason)
 })
 

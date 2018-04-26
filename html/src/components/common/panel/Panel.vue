@@ -1,6 +1,6 @@
 <template>
   <div class="dsw-panel panel">
-    <div class="panel-heading">
+    <div class="panel-heading" v-if="isShowHeading">
       <slot name="panel-heading">
         <div class="panel-title">
           <span class="dsw-panel-title">黄石市公安局</span>
@@ -26,13 +26,23 @@
       <slot></slot>
     </div>
 
-    <div class="panel-footer"><slot name="panel-footer"></slot></div>
+    <div class="panel-footer" v-if="isShowFooter"><slot name="panel-footer"></slot></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Panel'
+  name: 'Panel',
+  props: {
+    isShowHeading: {
+      type: Boolean,
+      default: true
+    },
+    isShowFooter: {
+      type: Boolean,
+      default: false
+    }
+  }
 }
 </script>
 

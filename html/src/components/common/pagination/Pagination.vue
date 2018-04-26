@@ -1,42 +1,19 @@
 <template>
-  <nav class="dsw-pagination-wrapper">
-    <a href="javascript:void(0);" class="dsw-pagination-first" @click="setCurrentPage($event,1)">首页</a >
-    <a href="javascript:void(0);" class="dsw-pagination-prev" @click="setCurrentPage($event,currentPage-1)">上一页</a >
-    <ul class="dsw-pagination-pagers">
-      <li class="dsw-pagination-pager" @click="setCurrentPage($event,1)">
-        <a class="dsw-pagination-pager-a" href="javascript:void(0);" >1</a >
-      </li>
-      <li class="dsw-pagination-pager active" v-show="isShowJumpPrev" @click="setCurrentPage($event,currentPage-5)">
-        <a class="dsw-pagination-pager-a" href="javascript:void(0);" >...</a >
-      </li>
-      <li class="dsw-pagination-pager" v-for="pager in pagers" :key="pager" @click="setCurrentPage($event,pager)">
-        <a class="dsw-pagination-pager-a" href="javascript:void(0);" >{{pager}}</a >
-      </li>
-      <li class="dsw-pagination-pager" v-show="isShowJumpNext" @click="setCurrentPage($event,currentPage+5)">
-        <a class="dsw-pagination-pager-a" href="javascript:void(0);" >...</a >
-      </li>
-      <li class="dsw-pagination-pager" @click="setCurrentPage($event,totalPage)" v-if="totalPage > 0">
-        <a class="dsw-pagination-pager-a" href="javascript:void(0);" >{{totalPage}}</a >
-      </li>
-    </ul>
-    <a href="javascript:void(0);" class="dsw-pagination-next" @click="setCurrentPage($event,currentPage+1)">下一页</a >
-    <a href="javascript:void(0);" class="dsw-pagination-last" @click="setCurrentPage($event,totalPage)">最后一页</a >
-    <span class="dsw-pagination-select-wrapper">
-      每页显示
-      <select class="dsw-pagination-select" @change="pageSizeChangeHandler">
-        <option :value="option" v-for="(option,index) in pageSizeOption" :key="index">{{option}}</option >
-      </select >
-      条
-    </span>
-    <span class="dsw-pagination-jump-wrapper">
-      跳转到第 <input type="text" class="dsw-pagination-jump-input" @keyup.enter="jumpHandler"/> 页 <button type="button" @click="jumpHandler">跳转</button>
-    </span>
-  </nav>
+  <div class="dsw-pagination-wrapper">
+    <v-pagination :layout="layout" size="small" :total="totalRecords" :pageIndex="currentPage" :showPagingCount="pagerCount" :pageSize="recordsPerPage" :pageSizeOption="pageSizeOption" @page-change="pageChangeHandler" @page-size-change="pageSizeChangeHandler"></v-pagination>
+  </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import {VPagination} from 'vue-easytable'
+
+import 'vue-easytable/libs/themes-base/index.css'
+
+Vue.component(VPagination.name, VPagination)
+
 export default {
-  name: 'Pagination',
+  name: 'EasyTable',
   props: {
     currentPage: {
       type: Number,
@@ -53,7 +30,7 @@ export default {
     pageSizeOption: {
       type: Array,
       default () {
-        return [10, 20, 30, 50, 'ALL']
+        return [10, 20, 30, 50]
       }
     },
     pagerCount: {
@@ -63,95 +40,15 @@ export default {
     layout: {
       type: Array,
       default () {
-        return ['first', 'prev', 'pager', 'next', 'last', 'sizer', 'jumper']
-      }
-    }
-  },
-  data () {
-    return {
-      pageIndex: 1
-    }
-  },
-  computed: {
-    totalPage () {
-      const totalPage = Math.ceil(this.totalRecords / this.recordsPerPage)
-
-      return totalPage
-    },
-    pagers: {
-      get () {
-        const pagers = []
-        const pagerCount = this.pagerCount
-        const totalPage = this.totalPage
-        const currentPage = this.currentPage
-
-        const isShowJumpPrev = this.isShowJumpPrev
-        const isShowJumpNext = this.isShowJumpNext
-
-        const offset = Math.floor(this.pagerCount / 2)
-
-        let start = 0
-        let end = 0
-
-        if (isShowJumpPrev && !isShowJumpNext) {
-          start = this.totalPage - pagerCount
-          end = this.totalPage
-        } else if (!isShowJumpPrev && isShowJumpNext) {
-          start = 2
-          end = pagerCount + 2
-        } else if (isShowJumpPrev && isShowJumpNext) {
-          start = currentPage - offset
-          end = currentPage + offset + 1
-        } else {
-          start = 2
-          end = totalPage
-        }
-
-        while (start < end) {
-          pagers.push(start)
-          start++
-        }
-
-        return pagers
-      }
-    },
-    isShowJumpPrev () {
-      if ((this.totalPage > this.pagerCount + 2) && (this.currentPage > this.pagerCount)) {
-        return true
-      }
-      return false
-    },
-
-    isShowJumpNext () {
-      if ((this.totalPage > this.pagerCount + 2) && (this.currentPage <= this.totalPage - this.pagerCount)) {
-        return true
-      }
-      return false
-    }
-  },
-  watch: {
-    currentPage: {
-      deep: false,
-      immediate: true,
-      handler (val, oldVal) {
-        this.$emit('dswPagerChange', val)
+        return ['total', 'prev', 'pager', 'next', 'sizer', 'jumper']
       }
     }
   },
   methods: {
-    pageSizeChangeHandler (e) {
-      this.$emit('dswPageSizeChange')
+    pageChangeHandler (pageIndex) {
+
     },
-    setCurrentPage (e, currentPage) {
-      if (currentPage < 1) {
-        this.currentPage = 1
-      } else if (currentPage > this.totalPage) {
-        this.currentPage = this.totalPage
-      } else {
-        this.currentPage = currentPage
-      }
-    },
-    jumpHandler (e) {
+    pageSizeChangeHandler (newPageSize) {
 
     }
   }
@@ -159,38 +56,73 @@ export default {
 </script>
 
 <style lang="stylus">
+$fontColor = #108ee9
+$borderColor = #18445a
+
 .dsw-pagination-wrapper{
-  .dsw-pagination-first{
-
-  }
-  .dsw-pagination-prev{
-
-  }
-  .dsw-pagination-pagers{
-    display : inline-block;
-    vertical-align :middle;
-    overflow : hidden;
-    .dsw-pagination-pager{
-      float : left;
-      .dsw-pagination-pager-a{
-
+  text-align : right;
+  .v-page-ul{
+    .v-page-li{
+      border: none;
+      background : none;
+      a{
+        color : $fontColor
       }
     }
-  }
-  .dsw-pagination-next{
-
-  }
-  .dsw-pagination-last{
-
-  }
-  .dsw-pagination-select-wrapper{
-    .dsw-pagination-select{
+    .v-page-li-active{
+      background-color: #293663;
+    }
+    .v-page-prev{
+      i{
+        color : $fontColor
+      }
+    }
+    .v-page-next{
+      i{
+        color : $fontColor
+      }
+    }
+    .v-page-pager{
 
     }
-  }
-  .dsw-pagination-jump-wrapper{
-    .dsw-pagination-jump-input{
-
+    .v-dropdown{
+      a{
+        color : $fontColor
+      }
+      .v-dropdown-dt{
+        background-color : #16173e
+        .v-dropdown-selected {
+          color: #0092dd;
+          border-color: #0092dd;
+        }
+      }
+      .v-dropdown-dd{
+        background-color : #16173e
+        .v-dropdown-items{
+          background-color: #16173e;
+          border :none;
+          .v-dropdown-items-li{
+            &.active{
+              background-color :#12205f;
+            }
+            &.active a{
+              color : $fontColor;
+            }
+            &:hover{
+              background-color: #16173e;
+              a{
+                color : #65d2af;
+              }
+            }
+          }
+        }
+      }
+    }
+    .v-page-goto{
+      .v-page-goto-input{
+        border :1px solid #0092dd;
+        background-color : #16173e;
+      }
     }
   }
 }
