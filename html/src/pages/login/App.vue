@@ -27,6 +27,8 @@
 </template >
 
 <script >
+
+import config from 'assets/js/config'
 import 'assets/js/vee-validate'
 
 import DswContainer from 'components/common/container'
@@ -86,13 +88,12 @@ export default {
     loginHandler (e) {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          const username = this.username
-          const password = this.password
-          this.$https.post('/LoginRpc/login', {username, password}).then((result) => {
-            localStorage.setItem('dsw-token-info', JSON.stringify(result.data))
+          const userName = this.username
+          const passWord = this.password
+          this.$https.jsonp(config.api.login, {params: {userName, passWord}}).then((result) => {
+            console.log(result)
+            localStorage.setItem(config.tokenKey, result.data.token)
             location.href = '/index.html'
-          }).catch(() => {
-            this.$toastr.error('登录失败')
           })
         }
       })

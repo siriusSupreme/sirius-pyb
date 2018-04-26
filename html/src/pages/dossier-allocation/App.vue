@@ -20,6 +20,8 @@
 
       <dsw-table style="width: 100%;" :tableData="tableData" :columns="columns" :paginateInfo="paginateInfo"></dsw-table>
 
+      <dsw-pagination slot="panel-footer"></dsw-pagination>
+
     </dsw-panel>
   </iframe-container>
 </template >
@@ -27,6 +29,7 @@
 <script >
 import IframeContainer from 'components/common/iframe-container'
 import DswPanel from 'components/common/panel'
+import DswPagination from 'components/common/pagination'
 import DswTable from 'components/function/easy-table'
 
 export default {
@@ -46,6 +49,7 @@ export default {
   components: {
     IframeContainer,
     DswPanel,
+    DswPagination,
     DswTable
   },
   mounted () {

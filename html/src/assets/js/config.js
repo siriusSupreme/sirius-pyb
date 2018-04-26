@@ -5,9 +5,9 @@ export default {
   // 发送给后端的 header key
   tokenName: 'token',
   // 请求基地址
-  baseURL: 'http://rap2api.taobao.org/app/mock/10074/',
+  baseURL: 'http://192.168.0.188:8095/caseManager/',
   // 接口定义
   api: {
-
+    login: 'LoginRpc/login.json'
   }
 }
