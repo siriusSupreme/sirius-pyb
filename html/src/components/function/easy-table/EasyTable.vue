@@ -9,6 +9,7 @@
       :show-horizontal-border="true"
       :show-vertical-border="true"
       :table-bg-color="'#16173e'"
+      @on-custom-comp="customComponentHandler"
     ></v-table>
   </div>
 </template>
@@ -34,11 +35,8 @@ export default {
     }
   },
   methods: {
-    pageChangeHandler (pageIndex) {
-
-    },
-    pageSizeChangeHandler (newPageSize) {
-
+    customComponentHandler (payload) {
+      this.$emit('dswCustomComponent', payload)
     }
   }
 }
