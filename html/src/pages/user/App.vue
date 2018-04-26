@@ -22,7 +22,7 @@
 
 <script >
 import IframeContainer from 'components/common/iframe-container'
-import DswTable from 'components/function/easy-table'
+import DswTable from 'components/function/table'
 
 export default {
   name: 'App',

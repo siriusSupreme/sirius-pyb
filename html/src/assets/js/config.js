@@ -1,5 +1,7 @@
 
 export default {
+  // 环境变量
+  env: 'developments',
   // 保存在 localStorage 中的 key
   tokenKey: 'dsw-token-info',
   // 发送给后端的 header key

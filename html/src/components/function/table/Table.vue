@@ -23,7 +23,7 @@ import 'vue-easytable/libs/themes-base/index.css'
 Vue.component(VTable.name, VTable)
 
 export default {
-  name: 'EasyTable',
+  name: 'Table',
   props: {
     tableData: {
       type: Array,

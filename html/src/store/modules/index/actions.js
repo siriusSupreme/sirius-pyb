@@ -12,12 +12,8 @@ function initMenuLists (menuLists) {
 
 export default {
   getMenuLists ({commit}, {vm}) {
-    return vm.$https.get('Menu/getMenuTreeForIndex').then((result) => {
+    return vm.$https.jsonp(vm.$api.getLoginMenu).then((result) => {
       let menuLists = result.data.lists
-
-      menuLists.forEach((menu, index) => {
-        menuLists[index] = menu['MenuTreeVo']
-      })
 
       initMenuLists(menuLists)
 

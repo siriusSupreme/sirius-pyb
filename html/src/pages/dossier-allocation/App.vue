@@ -19,7 +19,7 @@
               黄石市公安局西塞山分局刑侦大队
             </div>
 
-            <dsw-table style="width: 100%;" :tableData="tableData" :columns="columns" :paginateInfo="paginateInfo"></dsw-table>
+            <dsw-table style="width: 100%;" :tableData="tableData" :columns="columns"></dsw-table>
 
             <dsw-pagination slot="panel-footer">
               <button type="button">新增</button>
@@ -37,7 +37,7 @@
 import IframeContainer from 'components/common/iframe-container'
 import DswPanel from 'components/common/panel'
 import DswPagination from 'components/common/pagination'
-import DswTable from 'components/function/easy-table'
+import DswTable from 'components/function/table'
 
 export default {
   name: 'App',

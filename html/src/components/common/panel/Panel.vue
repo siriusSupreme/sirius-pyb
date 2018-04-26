@@ -1,23 +1,11 @@
 <template>
   <div class="dsw-panel panel">
+    <span class="dsw-panel-refresh" v-if="isShowRefresh"><i class="fa fa-refresh dsw-panel-refresh-icon"></i></span>
+
     <div class="panel-heading" v-if="isShowHeading">
       <slot name="panel-heading">
         <div class="panel-title">
-          <span class="dsw-panel-title">黄石市公安局</span>
-          <span class="dsw-panel-select-container">
-            <span class="dsw-panel-select-wrapper">
-              <select name="previace" class="dsw-panel-select">
-              <option value="0" >请选择</option >
-              <option value="1" >湖北省</option >
-            </select >
-            </span>
-            <span class="dsw-panel-select-wrapper">
-              <select name="city" class="dsw-panel-select">
-                <option value="0" >请选择</option >
-                <option value="1" >武汉市</option >
-              </select >
-            </span>
-          </span>
+          <span class="dsw-panel-title">黄石市公安局</span><cascade-select></cascade-select>
         </div>
       </slot>
     </div>
@@ -31,9 +19,16 @@
 </template>
 
 <script>
+
+import CascadeSelect from 'components/common/cascade-select'
+
 export default {
   name: 'Panel',
   props: {
+    isShowRefresh: {
+      type: Boolean,
+      default: false
+    },
     isShowHeading: {
       type: Boolean,
       default: true
@@ -42,36 +37,31 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  components: {
+    CascadeSelect
+  },
+  methods: {
+    refreshHandler (e) {
+      this.$emit('dswPanelRefresh', {e})
+    }
   }
 }
 </script>
 
 <style lang="stylus">
 .dsw-panel{
+  position : relative;
   width :100%;
   height : 100%;
   border : none;
   /*background : url("./images/panel-bg.png") no-repeat scroll 0 0/100% 100%;*/
-  .panel-title{
-    .dsw-panel-title{
-
-    }
-    .dsw-panel-select-container{
-      .dsw-panel-select-wrapper{
-        position : relative;
-        margin :0 0 0 20px;
-        &::before{
-          content : '-';
-          position : absolute;
-          top :0;
-          left :-16px;
-        }
-        .dsw-panel-select{
-          background-color :#112752;
-          border :none;
-        }
-      }
-    }
+  .dsw-panel-refresh{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 16px;
+    cursor: pointer;
   }
 }
 </style>

@@ -10,8 +10,8 @@ const token = new Token(config.tokenKey)
 const source = axios.CancelToken.source()
 
 const axiosInstance = axios.create({
-  baseURL: process.env === 'development' ? 'http://rap2api.taobao.org/app/mock/10074/' : config.baseURL,
-  timeout: process.env === 'development' ? 0 : 6000,
+  baseURL: process.env.NODE_ENV === config.env ? 'http://rap2api.taobao.org/app/mock/10074/' : config.baseURL,
+  timeout: process.env.NODE_ENV === config.env ? 0 : 6000,
   withCredentials: true,
   responseType: 'json'
 })

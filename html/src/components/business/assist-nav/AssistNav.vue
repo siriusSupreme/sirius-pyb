@@ -43,8 +43,7 @@ export default {
     }
   },
   mounted () {
-    const token = JSON.parse(localStorage.getItem('dsw-token-info'))
-    this.$https.get('User/getUserInfo', {params: {id: token.userId}}).then((result) => {
+    this.$https.jsonp(this.$api.getUserInfo).then((result) => {
       this.userInfo = result.data
     }).catch((reason) => {
       this.$toastr.error('获取用户信息失败')
