@@ -1,36 +1,44 @@
 <template >
-  <iframe-container>
+  <iframe-container :isShowFooter="true">
     <div class="dsw-first-line">
-      <dsw-panel class="dsw-total-case-count">
-        <div slot="panel-heading">
-          <span>累计案件数</span>
-        </div>
-        <dsw-echarts :options="totalCaseOptions"></dsw-echarts>
-      </dsw-panel>
+      <div class="dsw-first-line-left">
+        <dsw-panel class="dsw-main-panel">
+          <template slot="panel-heading">
+            <span class="dsw-panel-title">累计案件数</span>
+          </template>
+          <dsw-echarts :options="totalCaseOptions"></dsw-echarts>
+        </dsw-panel>
+      </div>
 
-      <dsw-panel class="dsw-case-trendency">
-        <div slot="panel-heading">
-          <span>案件趋势图</span>
-        </div>
-        <dsw-echarts :options="caseTrendenyOptions"></dsw-echarts>
-      </dsw-panel>
+      <div class="dsw-first-line-right">
+        <dsw-panel class="dsw-main-panel">
+          <template slot="panel-heading">
+            <span class="dsw-panel-title">案件趋势图</span>
+          </template>
+          <dsw-echarts :options="caseTrendenyOptions"></dsw-echarts>
+        </dsw-panel>
+      </div>
     </div>
 
     <div class="dsw-second-line">
-      <dsw-panel class="dsw-various-case-distribution">
-        <div slot="panel-heading">
-          <span>各类型案件分布</span>
-        </div>
-        <dsw-echarts :options="caseDistributionOptions"></dsw-echarts>
-      </dsw-panel>
+      <div class="dsw-second-line-left">
+        <dsw-panel class="dsw-main-panel">
+          <template slot="panel-heading">
+            <span class="dsw-panel-title">各类型案件分布</span>
+          </template>
+          <dsw-echarts :options="caseDistributionOptions"></dsw-echarts>
+        </dsw-panel>
+      </div>
 
-      <dsw-panel class="dsw-sponsor-case-count">
-        <div slot="panel-heading">
-          <span>民警主办案件数</span>
-        </div>
-        <dsw-table :tableData="tableData" :columns="columns"></dsw-table>
-        <dsw-pagination slot="panel-footer"></dsw-pagination>
-      </dsw-panel>
+      <div class="dsw-second-line-right">
+        <dsw-panel class="dsw-main-panel">
+          <template slot="panel-heading">
+            <span class="dsw-panel-title">民警主办案件数</span>
+          </template>
+          <dsw-table :tableData="tableData" :columns="columns"></dsw-table>
+          <dsw-pagination slot="panel-footer"></dsw-pagination>
+        </dsw-panel>
+      </div>
     </div>
   </iframe-container>
 </template >
@@ -38,7 +46,7 @@
 <script >
 import IframeContainer from 'components/common/iframe-container'
 import DswPanel from 'components/common/panel'
-import DswEcharts from 'components/function/echarts'
+import DswEcharts from 'components/common/echarts'
 import DswTable from 'components/function/table'
 import DswPagination from 'components/common/pagination'
 
@@ -59,9 +67,9 @@ export default {
           formatter: '{b}: {c} ({d}%)'
         },
         legend: {
-          align: 'left',
-          right: 20,
-          bottom: 20,
+          orient: 'vertical',
+          bottom: 50,
+          right: 30,
           textStyle: {
             color: '#fff'
           },
@@ -72,7 +80,7 @@ export default {
           {
             name: '案卷数据',
             type: 'pie',
-            center: ['50%', '50%'],
+            center: ['45%', '50%'],
             label: {
               show: true,
               formatter: '{d}%\n\n{c}起',
@@ -103,15 +111,63 @@ export default {
           data: ['全部', '在办', '已结', '未破']
         },
         calculable: true,
-        xAxis: [
-          {
-            type: 'category',
-            data: ['2018-04-26', '2018-04-27', '2018-04-28', '2018-04-29', '2018-04-30', '2018-05-01', '2018-05-02']
+        xAxis: {
+          type: 'category',
+          data: ['2018-04-26', '2018-04-27', '2018-04-28', '2018-04-29', '2018-04-30', '2018-05-01', '2018-05-02', '2018-05-03', '2018-05-04', '2018-05-05', '2018-05-06', '2018-05-07', '2018-05-08', '2018-05-09', '2018-05-10', '2018-05-11', '2018-05-12', '2018-05-13', '2018-05-14', '2018-05-15'],
+          axisLabel: {
+            color: '#23c7ed',
+            fontSize: 14
+          },
+          axisTick: {
+            inside: true
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#23c7ed',
+              width: 2
+            }
           }
-        ],
-        yAxis: [
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            color: '#23c7ed',
+            fontSize: 14
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#23c7ed',
+              width: 2
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#333',
+              type: 'dotted'
+            }
+          }
+        },
+        dataZoom: [
           {
-            type: 'value'
+            type: 'inside',
+            startValue: 0
+          },
+          {
+            type: 'slider',
+            startValue: 0,
+            backgroundColor: '#061838',
+            borderColor: '#061838',
+            dataBackground: {
+              lineStyle: {
+                color: '#23c7ed'
+              },
+              areaStyle: {
+                color: '#23c7ed'
+              }
+            },
+            textStyle: {
+              color: '#23c7ed'
+            }
           }
         ],
         series: [
@@ -119,120 +175,134 @@ export default {
             name: '全部',
             type: 'line',
             stack: '总量',
-            data: [120, 132, 101, 134, 90, 230, 210]
+            symbol: 'rect',
+            data: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230]
           },
           {
             name: '在办',
             type: 'line',
             stack: '总量',
-            data: [220, 182, 191, 234, 290, 330, 310]
+            symbol: 'rect',
+            data: [220, 182, 191, 234, 290, 330, 310, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230]
           },
           {
             name: '已结',
             type: 'line',
             stack: '总量',
-            data: [150, 232, 201, 154, 190, 330, 410]
+            symbol: 'rect',
+            data: [150, 232, 201, 154, 190, 330, 410, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230]
           },
           {
             name: '未破',
             type: 'line',
             stack: '总量',
-            data: [320, 332, 301, 334, 390, 330, 320]
-          },
-          {
-            name: '搜索引擎',
-            type: 'line',
-            stack: '总量',
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
+            symbol: 'rect',
+            data: [320, 332, 301, 334, 390, 330, 320, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230]
           }
         ]
       },
       caseDistributionOptions: {
-        title: {
-          text: 'ECharts2 vs ECharts1',
-          subtext: 'Chrome下测试数据'
-        },
         tooltip: {
-          trigger: 'axis'
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          }
         },
         legend: {
-          data: [
-            'ECharts1 - 2k数据', 'ECharts1 - 2w数据', 'ECharts1 - 20w数据', '',
-            'ECharts2 - 2k数据', 'ECharts2 - 2w数据', 'ECharts2 - 20w数据'
-          ]
-        },
-        toolbox: {
-          show: true,
-          feature: {
-            mark: {show: true},
-            dataView: {show: true, readOnly: false},
-            magicType: {show: true, type: ['line', 'bar']},
-            restore: {show: true},
-            saveAsImage: {show: true}
-          }
-        },
-        calculable: true,
-        grid: {y: 70, y2: 30, x2: 20},
-        xAxis: [
-          {
-            type: 'category',
-            data: ['Line', 'Bar', 'Scatter', 'K', 'Map']
+          left: 'center',
+          bottom: 20,
+          textStyle: {
+            color: '#fff'
           },
-          {
-            type: 'category',
-            axisLine: {show: false},
-            axisTick: {show: false},
-            axisLabel: {show: false},
-            splitArea: {show: false},
-            splitLine: {show: false},
-            data: ['Line', 'Bar', 'Scatter', 'K', 'Map']
+          data: ['在办', '已结', '未破']
+        },
+        grid: {
+          top: 10,
+          bottom: 120
+        },
+        xAxis: {
+          type: 'category',
+          data: ['行政案件', '现场条件案件', '当场处理案件', '消防管理案件', '出入境管理案件', '交通管理案件', '行政复议案件', '涉赌行政案件', '刑事案件', '经济犯罪案件', '刑事复议案件', '赔偿案件', '诉讼案件', '少数案件', '其他'],
+          axisLabel: {
+            interval: 0,
+            rotate: 45,
+            color: '#23c7ed',
+            fontSize: 14
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#23c7ed',
+              width: 2
+            }
           }
-        ],
-        yAxis: [
-          {
-            type: 'value',
-            axisLabel: {formatter: '{value} ms'}
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            color: '#23c7ed',
+            fontSize: 14
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#23c7ed',
+              width: 2
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#333',
+              type: 'dotted'
+            }
           }
-        ],
+        },
         series: [
           {
-            name: 'ECharts2 - 2k数据',
+            name: '在办',
             type: 'bar',
-            itemStyle: { normal: { color: 'rgba(193,35,43,1)', label: {show: true} } },
-            data: [40, 155, 95, 75, 0]
+            stack: '总数',
+            label: {
+              normal: {
+                show: true,
+                position: 'inside'
+              }
+            },
+            itemStyle: {
+              color: '#1734c4'
+            },
+            data: [320, 302, 301, 334, 390, 330, 320, 320, 302, 301, 334, 390, 330, 320, 320]
           },
           {
-            name: 'ECharts2 - 2w数据',
+            name: '已结',
             type: 'bar',
-            itemStyle: { normal: { color: 'rgba(181,195,52,1)', label: { show: true, textStyle: {color: '#27727B'} } } },
-            data: [100, 200, 105, 100, 156]
+            stack: '总数',
+            label: {
+              normal: {
+                show: true,
+                position: 'inside'
+              }
+            },
+            itemStyle: {
+              color: '#13d734'
+            },
+            data: [120, 132, 101, 134, 90, 230, 210, 320, 302, 301, 334, 390, 330, 320, 320]
           },
           {
-            name: 'ECharts2 - 20w数据',
+            name: '未破',
             type: 'bar',
-            itemStyle: { normal: { color: 'rgba(252,206,16,1)', label: { show: true, textStyle: {color: '#E87C25'} } } },
-            data: [906, 911, 908, 778, 0]
-          },
-          {
-            name: 'ECharts1 - 2k数据',
-            type: 'bar',
-            xAxisIndex: 1,
-            itemStyle: { normal: { color: 'rgba(193,35,43,0.5)', label: { show: true, formatter: function (p) { return p.value > 0 ? (p.value + '\n') : '' } } } },
-            data: [96, 224, 164, 124, 0]
-          },
-          {
-            name: 'ECharts1 - 2w数据',
-            type: 'bar',
-            xAxisIndex: 1,
-            itemStyle: { normal: { color: 'rgba(181,195,52,0.5)', label: {show: true} } },
-            data: [491, 2035, 389, 955, 347]
-          },
-          {
-            name: 'ECharts1 - 20w数据',
-            type: 'bar',
-            xAxisIndex: 1,
-            itemStyle: { normal: { color: 'rgba(252,206,16,0.5)', label: { show: true, formatter: function (p) { return p.value > 0 ? (p.value + '+') : '' } } } },
-            data: [3000, 3000, 2817, 3000, 0]
+            stack: '总数',
+            label: {
+              normal: {
+                show: true,
+                position: 'inside'
+              }
+            },
+            itemStyle: {
+              color: '#db4300'
+            },
+            data: [220, 182, 191, 234, 290, 330, 310, 320, 302, 301, 334, 390, 330, 320, 320]
           }
         ]
       },
@@ -254,33 +324,42 @@ export default {
 </script >
 
 <style lang="stylus" >
+.dsw-main-panel{
+  background : url("./images/panel-bg.png") no-repeat scroll center center/99% 98%;
+  .dsw-panel-heading{
+    background : url("./images/panel-heading.png") no-repeat scroll 0 0/100% 100%;
+    .dsw-panel-title{
+      font-size :0.24rem;
+    }
+  }
+}
 .dsw-first-line{
   height : 45%;
   overflow: hidden;
-  .dsw-total-case-count{
-    width : 40%;
-    height : 100%;
-    float: left;
-  }
-  .dsw-case-trendency{
-    width : 60%;
-    height : 100%;
-    float: right;
-  }
+  margin :0 0.10rem;
 }
 .dsw-second-line{
   height : 55%;
   overflow: hidden;
-  .dsw-various-case-distribution{
-    width : 60%;
-    height : 100%;
-    float: left;
-  }
-  .dsw-sponsor-case-count{
-    width : 40%;
-    height : 100%;
-    float: right;
-  }
+  margin :0 0.10rem;
+}
+.dsw-first-line-left,
+.dsw-second-line-left{
+  height : 100%;
+  float : left;
+}
+.dsw-first-line-right
+.dsw-second-line-right{
+  height :100%;
+  float : right;
+}
+.dsw-first-line-left,
+.dsw-second-line-right{
+  width :40%;
+}
+.dsw-first-line-right,
+.dsw-second-line-left{
+  width :60%;
 }
 </style >
 

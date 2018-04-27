@@ -8,16 +8,15 @@
       </slot>
     </div>
 
-    <div class="panel-body" ref="panel-body" style="height: 100%;">
+    <div class="panel-body dsw-panel-body" ref="panel-body" style="height: 100%;">
       <slot></slot>
     </div>
 
-    <div class="panel-footer" v-if="isShowFooter" ref="panel-footer"><slot name="panel-footer"></slot></div>
+    <div class="panel-footer dsw-panel-footer" v-if="isShowFooter" ref="panel-footer"><slot name="panel-footer"></slot></div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'Panel',
   props: {
@@ -69,11 +68,12 @@ export default {
   height : 100%;
   overflow : hidden;
   border : none;
+  margin :0;
   /*background : url("./images/panel-bg.png") no-repeat scroll 0 0/100% 100%;*/
   .dsw-panel-refresh{
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 0.2rem;
     font-size: 16px;
     cursor: pointer;
   }
