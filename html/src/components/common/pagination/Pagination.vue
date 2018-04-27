@@ -46,28 +46,13 @@ export default {
   },
   data () {
     return {
-      pageIndex: 1,
-      pageSize: 10
-    }
-  },
-  watch: {
-    pageIndex: {
-      deep: false,
-      immediate: true,
-      handler (val, oldVal) {
-        return this.currentPage
-      }
-    },
-    pageSize: {
-      deep: false,
-      immediate: true,
-      handler (val, oldVal) {
-        return this.recordsPerPage
-      }
+      pageIndex: this.currentPage,
+      pageSize: this.recordsPerPage
     }
   },
   methods: {
     pageChangeHandler (pageIndex, recordsPerPage = this.pageSize) {
+      this.pageIndex = pageIndex
       this.$emit('dswPagerChange', {pageIndex, recordsPerPage})
     },
     pageSizeChangeHandler (newPageSize) {

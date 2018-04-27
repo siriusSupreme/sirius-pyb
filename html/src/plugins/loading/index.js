@@ -20,10 +20,12 @@ export default {
       dswLoading.title = title
       dswLoading.isShow = true
       // 确保 该元素上 有且只有 一个 插件实例
-      if (!this.$el.getAttribute('data-dsw-loading')) {
-        this.$el.appendChild($el)
-        this.$el.setAttribute('data-dsw-loading', dswLoading)
-      }
+      this.$nextTick(() => {
+        if (!this.$el.getAttribute('data-dsw-loading')) {
+          this.$el.appendChild($el)
+          this.$el.setAttribute('data-dsw-loading', dswLoading)
+        }
+      })
     }
 
     Vue.prototype.$hideLoading = function () {

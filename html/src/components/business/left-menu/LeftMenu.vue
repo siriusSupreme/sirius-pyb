@@ -28,7 +28,7 @@ export default {
   components: {
     DswMenu
   },
-  mounted () {
+  created () {
     this.$showLoading(3)
     this.getMenuLists({vm: this}).then((result) => {
       this.$hideLoading()

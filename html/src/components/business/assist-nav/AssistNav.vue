@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import getUserInfo from 'mixins/get-user-info'
+import getCurrentUserInfo from 'mixins/get-current-user-info'
 
 export default {
   name: 'AssistNav',
@@ -44,9 +44,9 @@ export default {
       userInfo: {}
     }
   },
-  mixins: [getUserInfo],
-  mounted () {
-    this.getUserInfo.then((result) => {
+  mixins: [getCurrentUserInfo],
+  created () {
+    this.getCurrentUserInfo().then((result) => {
       this.userInfo = result
     }).catch((reason) => {
       this.$toastr.error('获取用户信息失败')

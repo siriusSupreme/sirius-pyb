@@ -1,6 +1,8 @@
 <template>
   <v-table
     class="dsw-easy-table-wrapper"
+    ref="dsw-easy-table-wrapper"
+    :height="height"
     :is-horizontal-resize="true"
     :column-width-drag="columnWidthDrag"
     :is-loading="isLoadingForTable"
@@ -10,14 +12,16 @@
     :show-horizontal-border="isShowHorizontalBorder"
     :show-vertical-border="isShowVerticalBorder"
     :table-bg-color="tableBgColor"
-    @on-custom-comp="customComponentHandler"
     v-bind="$attrs"
+    @on-custom-comp="customComponentHandler"
+    :filter-method="filterMethodHandler"
   ></v-table>
 </template>
 
 <script>
 import Vue from 'vue'
 import {VTable} from 'vue-easytable'
+import BScroll from 'better-scroll'
 
 import 'vue-easytable/libs/themes-base/index.css'
 
@@ -59,9 +63,35 @@ export default {
       default: '#16173e'
     }
   },
+  data () {
+    return {
+      height: 220,
+      betterScroll: null
+    }
+  },
+  created () {
+    this.$nextTick(() => {
+      this.height = this.$refs['dsw-easy-table-wrapper'].$el.parentNode.clientHeight
+    })
+  },
+  mounted () {
+    this.betterScroll = new BScroll(this.$refs['dsw-easy-table-wrapper'].$el.querySelector('.v-table-body-class'), {
+      scrollX: false,
+      scrollY: true,
+      mouseWheel: true,
+      scrollbar: true
+    })
+  },
+  updated () {
+    this.$refs['dsw-easy-table-wrapper'].resize()
+    this.betterScroll.refresh()
+  },
   methods: {
     customComponentHandler (payload) {
       this.$emit('dswCustomComponent', payload)
+    },
+    filterMethodHandler (filters) {
+      this.$emit('dswFilterMethod', filters)
     }
   }
 }
@@ -75,14 +105,26 @@ $borderColor = #18445a
   width : 100%;
   height : 100%;
   color : $fontColor;
+  font-size : 0.16rem;
   border : 1px solid $borderColor;
   &.v-table-class{
     .v-table-title-class{
       background : url("./images/title-bg.png") no-repeat scroll 0 0/100% 100%;
       background-color : transparent !important;
+      .v-table-htable{
+        /*width :100%;*/
+      }
+      .v-table-title-cell{
+        .v-dropdown-dt{
+          background-color : #5bc0de;
+        }
+      }
     }
     .v-table-body-class{
-
+      overflow : hidden;
+      .v-table-btable{
+        width :100%;
+      }
     }
     .v-scrollbar-wrap{
 
