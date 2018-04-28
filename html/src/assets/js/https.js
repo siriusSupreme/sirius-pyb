@@ -5,6 +5,9 @@ import jsonp from 'jsonp'
 import config from './config'
 import axios from './axios'
 import toastr from './toastr'
+import Token from './Token'
+
+const token = new Token(config.tokenKey)
 
 let https = axios
 
@@ -13,14 +16,12 @@ https.jsonp = (url, options) => {
 
   options = options || {}
 
-  const token = localStorage.getItem(config.tokenKey)
-  // token 不存在 且 不是登录页发出的请求
-  if (!token && !/\/login.html$/.test(window.location.href)) {
-    window.location.href = '/login.html'
-    return false
-  } else if (token) {
+  const _token = token.getToken()
+  if (_token) {
     options.params = options.params || {}
-    options.params[config.tokenName] = token
+    options.params[config.tokenName] = _token
+  } else {
+    return false
   }
 
   // 处理 url

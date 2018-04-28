@@ -85,13 +85,16 @@ export default {
     cursor: pointer;
   }
   .dsw-panel-heading{
-    background : url("./images/panel-heading-bg.png") no-repeat scroll 0 0/100% 100%;
+    width :100%;
     overflow : hidden;
+    background : url("./images/panel-heading-bg.png") no-repeat scroll 0 0/100% 100%;
   }
   .dsw-panel-body{
+    width :100%;
     overflow : hidden;
   }
   .dsw-panel-footer{
+    width :100%;
     overflow : hidden;
   }
 }

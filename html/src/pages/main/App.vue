@@ -1,44 +1,35 @@
 <template >
   <iframe-container :isShowFooter="true">
     <div class="dsw-first-line">
-      <div class="dsw-first-line-left">
-        <dsw-panel class="dsw-main-panel">
-          <template slot="panel-heading">
-            <span class="dsw-panel-title">累计案件数</span>
-          </template>
-          <dsw-echarts :options="totalCaseOptions"></dsw-echarts>
-        </dsw-panel>
-      </div>
+      <dsw-panel class="dsw-main-panel dsw-first-line-left">
+        <template slot="panel-heading">
+          <span class="dsw-panel-title">累计案件数</span>
+        </template>
+        <dsw-echarts :options="totalCaseOptions"></dsw-echarts>
+      </dsw-panel>
 
-      <div class="dsw-first-line-right">
-        <dsw-panel class="dsw-main-panel">
-          <template slot="panel-heading">
-            <span class="dsw-panel-title">案件趋势图</span>
-          </template>
-          <dsw-echarts :options="caseTrendenyOptions"></dsw-echarts>
-        </dsw-panel>
-      </div>
+      <dsw-panel class="dsw-main-panel dsw-first-line-right">
+        <template slot="panel-heading">
+          <span class="dsw-panel-title">案件趋势图</span>
+        </template>
+        <dsw-echarts :options="caseTrendenyOptions"></dsw-echarts>
+      </dsw-panel>
     </div>
 
     <div class="dsw-second-line">
-      <div class="dsw-second-line-left">
-        <dsw-panel class="dsw-main-panel">
-          <template slot="panel-heading">
-            <span class="dsw-panel-title">各类型案件分布</span>
-          </template>
-          <dsw-echarts :options="caseDistributionOptions"></dsw-echarts>
-        </dsw-panel>
-      </div>
+      <dsw-panel class="dsw-main-panel dsw-second-line-left">
+        <template slot="panel-heading">
+          <span class="dsw-panel-title">各类型案件分布</span>
+        </template>
+        <dsw-echarts :options="caseDistributionOptions"></dsw-echarts>
+      </dsw-panel>
 
-      <div class="dsw-second-line-right">
-        <dsw-panel class="dsw-main-panel">
-          <template slot="panel-heading">
-            <span class="dsw-panel-title">民警主办案件数</span>
-          </template>
-          <dsw-table :tableData="tableData" :columns="columns"></dsw-table>
-          <dsw-pagination slot="panel-footer"></dsw-pagination>
-        </dsw-panel>
-      </div>
+      <dsw-panel class="dsw-main-panel dsw-second-line-right">
+        <template slot="panel-heading">
+          <span class="dsw-panel-title">民警主办案件数</span>
+        </template>
+        <dsw-table :tableData="tableData" :columns="columns" :columnWidthDrag="true"></dsw-table>
+      </dsw-panel>
     </div>
   </iframe-container>
 </template >
@@ -47,7 +38,7 @@
 import IframeContainer from 'components/common/iframe-container'
 import DswPanel from 'components/common/panel'
 import DswEcharts from 'components/common/echarts'
-import DswTable from 'components/function/table'
+import DswTable from 'components/common/table'
 import DswPagination from 'components/common/pagination'
 
 export default {
@@ -319,7 +310,24 @@ export default {
         ]
       },
       tableData: [],
-      columns: []
+      columns: [
+        {
+          title: '序号',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return pagingIndex + rowIndex + 1
+          },
+          width: 30,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true
+        },
+        {title: '主办民警', field: 'ip', width: 50, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '案件总数', field: 'content', width: 50, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '在办案件数', field: 'updateTime', width: 50, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '结案案件数', field: 'updateTime', width: 50, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '未破案件数', field: 'updateTime', width: 50, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true}
+      ]
     }
   },
   components: {
@@ -336,15 +344,6 @@ export default {
 </script >
 
 <style lang="stylus" >
-.dsw-main-panel{
-  background : url("./images/panel-bg.png") no-repeat scroll center center/99% 98%;
-  .dsw-panel-heading{
-    background : url("./images/panel-heading.png") no-repeat scroll 0 0/100% 100%;
-    .dsw-panel-title{
-      font-size :0.24rem;
-    }
-  }
-}
 .dsw-first-line{
   height : 45%;
   overflow: hidden;
@@ -355,23 +354,33 @@ export default {
   overflow: hidden;
   margin :0 0.10rem;
 }
-.dsw-first-line-left,
-.dsw-second-line-left{
-  height : 100%;
-  float : left;
-}
-.dsw-first-line-right
-.dsw-second-line-right{
-  height :100%;
-  float : right;
-}
-.dsw-first-line-left,
-.dsw-second-line-right{
-  width :40%;
-}
-.dsw-first-line-right,
-.dsw-second-line-left{
-  width :60%;
+.dsw-main-panel{
+  background : url("./images/panel-bg.png") no-repeat scroll center center/99% 98%;
+  .dsw-panel-heading{
+    background : url("./images/panel-heading.png") no-repeat scroll 0 0/100% 100%;
+    .dsw-panel-title{
+      font-size :0.24rem;
+    }
+  }
+
+  &.dsw-first-line-left,
+  &.dsw-second-line-left{
+    height : 100%;
+    float : left;
+  }
+  &.dsw-first-line-right
+  &.dsw-second-line-right{
+    height :100%;
+    float : right;
+  }
+  &.dsw-first-line-left,
+  &.dsw-second-line-right{
+    width :40%;
+  }
+  &.dsw-first-line-right,
+  &.dsw-second-line-left{
+    width :60%;
+  }
 }
 </style >
 

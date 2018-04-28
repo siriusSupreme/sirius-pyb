@@ -28,11 +28,14 @@ export default {
       echartsInstance: null
     }
   },
-  mounted () {
+  created () {
     if (this.echartsInstance === null) {
       this.$nextTick(() => {
         this.echartsInstance = echarts.init(document.getElementById(this.id))
         this.echartsInstance.setOption(this.options)
+      })
+      window.addEventListener('resize', (e) => {
+        this.echartsInstance.resize()
       })
     }
   }

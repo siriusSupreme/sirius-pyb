@@ -36,7 +36,7 @@
 import IframeContainer from 'components/common/iframe-container'
 import DswPanel from 'components/common/panel'
 import DswPagination from 'components/common/pagination'
-import DswTable from 'components/function/table'
+import DswTable from 'components/common/table'
 import SearchBtn from 'components/common/search-btn'
 
 export default {

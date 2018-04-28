@@ -54,7 +54,7 @@ export default {
 <style lang="stylus">
   .dsw-left-menu{
     position : relative;
-    width : 3.27rem;
+    width : 3rem;
     height :100%;
     padding :5px 0 5px 10px;
     margin : 0 10px 0 0;

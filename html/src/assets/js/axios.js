@@ -5,10 +5,13 @@ import axios from 'axios'
 import config from './config'
 import Token from './Token'
 import toastr from './toastr'
+import VerifyResponse from './VerifyResponse'
 
 const token = new Token(config.tokenKey)
+const verifyResponse = new VerifyResponse()
 const source = axios.CancelToken.source()
 
+// 创建 axios 实例
 const axiosInstance = axios.create({
   baseURL: process.env.NODE_ENV === config.env ? 'http://rap2api.taobao.org/app/mock/10074/' : config.baseURL,
   timeout: process.env.NODE_ENV === config.env ? 0 : 6000,
@@ -16,16 +19,9 @@ const axiosInstance = axios.create({
   responseType: 'json'
 })
 
+// 请求拦截器
 axiosInstance.interceptors.request.use((options) => {
-  const _token = token.getToken()
-
-  // token 不存在 且 不是登录页发出的请求
-  if (!_token && !/\/login.html$/.test(window.location.href)) {
-    window.location.href = '/login.html'
-    source.cancel('尚未登录')
-  } else if (_token) {
-    options.headers[config.tokenName] = _token
-  }
+  options.headers[config.tokenName] = token.getToken(source)
 
   return options
 }, (reason) => {
@@ -33,15 +29,15 @@ axiosInstance.interceptors.request.use((options) => {
   return Promise.reject(reason)
 })
 
+// 响应拦截器
 axiosInstance.interceptors.response.use((response) => {
-  const data = response.data || JSON.parse(response.request.responseText)
+  const result = response.data || JSON.parse(response.request.responseText)
 
-  // TODO 登录失效处理
-  if (data.code !== 0) {
-    toastr.error(data.msg || '非法请求，响应异常')
+  if (verifyResponse.verify(result)) {
+    return Promise.resolve(result)
+  } else {
+    return Promise.reject(result)
   }
-
-  return data
 }, (reason) => {
   toastr.error('JSON Response Error')
   return Promise.reject(reason)
