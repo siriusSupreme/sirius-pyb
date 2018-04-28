@@ -176,6 +176,9 @@ export default {
             type: 'line',
             stack: '总量',
             symbol: 'rect',
+            itemStyle: {
+              color: '#23c7ed'
+            },
             data: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230]
           },
           {
@@ -183,6 +186,9 @@ export default {
             type: 'line',
             stack: '总量',
             symbol: 'rect',
+            itemStyle: {
+              color: '#1734c4'
+            },
             data: [220, 182, 191, 234, 290, 330, 310, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230]
           },
           {
@@ -190,6 +196,9 @@ export default {
             type: 'line',
             stack: '总量',
             symbol: 'rect',
+            itemStyle: {
+              color: '#13d734'
+            },
             data: [150, 232, 201, 154, 190, 330, 410, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230]
           },
           {
@@ -197,6 +206,9 @@ export default {
             type: 'line',
             stack: '总量',
             symbol: 'rect',
+            itemStyle: {
+              color: '#db4300'
+            },
             data: [320, 332, 301, 334, 390, 330, 320, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230]
           }
         ]

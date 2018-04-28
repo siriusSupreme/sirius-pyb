@@ -51,22 +51,24 @@ export default {
         pageSize: 20
       },
       dictionary: {
-        'LOG_OPT_MODULE': {}
+        'caseStatus': {
+          '01': '在办',
+          '02': '未破',
+          '03': '已结'
+        },
+        'subStatus': {
+          '01': '在柜',
+          '02': '借阅审核',
+          '03': '已外借',
+          '04': '移交审批中',
+          '05': '已移交',
+          '06': '移送审批中',
+          '07': '已移送'
+        }
+
       },
-      caseStatusFilters: [
-        {label: '在办', value: '01'},
-        {label: '未破', value: '02'},
-        {label: '已结', value: '03'}
-      ],
-      subStatusFilters: [
-        {label: '在柜', value: '01'},
-        {label: '借阅审核', value: '02'},
-        {label: '已外借', value: '03'},
-        {label: '移交审批中', value: '04'},
-        {label: '已移交', value: '05'},
-        {label: '移送审批中', value: '06'},
-        {label: '已移送', value: '07'}
-      ],
+      caseStatusFilters: [],
+      subStatusFilters: [],
       caseStatus: '',
       subStatus: '',
       searchCode: ''
@@ -80,12 +82,23 @@ export default {
     SearchBtn
   },
   created () {
+    //  设置过滤器
+    this.setFilters('caseStatusFilters', 'caseStatus')
+    this.setFilters('subStatusFilters', 'subStatus')
     // 获取表格数据
     this.getDossierLists()
     // 设置显示列
     this.setColumns()
   },
   methods: {
+    setFilters (filterName, filterType) {
+      const _filterType = this.dictionary[filterType]
+
+      for (let k in _filterType) {
+        let filter = {label: _filterType[k], value: k}
+        this[filterName].push(filter)
+      }
+    },
     getDossierLists ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
       const caseStatus = this.caseStatus
       const subStatus = this.subStatus

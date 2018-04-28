@@ -33,6 +33,11 @@ export default {
       default: false
     }
   },
+  data () {
+    return {
+      height: '100%'
+    }
+  },
   created () {
     this.$nextTick(() => {
       this.adjustHeight()
@@ -56,6 +61,8 @@ export default {
       // console.log(panelHeight + '===' + panelHeadingHeight + '===' + panelFooterHeight)
 
       panelBody.style.height = (panelHeight - panelHeadingHeight - panelFooterHeight) + 'px'
+
+      this.height = (panelHeight - panelHeadingHeight - panelFooterHeight) + 'px'
     }
   }
 }
@@ -79,6 +86,13 @@ export default {
   }
   .dsw-panel-heading{
     background : url("./images/panel-heading-bg.png") no-repeat scroll 0 0/100% 100%;
+    overflow : hidden;
+  }
+  .dsw-panel-body{
+    overflow : hidden;
+  }
+  .dsw-panel-footer{
+    overflow : hidden;
   }
 }
 </style>

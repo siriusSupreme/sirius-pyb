@@ -57,7 +57,7 @@ export default {
     SearchBtn
   },
   created () {
-    // 获取字典
+    // 获取字典 并且 设置过滤器
     const modulePromise = this.getDictionary('LOG_OPT_MODULE', 4).then((result) => {
       this.setFilters('moduleFilters', 'LOG_OPT_MODULE')
     })
@@ -105,41 +105,46 @@ export default {
     setColumns () {
       this.columns = [
         {
+          title: '序号',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
             return pagingIndex + rowIndex + 1
           },
-          title: '序号',
           width: 50,
           titleAlign: 'center',
           columnAlign: 'center',
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
+          title: '操作模块',
           field: 'module',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
             // 箭头函数 this 指向 vm；普通函数 this 指向 该列的选项
             return this.dictionary['LOG_OPT_MODULE'][rowData[field]]
           },
           filters: this.moduleFilters,
-          title: '操作模块',
           width: 100,
           titleAlign: 'center',
           columnAlign: 'center',
-          isResize: true},
+          isResize: true,
+          overflowTitle: true
+        },
         {
+          title: '操作类型',
           field: 'type',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
             return this.dictionary['LOG_OPT_TYPE'][rowData[field]]
           },
           filters: this.typeFilters,
-          title: '操作类型',
           width: 260,
           titleAlign: 'center',
           columnAlign: 'center',
-          isResize: true},
-        {field: 'ip', title: 'IP', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true},
-        {field: 'content', title: '操作内容', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true},
-        {field: 'updateTime', title: '操作时间', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true}
+          isResize: true,
+          overflowTitle: true
+        },
+        {title: 'IP', field: 'ip', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '操作内容', field: 'content', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '操作时间', field: 'updateTime', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true}
       ]
     },
     searchHandler (e) {
