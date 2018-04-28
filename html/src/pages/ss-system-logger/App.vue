@@ -15,7 +15,7 @@
 
       <dsw-table style="width: 100%;" @dswFilterMethod="filterMethodHandler" :isLoadingForTable="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
 
-      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dswPagerChange="getLogs"></dsw-pagination>
+      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dswPagerChange="getLoggers"></dsw-pagination>
     </dsw-panel>
   </iframe-container>
 </template >
@@ -66,7 +66,7 @@ export default {
     })
     // 获取表格数据 并且 设置显示列
     Promise.all([modulePromise, typePromise]).then((result) => {
-      this.getLogs()
+      this.getLoggers()
       this.setColumns()
     })
   },
@@ -86,7 +86,7 @@ export default {
         this[filterName].push(filter)
       }
     },
-    getLogs ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
+    getLoggers ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
       const module = this.module
       const type = this.type
       const content = this.content
@@ -144,20 +144,31 @@ export default {
         },
         {title: 'IP', field: 'ip', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
         {title: '操作内容', field: 'content', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '操作时间', field: 'updateTime', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true}
+        {
+          title: '操作时间',
+          field: 'updateTime',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return (new Date(rowData[field])).format()
+          },
+          width: 260,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true
+        }
       ]
     },
     searchHandler (e) {
-      this.getLogs()
+      this.getLoggers()
     },
     filterMethodHandler (filters) {
       if (filters['module'] && this.module !== filters['module'][0]) {
         this.module = filters['module'][0]
-        this.getLogs()
+        this.getLoggers()
       }
       if (filters['type'] && this.type !== filters['type'][0]) {
         this.type = filters['type'][0]
-        this.getLogs()
+        this.getLoggers()
       }
     }
   }

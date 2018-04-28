@@ -36,8 +36,12 @@ export default {
 
 <style lang="stylus" scoped>
 .dsw-iframe-container{
-  height: 100%;
-  max-height :100%;
+  width : 100%;
+  min-width : 100%;
+  max-width : 100%;
+  height :100vh;
+  min-height :100vh;
+  max-height : 100vh;
   position: relative;
   overflow : hidden;
   background : url("./images/iframe-bg.png") no-repeat scroll 0 0/100% 100%;

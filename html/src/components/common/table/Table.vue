@@ -99,14 +99,14 @@ export default {
 </script>
 
 <style lang="stylus">
-$fontColor = #108ee9
+$fontColor = #23c7ed
 $borderColor = #18445a
 
 .dsw-easy-table-wrapper{
   width : 100%;
   height : 100%;
   color : $fontColor;
-  font-size : 0.16rem;
+  font-size : 0.18rem;
   border : 1px solid $borderColor;
   &.v-table-class{
     .v-table-title-class{

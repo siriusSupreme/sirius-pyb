@@ -1,27 +1,26 @@
 <template >
-  <dsw-container>
+  <dsw-container class="dsw-login-container">
     <!--登录框 start-->
-    <div class="dsw-login-container">
-      <img src="./images/logo.png" alt="" class="dsw-login-logo" />
-      <div class="dsw-login-wrapper">
-        <ul class="dsw-login-lists">
-          <li class="dsw-login-item">
-            <input class="dsw-login-item-input" v-validate="'required'" type="text" name="username" ref="username" data-vv-as="用户名" v-model="username" placeholder="请输入用户名" />
-          </li>
-          <li class="dsw-login-item">
-            <input class="dsw-login-item-input" v-validate="'required'" type="password" name="password" ref="password" data-vv-as="密码" v-model="password" placeholder="请输入密码" />
-          </li>
-        </ul>
+    <img src="./images/logo.png" alt="" class="dsw-login-logo" />
 
-        <button type="button" class="dsw-login-btn" @click="loginHandler" ref="dsw-login-btn">登录</button >
-      </div>
-      <span class="dsw-login-copyright">技术支持：武汉迪赛威智能科技有限公司</span>
+    <div class="dsw-login-wrapper">
+      <ul class="dsw-login-lists" @keyup.stop.enter="loginHandler">
+        <li class="dsw-login-item">
+          <input class="dsw-login-item-input" v-validate="'required'" type="text" name="username" ref="username" data-vv-as="用户名" v-model="username" placeholder="请输入用户名" />
+        </li>
+        <li class="dsw-login-item">
+          <input class="dsw-login-item-input" v-validate="'required'" type="password" name="password" ref="password" data-vv-as="密码" v-model="password" placeholder="请输入密码" />
+        </li>
+      </ul>
+
+      <button type="button" class="dsw-login-btn" @click="loginHandler" ref="dsw-login-btn">登录</button >
+      <button type="button" class="dsw-login-demo-btn" style="display: inline-block;" @click="demoHandler" >Demo</button >
     </div>
     <!--登录框 end-->
 
     <!--背景 start-->
     <!--<dsw-video src="./images/bg.mp4"></dsw-video>-->
-    <video class="dsw-login-bg" src="./videos/bg.mp4" loop autoplay ></video >
+    <video class="dsw-login-bg" src="./videos/login-bg.mp4" loop autoplay ></video >
     <!--背景 end-->
   </dsw-container>
 </template >
@@ -95,6 +94,11 @@ export default {
           })
         }
       })
+    },
+    demoHandler (e) {
+      this.$layer.iframe({
+        content: 'dev'
+      })
     }
   }
 }
@@ -102,31 +106,33 @@ export default {
 
 <style lang="stylus" >
 .dsw-login-container{
-  position : absolute;
-  top : 0;
-  left : 0;
-  z-index : 2;
-  width : 100%;
-  height : 100%;
-  text-align : center;
-  overflow : hidden;
   .dsw-login-logo{
+    display : none;
     width :8rem;
-    margin :50px 0 0;
+    position : absolute;
+    top : 1rem;
+    left : 50%;
+    z-index : 2;
+    transform : translate(-50%,0);
   }
   .dsw-login-wrapper{
-    width : 423px;
-    height: 281px;
+    position : absolute;
+    top : 20vh;
+    right : 1rem;
+    z-index : 2;
+    width : 634px;
+    height: 319px;
     margin : 120px auto 0;
+    text-align : center;
     background : url("./images/login-box.png") no-repeat scroll 0 0/100% 100%;
     .dsw-login-lists{
-      padding :36px 0 0 50px;
+      padding :26px 0 0 96px;
       .dsw-login-item{
-        margin: 16px 0 0 50px;
+        margin: 44px 0 0 50px;
         text-align: left;
         .dsw-login-item-input{
           display: inline-block;
-          width: 280px;
+          width: 320px;
           height: 36px;
           line-height: 36px;
           padding: 2px 5px;
@@ -140,23 +146,18 @@ export default {
     .dsw-login-btn{
       font-size: 0.32rem;
       letter-spacing: 0.20rem;
-      background-color: #091852;
+      background: url("./images/login-btn.png") no-repeat scroll 0 0/100% 100%;
       padding: 0 96px;
       text-align: center;
       height: 40px;
       line-height: 40px;
       display: inline-block;
-      margin: 40px 0 0;
+      margin: 50px 0 0;
       border-radius: 20px;
+      &:not([disabled]):hover{
+        background: url("./images/login-btn-hover.png") no-repeat scroll 0 0/100% 100%;
+      }
     }
-  }
-  .dsw-login-copyright{
-    position : absolute;
-    bottom :50px;
-    left :50%;
-    transform :translate(-50%,0);
-    color : #FFF;
-    font-size :0.16rem;
   }
 }
 .dsw-login-bg{
