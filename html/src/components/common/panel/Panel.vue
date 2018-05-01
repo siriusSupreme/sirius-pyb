@@ -70,12 +70,13 @@ export default {
 
 <style lang="stylus">
 .dsw-panel{
-  position : relative;width : 100%;
-  min-width : 100%;
+  position : relative;
+  width : 100%;
+  /*min-width : 100%;*/
   max-width : 100%;
-  height :100vh;
-  min-height :100vh;
-  max-height : 100vh;
+  height :100%;
+  min-height :100%;
+  /*max-height : 100%;*/
   overflow : hidden;
   border : none;
   margin :0;

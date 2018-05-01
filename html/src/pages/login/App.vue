@@ -14,7 +14,7 @@
       </ul>
 
       <button type="button" class="dsw-login-btn" @click="loginHandler" ref="dsw-login-btn">登录</button >
-      <button type="button" class="dsw-login-demo-btn" style="display: inline-block;" @click="demoHandler" >Demo</button >
+      <!--<button type="button" class="dsw-login-demo-btn" style="display: inline-block;" @click="demoHandler" >Demo</button >-->
     </div>
     <!--登录框 end-->
 
@@ -96,8 +96,8 @@ export default {
       })
     },
     demoHandler (e) {
-      this.$layer.iframe({
-        content: 'dev'
+      this.$vLayer.open({
+        type: 3
       })
     }
   }
