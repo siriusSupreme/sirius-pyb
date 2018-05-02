@@ -1,6 +1,6 @@
 <template >
   <iframe-container :isShowFooter="true">
-    <dsw-panel class="dsw-right-content-wrapper" :isShowFooter="true">
+    <dsw-panel :isShowFooter="true">
       <div slot="panel-heading" class="dsw-search-wrapper">
         <form class="form-inline" @keydown.stop.prevent.enter="searchHandler">
           <div class="form-group form-group-sm">
@@ -170,7 +170,21 @@ export default {
         },
         {
           title: '操作',
-          field: 'module',
+          field: 'status',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            switch (rowData[field]) {
+              case '01': {
+                return `<a href="javascript:void(0);" class="dsw-dossier-lists-operation">转破案</a>`
+              }
+              case '02':
+              case '03': {
+                return `<a href="javascript:void(0);" class="dsw-dossier-lists-operation">结案</a>`
+              }
+              default: {
+                return ''
+              }
+            }
+          },
           width: 100,
           titleAlign: 'center',
           columnAlign: 'center',
@@ -262,35 +276,56 @@ export default {
     addHandler (e) {
       this.$vLayer.openPage(DossierListsAdd, {}, {
         parent: this,
-        title: '案件整改信息'
+        title: '新增'
       })
     },
     editHandler (e) {
       this.$vLayer.openPage(DossierListsEdit, {}, {
         parent: this,
-        title: '案件整改信息'
+        title: '详情编辑'
       })
     },
     listsHandler (e) {
-
+      this.$vLayer.openPage(DossierListsLists, {}, {
+        parent: this,
+        title: '案件整改信息列表'
+      })
     },
     electronicHandler (e) {
-
+      this.$vLayer.openPage(DossierListsElectronic, {}, {
+        parent: this,
+        title: '案件整改信息列表'
+      })
     },
     borrowHandler (e) {
-
+      this.$vLayer.openPage(DossierListsBorrow, {}, {
+        parent: this,
+        title: '案件整改信息列表'
+      })
     },
     transformHandler (e) {
-
+      this.$vLayer.openPage(DossierListsTransform, {}, {
+        parent: this,
+        title: '案件整改信息列表'
+      })
     },
     qrcodeHandler (e) {
-
+      this.$vLayer.openPage(DossierListsQrcode, {}, {
+        parent: this,
+        title: '案件整改信息列表'
+      })
     },
     recordHandler (e) {
-
+      this.$vLayer.openPage(DossierListsRecord, {}, {
+        parent: this,
+        title: '案件整改信息列表'
+      })
     },
     trackHandler (e) {
-
+      this.$vLayer.openPage(DossierListsTrack, {}, {
+        parent: this,
+        title: '案件整改信息列表'
+      })
     }
   }
 }
@@ -314,5 +349,9 @@ export default {
       background : url("./images/add-btn-bg.png") no-repeat scroll 0 0/100% 100%;
     }
   }
+}
+.dsw-dossier-lists-operation{
+  color : #FF9700;
+  text-decoration : underline;
 }
 </style >

@@ -8,9 +8,7 @@
       </slot>
     </div>
 
-    <div class="panel-body dsw-panel-body" ref="panel-body" style="height: 100%;">
-      <slot></slot>
-    </div>
+    <div class="panel-body dsw-panel-body" ref="panel-body"><slot></slot></div>
 
     <div class="panel-footer dsw-panel-footer" v-if="isShowFooter" ref="panel-footer"><slot name="panel-footer"></slot></div>
   </div>
@@ -95,6 +93,7 @@ export default {
   }
   .dsw-panel-body{
     width :100%;
+    /*height : 100%;*/
     overflow : hidden;
   }
   .dsw-panel-footer{

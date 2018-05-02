@@ -27,8 +27,9 @@ export default {
 .dsw-dialog-container{
   width :100%;
   height :100%;
-  overflow : hidden;
-  background : url("./images/dialog-bg.png") no-repeat scroll 0 13px/100% 100%;
+  /*overflow : hidden;*/
+  /*background : url("./images/dialog-bg.png") no-repeat scroll 0 13px/100% 100%;*/
+  background : url("./images/dialog-bg.png") no-repeat scroll 0 0/100% 100%;
   position : relative;
   .dsw-dialog-title{
     display : inline-block;
@@ -38,12 +39,15 @@ export default {
     font-size : 0.24rem;
     color: #061635;
     position : absolute;
-    top :0;
+    top :-13px;
     left :50%;
     transform :translate(-50%,0)
     background : url("./images/title-bg.png") no-repeat scroll 0 0/100% 100%;
   }
   .dsw-dialog-wrapper{
+    width : 100%
+    height : 100%;
+    overflow : hidden;
     padding :40px 5px 5px;
   }
 }

@@ -35,7 +35,7 @@
         <div class="form-group form-group-sm">
           <label class="control-label col-sm-3 dsw-required" >简要案情：</label >
           <div class="col-sm-9">
-            <textarea name="" id="" cols="30" rows="10" ></textarea >
+            <textarea name="" class="form-control" rows="3" ></textarea >
           </div>
         </div>
         <div class="form-group form-group-sm">
@@ -53,7 +53,7 @@
         <div class="form-group form-group-sm">
           <label class="control-label col-sm-3 dsw-required" >备注：</label >
           <div class="col-sm-9">
-            <textarea name="" id="" cols="30" rows="10" ></textarea >
+            <textarea name="" class="form-control" rows="3" ></textarea >
           </div>
         </div>
       </form >
