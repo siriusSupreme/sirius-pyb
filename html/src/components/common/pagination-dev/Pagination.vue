@@ -127,7 +127,7 @@ export default {
       }
     },
     jumpHandler (e, pageIndex) {
-      this.$emit('dswPagerChange', pageIndex)
+      this.$emit('dsw-pager-change', pageIndex)
     }
   }
 }

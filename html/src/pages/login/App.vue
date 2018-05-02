@@ -84,6 +84,7 @@ export default {
   },
   methods: {
     loginHandler (e) {
+      console.log(this.$https)
       this.$validator.validateAll().then((result) => {
         if (result) {
           const userName = this.username

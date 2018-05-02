@@ -112,8 +112,12 @@ $borderColor = #18445a
     .v-table-title-class{
       background : url("./images/title-bg.png") no-repeat scroll 0 0/100% 100%;
       background-color : transparent !important;
-      .v-table-htable{
-        /*width :100%;*/
+      .v-table-header-inner{
+        width :auto;
+        float : none;
+        .v-table-htable{
+          width :100%;
+        }
       }
       .v-table-title-cell{
         .v-dropdown-dt{

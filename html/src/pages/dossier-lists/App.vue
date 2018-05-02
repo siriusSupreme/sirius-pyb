@@ -8,23 +8,23 @@
             <input type="text" name="searchCode" v-model="searchCode" style="width: 300px;" class="form-control" placeholder="通过案件编号/案件名称/主办民警" />
           </div>
           <div class="form-group" style="margin: 0 0 0 20px;">
-            <search-btn @dswClickBtn="searchHandler"></search-btn>
+            <search-btn @dsw-click-btn="searchHandler"></search-btn>
           </div>
         </form >
       </div>
 
-      <dsw-table style="width: 100%;" @dswFilterMethod="filterMethodHandler" :isLoadingForTable="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
+      <dsw-table style="width: 100%;" @dswFilterMethod="filterMethodHandler" :isl-loading-for-table="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
 
       <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dswPagerChange="getDossierLists"></dsw-pagination>
     </dsw-panel>
 
     <div class="dsw-dossier-lists-btn-wrapper" slot="panel-footer">
-      <button class="dsw-btn dsw-add-btn">新建</button>
+      <button class="dsw-btn dsw-add-btn" @click.stop="addHandler">新建</button>
       <button class="dsw-btn dsw-edit-btn">详情编辑</button>
       <button class="dsw-btn dsw-rectification-btn">整改信息列表</button>
       <button class="dsw-btn dsw-electronic-dossier-btn">电子卷宗</button>
       <button class="dsw-btn dsw-dossier-borrow-btn">案卷借阅</button>
-      <button class="dsw-btn dsw-transform-btn">一交易送</button>
+      <button class="dsw-btn dsw-transform-btn">移交移送</button>
       <button class="dsw-btn dsw-qrcode-btn">打印二维码</button>
       <button class="dsw-btn dsw-dossier-burning-btn">卷宗刻录</button>
       <button class="dsw-btn dsw-dossier-locus-btn">案卷轨迹</button>
@@ -39,6 +39,8 @@ import DswPagination from 'components/common/pagination'
 import DswTable from 'components/common/table'
 import SearchBtn from 'components/common/search-btn'
 
+import DossierListsAdd from 'components/business/dossier-lists-add'
+
 export default {
   name: 'App',
   data () {
@@ -51,12 +53,17 @@ export default {
         pageSize: 20
       },
       dictionary: {
-        'caseStatus': {
+        'CASE_TYPE': {
           '01': '在办',
           '02': '未破',
           '03': '已结'
         },
-        'subStatus': {
+        'CASE_STATUS': {
+          '01': '在办',
+          '02': '未破',
+          '03': '已结'
+        },
+        'SUB_STATUS': {
           '01': '在柜',
           '02': '借阅审核',
           '03': '已外借',
@@ -67,6 +74,7 @@ export default {
         }
 
       },
+      caseTypeFilters: [],
       caseStatusFilters: [],
       subStatusFilters: [],
       caseStatus: '',
@@ -83,14 +91,29 @@ export default {
   },
   created () {
     //  设置过滤器
-    this.setFilters('caseStatusFilters', 'caseStatus')
-    this.setFilters('subStatusFilters', 'subStatus')
-    // 获取表格数据
-    this.getDossierLists()
-    // 设置显示列
-    this.setColumns()
+    this.setFilters('caseStatusFilters', 'CASE_STATUS')
+    this.setFilters('subStatusFilters', 'SUB_STATUS')
+    // 获取字典 并且 设置过滤器
+    const caseTypePromise = this.getDictionary('CASE_TYPE', 'CASE_TYPE').then((result) => {
+      this.setFilters('caseTypeFilters', 'CASE_TYPE')
+    })
+
+    // 获取表格数据 并且 设置显示列
+    Promise.all([caseTypePromise]).then((result) => {
+      // 获取表格数据
+      this.getDossierLists()
+      // 设置显示列
+      this.setColumns()
+    })
   },
   methods: {
+    getDictionary (type, code) {
+      return this.$https.jsonp(this.$api.getDictionary, {params: {type, code}}).then((result) => {
+        result.data.lists.forEach((val) => {
+          this.dictionary[type][val.code] = val.name
+        })
+      })
+    },
     setFilters (filterName, filterType) {
       const _filterType = this.dictionary[filterType]
 
@@ -107,7 +130,6 @@ export default {
       this.isLoadingForTable = true
 
       this.$https.jsonp(this.$api.getDossierLists, {params: {page: pageIndex, limit: recordsPerPage, caseStatus, subStatus, searchCode}}).then((result) => {
-        console.log(result)
         this.tableData = result.data.lists
         this.paginateInfo = result.data.pageDto
         this.isLoadingForTable = false
@@ -147,14 +169,42 @@ export default {
           isResize: true,
           overflowTitle: false
         },
-        {title: '案件编号', field: 'ip', width: 80, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '接警编号', field: 'ip', width: 80, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '案件名称', field: 'ip', width: 80, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '案件类型', field: 'ip', width: 80, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '案件编号', field: 'caseNo', width: 80, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '接警编号', field: 'jjbh', width: 80, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '案件名称', field: 'name', width: 80, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {
+          title: '案件类型',
+          field: 'type',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return this.dictionary['CASE_TYPE'][rowData[field]]
+          },
+          filters: this.caseTypeFilters,
+          width: 80,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true
+        },
         {
           title: '案件状态',
-          field: 'type',
-          filters: this.caseStatus,
+          field: 'status',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            switch (rowData[field]) {
+              case '01': {
+                return `<img src="./images/case-ing.png" /><span>${this.dictionary['CASE_STATUS'][rowData[field]]}</span>`
+              }
+              case '02': {
+                return `<img src="./images/case-over.png" /><span>${this.dictionary['CASE_STATUS'][rowData[field]]}</span>`
+              }
+              case '03': {
+                return `<img src="./images/case-no-crack.png" /><span>${this.dictionary['CASE_STATUS'][rowData[field]]}</span>`
+              }
+              default: {
+                return ''
+              }
+            }
+          },
+          filters: this.caseStatusFilters,
           width: 80,
           titleAlign: 'center',
           columnAlign: 'center',
@@ -163,8 +213,11 @@ export default {
         },
         {
           title: '外借/移交状态',
-          field: 'module',
-          filters: this.subStatus,
+          field: 'subStatus',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return this.dictionary['SUB_STATUS'][rowData[field]]
+          },
+          filters: this.subStatusFilters,
           width: 80,
           titleAlign: 'center',
           columnAlign: 'center',
@@ -173,7 +226,10 @@ export default {
         },
         {
           title: '立案时间',
-          field: 'module',
+          field: 'regDate',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return (new Date(rowData[field])).format()
+          },
           width: 100,
           titleAlign: 'center',
           columnAlign: 'center',
@@ -194,6 +250,13 @@ export default {
         this.subStatus = filters['subStatus'][0]
         this.getDossierLists()
       }
+    },
+    addHandler (e) {
+      this.$vLayer.openPage(DossierListsAdd, {
+        propsData: {
+          title: '案件整改信息'
+        }
+      })
     }
   }
 }

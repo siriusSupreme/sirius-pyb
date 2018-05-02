@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     clickBtnHandler (e) {
-      this.$emit('dswClickBtn', e)
+      this.$emit('dsw-click-btn', e)
     }
   }
 }

@@ -1,0 +1,27 @@
+<template>
+  <dialog-container :title="title">
+    <h1>hello world</h1>
+  </dialog-container>
+</template>
+
+<script>
+import DialogContainer from 'components/common/dialog-container'
+
+export default {
+  name: 'DossierListsAdd',
+  components: {
+    DialogContainer
+  },
+  props: {
+    title: 'hi'
+  }
+}
+</script>
+
+<style lang="stylus">
+
+</style>
+
+<style lang="stylus" scoped>
+
+</style>

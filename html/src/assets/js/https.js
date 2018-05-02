@@ -20,8 +20,8 @@ https.jsonp = (url, options) => {
   if (_token) {
     options.params = options.params || {}
     options.params[config.tokenName] = _token
-  } else {
-    return false
+  } else if (!/\/login.html$/.test(window.location.href)) {
+    return Promise.reject(new Error('请先登录'))
   }
 
   // 处理 url
@@ -42,7 +42,7 @@ https.jsonp = (url, options) => {
     url += ('?' + queryString.substr(1))
   }
 
-  const promise = new Promise((resolve, reject) => {
+  let promise = new Promise((resolve, reject) => {
     // eslint-disable-next-line
     const cancel = jsonp(url, {
       prefix: options.prefix, // 前缀
@@ -58,7 +58,7 @@ https.jsonp = (url, options) => {
     })
   })
 
-  promise.catch(reason => {
+  promise = promise.catch(reason => {
     toastr.error('JSONP Request Error')
     return Promise.reject(reason)
   })

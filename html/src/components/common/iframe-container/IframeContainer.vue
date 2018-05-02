@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid dsw-iframe-container" id="dsw-iframe-container">
-      <dsw-panel :isShowRefresh="isShowRefresh" @dswPanelRefresh="dswPanelRefreshHandler" v-bind="$attrs">
+      <dsw-panel :is-show-refresh="isShowRefresh" @dsw-panel-refresh="dswPanelRefreshHandler" v-bind="$attrs">
         <template slot="panel-heading"><slot name="panel-heading"></slot></template>
         <template><slot></slot></template>
         <template slot="panel-footer"><slot name="panel-footer"></slot></template>

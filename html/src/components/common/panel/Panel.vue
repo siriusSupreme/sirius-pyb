@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     refreshHandler (e) {
-      this.$emit('dswPanelRefresh', {e})
+      this.$emit('dsw-panel-refresh', {e})
     },
     adjustHeight () {
       const panel = this.$refs['dsw-panel']
