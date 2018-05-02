@@ -34,7 +34,7 @@ export default {
     display : inline-block;
     height : 36px;
     line-height : 36px;
-    padding : 0 30px;
+    padding : 0 50px;
     font-size : 0.24rem;
     color: #061635;
     position : absolute;

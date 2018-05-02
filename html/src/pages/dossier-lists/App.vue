@@ -20,14 +20,14 @@
 
     <div class="dsw-dossier-lists-btn-wrapper" slot="panel-footer">
       <button class="dsw-btn dsw-add-btn" @click.stop="addHandler">新建</button>
-      <button class="dsw-btn dsw-edit-btn">详情编辑</button>
-      <button class="dsw-btn dsw-rectification-btn">整改信息列表</button>
-      <button class="dsw-btn dsw-electronic-dossier-btn">电子卷宗</button>
-      <button class="dsw-btn dsw-dossier-borrow-btn">案卷借阅</button>
-      <button class="dsw-btn dsw-transform-btn">移交移送</button>
-      <button class="dsw-btn dsw-qrcode-btn">打印二维码</button>
-      <button class="dsw-btn dsw-dossier-burning-btn">卷宗刻录</button>
-      <button class="dsw-btn dsw-dossier-locus-btn">案卷轨迹</button>
+      <button class="dsw-btn dsw-edit-btn" @click.stop="editHandler">详情编辑</button>
+      <button class="dsw-btn dsw-rectification-btn" @click.stop="listsHandler">整改信息列表</button>
+      <button class="dsw-btn dsw-electronic-dossier-btn" @click.stop="electronicHandler">电子卷宗</button>
+      <button class="dsw-btn dsw-dossier-borrow-btn" @click.stop="borrowHandler">案卷借阅</button>
+      <button class="dsw-btn dsw-transform-btn" @click.stop="transformHandler">移交移送</button>
+      <button class="dsw-btn dsw-qrcode-btn" @click.stop="qrcodeHandler">打印二维码</button>
+      <button class="dsw-btn dsw-dossier-burning-btn" @click.stop="recordHandler">卷宗刻录</button>
+      <button class="dsw-btn dsw-dossier-locus-btn" @click.stop="trackHandler">案卷轨迹</button>
     </div>
   </iframe-container>
 </template >
@@ -40,6 +40,14 @@ import DswTable from 'components/common/table'
 import SearchBtn from 'components/common/search-btn'
 
 import DossierListsAdd from 'components/business/dossier-lists-add'
+import DossierListsEdit from 'components/business/dossier-lists-edit'
+import DossierListsLists from 'components/business/dossier-lists-lists'
+import DossierListsElectronic from 'components/business/dossier-lists-electronic'
+import DossierListsBorrow from 'components/business/dossier-lists-borrow'
+import DossierListsTransform from 'components/business/dossier-lists-transform'
+import DossierListsQrcode from 'components/business/dossier-lists-qrcode'
+import DossierListsRecord from 'components/business/dossier-lists-record'
+import DossierListsTrack from 'components/business/dossier-lists-track'
 
 export default {
   name: 'App',
@@ -252,11 +260,37 @@ export default {
       }
     },
     addHandler (e) {
-      this.$vLayer.openPage(DossierListsAdd, {
-        propsData: {
-          title: '案件整改信息'
-        }
+      this.$vLayer.openPage(DossierListsAdd, {}, {
+        parent: this,
+        title: '案件整改信息'
       })
+    },
+    editHandler (e) {
+      this.$vLayer.openPage(DossierListsEdit, {}, {
+        parent: this,
+        title: '案件整改信息'
+      })
+    },
+    listsHandler (e) {
+
+    },
+    electronicHandler (e) {
+
+    },
+    borrowHandler (e) {
+
+    },
+    transformHandler (e) {
+
+    },
+    qrcodeHandler (e) {
+
+    },
+    recordHandler (e) {
+
+    },
+    trackHandler (e) {
+
     }
   }
 }

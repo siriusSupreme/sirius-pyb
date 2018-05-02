@@ -8,7 +8,7 @@
 import DialogContainer from 'components/common/dialog-container'
 
 export default {
-  name: 'DossierListsAdd',
+  name: 'DossierListsElectronic',
   components: {
     DialogContainer
   },

@@ -3,9 +3,10 @@ import Vue from 'vue'
 import layer from './layer'
 
 let vLayer = {
-  openPage (componentName, componentOptions = {}) {
+  openPage (componentName, componentOptions = {}, extraParams = {}) {
     const Component = Vue.extend(componentName)
     const component = new Component(componentOptions)
+    component.extraParams = extraParams
 
     // const documentFragment = window.document.createDocumentFragment()
     const tempWrapper = window.document.createElement('div')
