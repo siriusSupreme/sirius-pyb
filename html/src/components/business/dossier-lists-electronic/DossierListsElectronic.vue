@@ -26,7 +26,7 @@
               <dsw-panel :is-show-footer="true">
                 <span slot="panel-heading" style="white-space: nowrap;">材料部分</span>
 
-                <dsw-table style="width: 100%;" :isl-loading-for-table="isLoadingForTable" :tableData="tableData[dossier.type]" :columns="columns" :columnWidthDrag="true" :pagingIndex="0" :row-click="rowClickHandler" @dsw-custom-component='customComponentHandler' :row-click-color="'rgb(25, 45, 84)'" :row-hover-color="'rgb(25, 45, 84)'"></dsw-table>
+                <dsw-table style="width: 100%;" :isl-loading-for-table="isLoadingForTable" :tableData="tableData[dossier.type]" :columns="columns" :columnWidthDrag="true" :pagingIndex="0" :row-click="rowClickHandler" @dsw-custom-component='customComponentHandler' :row-hover-color="'rgb(25, 45, 84)'"></dsw-table>
 
                 <button class="dsw-btn" slot="panel-footer">预览该卷</button>
               </dsw-panel>

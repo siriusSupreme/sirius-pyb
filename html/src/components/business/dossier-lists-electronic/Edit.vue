@@ -1,4 +1,4 @@
-<template >
+<template>
   <dialog-container :title="extraParams['title']">
     <dsw-panel :is-show-heading="false" :is-show-footer="true">
       <div class="dsw-edit-container" ref="dsw-edit-container">
@@ -19,9 +19,9 @@
       </div>
     </dsw-panel>
   </dialog-container>
-</template >
+</template>
 
-<script >
+<script>
 import BScroll from 'better-scroll'
 
 import DialogContainer from 'components/common/dialog-container'
@@ -60,9 +60,9 @@ export default {
 
   }
 }
-</script >
+</script>
 
-<style lang="stylus" scoped >
+<style lang="stylus" scoped>
 .dsw-edit-container{
   position : relative;
   width : 100%;
@@ -116,4 +116,4 @@ export default {
     }
   }
 }
-</style >
+</style>
