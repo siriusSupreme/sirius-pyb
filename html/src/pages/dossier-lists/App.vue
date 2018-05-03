@@ -13,9 +13,9 @@
         </form >
       </div>
 
-      <dsw-table style="width: 100%;" @dswFilterMethod="filterMethodHandler" :isl-loading-for-table="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
+      <dsw-table style="width: 100%;" @dswFilterMethod="filterMethodHandler" :isl-loading-for-table="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)" :column-cell-class-name="addColumnCellClass" :row-click="rowClickHandler" :row-click-color="'rgb(36, 28, 88)'" :row-hover-color="'#231675'"></dsw-table>
 
-      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dswPagerChange="getDossierLists"></dsw-pagination>
+      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getDossierLists"></dsw-pagination>
     </dsw-panel>
 
     <div class="dsw-dossier-lists-btn-wrapper" slot="panel-footer">
@@ -49,6 +49,14 @@ import DossierListsQrcode from 'components/business/dossier-lists-qrcode'
 import DossierListsRecord from 'components/business/dossier-lists-record'
 import DossierListsTrack from 'components/business/dossier-lists-track'
 
+import caseIng from './images/case-ing.png'
+import caseOver from './images/case-over.png'
+import caseNoTrack from './images/case-no-crack.png'
+
+const CASE_ING = '104'
+const CASE_OVER = '206'
+const CASE_NO_TRACK = '205'
+
 export default {
   name: 'App',
   data () {
@@ -61,15 +69,11 @@ export default {
         pageSize: 20
       },
       dictionary: {
-        'CASE_TYPE': {
-          '01': '在办',
-          '02': '未破',
-          '03': '已结'
-        },
+        'CASE_TYPE': {},
         'CASE_STATUS': {
-          '01': '在办',
-          '02': '未破',
-          '03': '已结'
+          [CASE_ING]: '在办',
+          [CASE_OVER]: '未破',
+          [CASE_NO_TRACK]: '已结'
         },
         'SUB_STATUS': {
           '01': '在柜',
@@ -87,7 +91,9 @@ export default {
       subStatusFilters: [],
       caseStatus: '',
       subStatus: '',
-      searchCode: ''
+      type: '',
+      searchCode: '',
+      currentRow: null
     }
   },
   components: {
@@ -149,15 +155,6 @@ export default {
     setColumns () {
       this.columns = [
         {
-          title: '选择',
-          type: 'selection',
-          width: 50,
-          titleAlign: 'center',
-          columnAlign: 'center',
-          isResize: true,
-          overflowTitle: false
-        },
-        {
           title: '序号',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
             return pagingIndex + rowIndex + 1
@@ -173,11 +170,11 @@ export default {
           field: 'status',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
             switch (rowData[field]) {
-              case '01': {
+              case CASE_OVER: {
                 return `<a href="javascript:void(0);" class="dsw-dossier-lists-operation">转破案</a>`
               }
-              case '02':
-              case '03': {
+              case CASE_ING:
+              case CASE_NO_TRACK: {
                 return `<a href="javascript:void(0);" class="dsw-dossier-lists-operation">结案</a>`
               }
               default: {
@@ -200,7 +197,7 @@ export default {
           formatter: (rowData, rowIndex, pagingIndex, field) => {
             return this.dictionary['CASE_TYPE'][rowData[field]]
           },
-          filters: this.caseTypeFilters,
+          // filters: this.caseTypeFilters,
           width: 80,
           titleAlign: 'center',
           columnAlign: 'center',
@@ -212,14 +209,14 @@ export default {
           field: 'status',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
             switch (rowData[field]) {
-              case '01': {
-                return `<img src="./images/case-ing.png" /><span>${this.dictionary['CASE_STATUS'][rowData[field]]}</span>`
+              case '104': {
+                return `<img src="${caseIng}" class="dsw-dossier-lists-icon" /><span>${this.dictionary['CASE_STATUS'][rowData[field]]}</span>`
               }
-              case '02': {
-                return `<img src="./images/case-over.png" /><span>${this.dictionary['CASE_STATUS'][rowData[field]]}</span>`
+              case '205': {
+                return `<img src="${caseOver}" class="dsw-dossier-lists-icon" /><span>${this.dictionary['CASE_STATUS'][rowData[field]]}</span>`
               }
-              case '03': {
-                return `<img src="./images/case-no-crack.png" /><span>${this.dictionary['CASE_STATUS'][rowData[field]]}</span>`
+              case '206': {
+                return `<img src="${caseNoTrack}" class="dsw-dossier-lists-icon" /><span>${this.dictionary['CASE_STATUS'][rowData[field]]}</span>`
               }
               default: {
                 return ''
@@ -239,7 +236,7 @@ export default {
           formatter: (rowData, rowIndex, pagingIndex, field) => {
             return this.dictionary['SUB_STATUS'][rowData[field]]
           },
-          filters: this.subStatusFilters,
+          // filters: this.subStatusFilters,
           width: 80,
           titleAlign: 'center',
           columnAlign: 'center',
@@ -264,14 +261,24 @@ export default {
       this.getDossierLists()
     },
     filterMethodHandler (filters) {
-      if (filters['caseStatus'] && this.caseStatus !== filters['caseStatus'][0]) {
-        this.caseStatus = filters['caseStatus'][0]
+      if (filters['status'] && this.caseStatus !== filters['status'][0]) {
+        this.caseStatus = filters['status'][0]
         this.getDossierLists()
-      }
-      if (filters['subStatus'] && this.subStatus !== filters['subStatus'][0]) {
+      } else if (filters['subStatus'] && this.subStatus !== filters['subStatus'][0]) {
         this.subStatus = filters['subStatus'][0]
         this.getDossierLists()
+      } else if (filters['type'] && this.type !== filters['type'][0]) {
+        this.type = filters['type'][0]
+        this.getDossierLists()
       }
+    },
+    addColumnCellClass (rowIndex, field, rowData) {
+      if (field === 'status') {
+        return 'dsw-status'
+      }
+    },
+    rowClickHandler (rowIndex, rowData, columnOptions) {
+      this.currentRow = rowData
     },
     addHandler (e) {
       this.$vLayer.openPage(DossierListsAdd, {}, {
@@ -280,51 +287,56 @@ export default {
       })
     },
     editHandler (e) {
-      this.$vLayer.openPage(DossierListsEdit, {}, {
-        parent: this,
-        title: '详情编辑'
-      })
+      if (this.currentRow) {
+        this.$vLayer.openPage(DossierListsEdit, {}, {
+          parent: this,
+          title: '详情编辑',
+          id: this.currentRow.id
+        })
+      } else {
+        this.$toastr.warning('请先选择一个案卷')
+      }
     },
     listsHandler (e) {
       this.$vLayer.openPage(DossierListsLists, {}, {
         parent: this,
-        title: '案件整改信息列表'
+        title: '整改信息列表'
       })
     },
     electronicHandler (e) {
       this.$vLayer.openPage(DossierListsElectronic, {}, {
         parent: this,
-        title: '案件整改信息列表'
+        title: '电子卷宗'
       })
     },
     borrowHandler (e) {
       this.$vLayer.openPage(DossierListsBorrow, {}, {
         parent: this,
-        title: '案件整改信息列表'
+        title: '案卷借阅'
       })
     },
     transformHandler (e) {
       this.$vLayer.openPage(DossierListsTransform, {}, {
         parent: this,
-        title: '案件整改信息列表'
+        title: '移交移送'
       })
     },
     qrcodeHandler (e) {
       this.$vLayer.openPage(DossierListsQrcode, {}, {
         parent: this,
-        title: '案件整改信息列表'
+        title: '打印二维码'
       })
     },
     recordHandler (e) {
       this.$vLayer.openPage(DossierListsRecord, {}, {
         parent: this,
-        title: '案件整改信息列表'
+        title: '卷宗刻录'
       })
     },
     trackHandler (e) {
       this.$vLayer.openPage(DossierListsTrack, {}, {
         parent: this,
-        title: '案件整改信息列表'
+        title: '案卷轨迹'
       })
     }
   }
@@ -332,7 +344,16 @@ export default {
 </script >
 
 <style lang="stylus" >
-
+.dsw-status{
+  .dsw-dossier-lists-operation{
+    color : #FF9700;
+    text-decoration : underline;
+  }
+  .dsw-dossier-lists-icon{
+    width :20px;
+    margin :0 5px 0 0;
+  }
+}
 </style >
 
 <style lang="stylus" scoped >
@@ -349,9 +370,5 @@ export default {
       background : url("./images/add-btn-bg.png") no-repeat scroll 0 0/100% 100%;
     }
   }
-}
-.dsw-dossier-lists-operation{
-  color : #FF9700;
-  text-decoration : underline;
 }
 </style >

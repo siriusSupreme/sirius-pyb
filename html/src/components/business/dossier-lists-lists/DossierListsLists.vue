@@ -16,7 +16,7 @@
 
         <dsw-table style="width: 100%;" @dswFilterMethod="filterMethodHandler" :isl-loading-for-table="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
 
-        <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dswPagerChange="getDossierLists"></dsw-pagination>
+        <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getDossierLists"></dsw-pagination>
       </dsw-panel>
     </div>
 
@@ -84,7 +84,7 @@ export default {
       columns: [],
       paginateInfo: {
         currentPage: 1,
-        pageSize: 20
+        pageSize: 10
       },
       dictionary: {
         'CASE_TYPE': {
@@ -299,7 +299,7 @@ export default {
     }
     .right-info-left-item-key{
       float : left;
-      width :60px;
+      width :80px;
       text-align : right;
     }
     .right-info-left-item-val{
