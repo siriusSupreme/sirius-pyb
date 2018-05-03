@@ -102,7 +102,7 @@ export default {
       deep: false,
       immediate: true,
       handler (val, oldVal) {
-        // this.$emit('dswPagerChange', val)
+        // this.$emit('dsw-pager-change', val)
       }
     }
   },

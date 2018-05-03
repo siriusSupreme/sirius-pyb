@@ -3,7 +3,7 @@ import Vue from 'vue'
 import layer from './layer'
 
 let vLayer = {
-  openPage (componentName, componentOptions = {}, extraParams = {}) {
+  openPage (componentName, componentOptions = {}, extraParams = {}, layerOptions = {}) {
     const Component = Vue.extend(componentName)
     const component = new Component(componentOptions)
     component.extraParams = extraParams
@@ -14,7 +14,7 @@ let vLayer = {
     // documentFragment.appendChild(tempWrapper)
     // tempWrapper.appendChild(component.$mount().$el)
 
-    return layer.open({
+    return layer.open(Object.assign({
       type: 1,
       title: false,
       // content: 'tempWrapper.innerHTML',
@@ -24,7 +24,7 @@ let vLayer = {
       success (layero, index) {
         layero.find('.layui-layer-content').append(component.$mount().$el)
       }
-    })
+    }, layerOptions))
   }
 }
 

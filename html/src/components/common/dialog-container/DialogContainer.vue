@@ -1,7 +1,7 @@
 <template>
-  <div class="dsw-dialog-container">
-    <span class="dsw-dialog-title">{{title}}</span>
-    <div class="dsw-dialog-wrapper"><slot></slot></div>
+  <div class="dsw-dialog-container" :class="{'no-title':!isShowTitle}">
+    <span class="dsw-dialog-title" v-if="isShowTitle">{{title}}</span>
+    <slot></slot>
   </div>
 </template>
 
@@ -14,6 +14,10 @@ export default {
     title: {
       type: String,
       default: '对话框'
+    },
+    isShowTitle: {
+      type: Boolean,
+      default: true
     }
   }
 }
@@ -27,10 +31,12 @@ export default {
 .dsw-dialog-container{
   width :100%;
   height :100%;
-  /*overflow : hidden;*/
-  /*background : url("./images/dialog-bg.png") no-repeat scroll 0 13px/100% 100%;*/
+  padding :40px 5px 5px;
   background : url("./images/dialog-bg.png") no-repeat scroll 0 0/100% 100%;
   position : relative;
+  &.no-title{
+    padding :5px;
+  }
   .dsw-dialog-title{
     display : inline-block;
     height : 36px;
@@ -43,12 +49,6 @@ export default {
     left :50%;
     transform :translate(-50%,0)
     background : url("./images/title-bg.png") no-repeat scroll 0 0/100% 100%;
-  }
-  .dsw-dialog-wrapper{
-    width : 100%
-    height : 100%;
-    overflow : hidden;
-    padding :40px 5px 5px;
   }
 }
 </style>

@@ -13,7 +13,7 @@
         </form >
       </div>
 
-      <dsw-table style="width: 100%;" @dswFilterMethod="filterMethodHandler" :isl-loading-for-table="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)" :column-cell-class-name="addColumnCellClass" :row-click="rowClickHandler" :row-click-color="'rgb(36, 28, 88)'" :row-hover-color="'#231675'"></dsw-table>
+      <dsw-table style="width: 100%;" @dsw-filter-method="filterMethodHandler" :isl-loading-for-table="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)" :column-cell-class-name="addColumnCellClass" :row-click="rowClickHandler" :row-click-color="'rgb(36, 28, 88)'" :row-hover-color="'#231675'"></dsw-table>
 
       <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getDossierLists"></dsw-pagination>
     </dsw-panel>
@@ -304,10 +304,15 @@ export default {
       })
     },
     electronicHandler (e) {
-      this.$vLayer.openPage(DossierListsElectronic, {}, {
-        parent: this,
-        title: '电子卷宗'
-      })
+      if (this.currentRow) {
+        this.$vLayer.openPage(DossierListsElectronic, {}, {
+          parent: this,
+          title: '电子卷宗',
+          id: this.currentRow.id
+        })
+      } else {
+        this.$toastr.warning('请先选择一个案卷')
+      }
     },
     borrowHandler (e) {
       this.$vLayer.openPage(DossierListsBorrow, {}, {

@@ -89,10 +89,10 @@ export default {
   },
   methods: {
     customComponentHandler (payload) {
-      this.$emit('dswCustomComponent', payload)
+      this.$emit('dsw-custom-component', payload)
     },
     filterMethodHandler (filters) {
-      this.$emit('dswFilterMethod', filters)
+      this.$emit('dsw-filter-method', filters)
     }
   }
 }

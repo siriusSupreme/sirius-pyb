@@ -8,12 +8,12 @@
             <input type="text" name="content" v-model="content" class="form-control" />
           </div>
           <div class="form-group">
-            <search-btn @dswClickBtn="searchHandler"></search-btn>
+            <search-btn @dsw-click-btn="searchHandler"></search-btn>
           </div>
         </form >
       </div>
 
-      <dsw-table style="width: 100%;" @dswFilterMethod="filterMethodHandler" :is-loading-for-table="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
+      <dsw-table style="width: 100%;" @dsw-filter-method="filterMethodHandler" :is-loading-for-table="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
 
       <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getLoggers"></dsw-pagination>
     </dsw-panel>
