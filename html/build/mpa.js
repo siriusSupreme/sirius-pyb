@@ -71,12 +71,12 @@ function getPlugins ( optimize = false ) {
     const dirname = path.dirname( file );
     const page = path.basename( dirname );
 
-    const templateName=(seo[page] && seo[page]['templateName']) && config.defaultTemplateName;
-    const pageTemplateHtml= dirname + templateName;
+    const templateName=(seo[page] && seo[page]['templateName']) || config.defaultTemplateName;
+    const pageTemplateHtml= dirname + '/' + templateName;
 
     options.title = (seo[page] && seo[page].title) || config.defaultTitle;
     options.filename = (seo[page] && seo[page].fileName) || (page + '.html');
-    options.template = fs.existsSync(pageTemplateHtml)?pageTemplateHtml:config.defaultTemplateFile;
+    options.template = fs.existsSync(pageTemplateHtml) ? pageTemplateHtml : config.defaultTemplateFile;
     // options.chunks.push.apply(options.chunks,['common',page]);
     options.chunks = [ 'manifest', 'vendor', 'common' ].concat( page );
 

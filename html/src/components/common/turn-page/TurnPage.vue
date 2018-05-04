@@ -1,6 +1,6 @@
 <template>
   <div :id="id" :dir="direction">
-    <div class="hard"> Turn.js </div>
+    <div class="hard"> Turnjs </div>
     <div class="hard"></div>
     <div> Page 1 </div>
     <div> Page 2 </div>
@@ -31,11 +31,15 @@ export default {
   },
   data () {
     return {
-      id: 'flipbook-' + Date.now() + '-' + Math.random()
+      id: 'flipbook-' + Date.now() + '-' + (Math.random()).toFixed(10) * 10 ** 10
     }
   },
-  beforeMount () {
-    $(`#${this.id}`).turn()
+  mounted () {
+    this.$nextTick(() => {
+      $(`#${this.id}`).turn({
+        autoCenter: true
+      })
+    })
   }
 }
 </script>
