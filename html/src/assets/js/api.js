@@ -10,7 +10,8 @@ Object.defineProperty(Vue.prototype, '$api', {
     return {
       baseUrl: https.defaults.baseURL,
       getAttachment: 'FileUpload/getAttach.json',
-      uploadAttachment: '',
+      uploadAttachment: 'FileUpload/upload.json',
+      uploadBase64: 'FileUpload/uploadBase64.json',
       getDictionary: 'Dictionary/queryTableListByType.json',
       login: 'LoginRpc/login.json',
       getLoginMenu: 'Menu/getMenuTreeForIndex.json',

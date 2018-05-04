@@ -162,12 +162,12 @@ export default {
       this.getLoggers()
     },
     filterMethodHandler (filters) {
-      if (filters['module'] && this.module !== filters['module'][0]) {
-        this.module = filters['module'][0]
+      if ((filters['module'] && this.module !== filters['module'][0]) || (filters['module'] === null && this.module)) {
+        this.module = filters['module'] ? filters['module'][0] : ''
         this.getLoggers()
       }
-      if (filters['type'] && this.type !== filters['type'][0]) {
-        this.type = filters['type'][0]
+      if ((filters['type'] && this.type !== filters['type'][0]) || (filters['type'] === null && this.type)) {
+        this.type = filters['type'] ? filters['type'][0] : ''
         this.getLoggers()
       }
     }

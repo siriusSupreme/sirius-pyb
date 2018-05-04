@@ -1,3 +1,3 @@
-import BetterScroll from './BetterScroll'
+import TurnPage from './TurnPage'
 
-export default BetterScroll
+export default TurnPage

@@ -20,6 +20,9 @@ import DialogContainer from 'components/common/dialog-container'
 
 export default {
   name: 'Scan',
+  data () {
+    return {}
+  },
   components: {
     DialogContainer
   }

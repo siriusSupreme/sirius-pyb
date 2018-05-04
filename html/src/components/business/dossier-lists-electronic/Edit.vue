@@ -3,18 +3,19 @@
     <dsw-panel :is-show-heading="false" :is-show-footer="true">
       <div class="dsw-edit-container" ref="dsw-edit-container">
         <ul class="dsw-edit-lists">
-          <li class="dsw-edit-item" v-for="index in 23" :key="index">
+          <li class="dsw-edit-item" v-for="(attachment, index) in attachmentLists" :key="index">
             <figure>
               <i class="fa fa-close"></i>
-              <img src="./images/default.png" />
+              <img :src="attachment.id" v-if="attachment.id.startsWith('data')" />
+              <img :src="$api.getAttachment + 'id=' + attachment.id" v-else />
             </figure>
-            <span>{{index}}、接受刑事案件登记表</span>
+            <span :title="attachment.fileName">{{index}}、{{attachment.fileName}}</span>
           </li>
         </ul>
       </div>
 
       <div class="dsw-btn-wrapper" slot="panel-footer">
-        <button class="dsw-btn">选择文件</button>
+        <button class="dsw-btn" ref="dsw-select-btn">选择文件</button>
         <button class="dsw-btn">确认上传</button>
       </div>
     </dsw-panel>
@@ -23,6 +24,7 @@
 
 <script>
 import BScroll from 'better-scroll'
+import WebUploader from 'assets/js/web-uploader'
 
 import DialogContainer from 'components/common/dialog-container'
 import DswPanel from 'components/common/panel'
@@ -31,8 +33,10 @@ export default {
   name: 'Edit',
   data () {
     return {
+      uploader: null,
       betterScroll: null,
-      attachmentLists: []
+      attachmentLists: [],
+      addedLists: []
     }
   },
   components: {
@@ -55,9 +59,38 @@ export default {
     }).catch((reason) => {
       this.$toastr.error('获取附件列表失败')
     })
+
+    this.$nextTick(() => {
+      this.uploader = new WebUploader.Uploader({
+        swf: WebUploader.swf,
+        server: this.$api.uploadAttachment,
+        auto: false,
+        pick: {
+          id: this.$refs['dsw-select-btn'],
+          multiple: true
+        }
+      })
+
+      this.uploader.on('fileQueued', (file) => {
+        console.log(file)
+        this.uploader.makeThumb(file, (error, result) => {
+          if (error) {
+            console.log(error)
+          } else {
+            const fileInfo = {
+              id: result,
+              fileName: file.name
+            }
+            this.addedLists.push(fileInfo)
+            this.attachmentLists.push(fileInfo)
+            console.log(this.attachmentLists)
+          }
+        })
+      })
+    })
   },
   updated () {
-
+    this.betterScroll && this.betterScroll.refresh()
   }
 }
 </script>
@@ -99,11 +132,19 @@ export default {
           background-color : #285fc2;
         }
       }
+      span {
+        display : inline-block;
+        width : 100%;
+        overflow : hidden;
+        text-overflow ellipsis;
+        white-space :nowrap;
+      }
     }
   }
 }
 .dsw-btn-wrapper{
   text-align : center;
+  margin :24px 0 0;
   .dsw-btn{
     height : 32px;
     line-height : 32px;
