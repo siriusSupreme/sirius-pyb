@@ -19,15 +19,15 @@
     </dsw-panel>
 
     <div class="dsw-dossier-lists-btn-wrapper" slot="panel-footer">
-      <button class="dsw-btn dsw-add-btn" @click.stop="addHandler">新建</button>
-      <button class="dsw-btn dsw-edit-btn" @click.stop="editHandler">详情编辑</button>
-      <button class="dsw-btn dsw-rectification-btn" @click.stop="listsHandler">整改信息列表</button>
-      <button class="dsw-btn dsw-electronic-dossier-btn" @click.stop="electronicHandler">电子卷宗</button>
-      <button class="dsw-btn dsw-dossier-borrow-btn" @click.stop="borrowHandler">案卷借阅</button>
-      <button class="dsw-btn dsw-transform-btn" @click.stop="transformHandler">移交移送</button>
-      <button class="dsw-btn dsw-qrcode-btn" @click.stop="qrcodeHandler">打印二维码</button>
-      <button class="dsw-btn dsw-dossier-burning-btn" @click.stop="recordHandler">卷宗刻录</button>
-      <button class="dsw-btn dsw-dossier-locus-btn" @click.stop="trackHandler">案卷轨迹</button>
+      <button type="button" class="dsw-btn dsw-add-btn" @click.stop="addHandler">新建</button>
+      <button type="button" class="dsw-btn" @click.stop="editHandler">详情编辑</button>
+      <button type="button" class="dsw-btn" @click.stop="listsHandler">整改信息列表</button>
+      <button type="button" class="dsw-btn" @click.stop="electronicHandler">电子卷宗</button>
+      <button type="button" class="dsw-btn" @click.stop="borrowHandler">案卷借阅</button>
+      <button type="button" class="dsw-btn" @click.stop="transformHandler">移交移送</button>
+      <button type="button" class="dsw-btn" @click.stop="qrcodeHandler">打印二维码</button>
+      <button type="button" class="dsw-btn" @click.stop="recordHandler">卷宗刻录</button>
+      <button type="button" class="dsw-btn" @click.stop="trackHandler">案卷轨迹</button>
     </div>
   </iframe-container>
 </template >
@@ -137,6 +137,8 @@ export default {
       }
     },
     getDossierLists ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
+      this.currentRow = null
+
       const caseStatus = this.caseStatus
       const subStatus = this.subStatus
       const searchCode = this.searchCode
@@ -261,14 +263,14 @@ export default {
       this.getDossierLists()
     },
     filterMethodHandler (filters) {
-      if (filters['status'] && this.caseStatus !== filters['status'][0]) {
-        this.caseStatus = filters['status'][0]
+      if ((filters['status'] && this.caseStatus !== filters['status'][0]) || (filters['status'] === null && this.caseStatus)) {
+        this.caseStatus = filters['status'] ? filters['status'][0] : ''
         this.getDossierLists()
-      } else if (filters['subStatus'] && this.subStatus !== filters['subStatus'][0]) {
-        this.subStatus = filters['subStatus'][0]
+      } else if ((filters['subStatus'] && this.subStatus !== filters['subStatus'][0]) || (filters['subStatus'] === null && this.subStatus)) {
+        this.subStatus = filters['subStatus'] ? filters['subStatus'][0] : ''
         this.getDossierLists()
-      } else if (filters['type'] && this.type !== filters['type'][0]) {
-        this.type = filters['type'][0]
+      } else if ((filters['type'] && this.type !== filters['type'][0]) || (filters['type'] === null && this.type)) {
+        this.type = filters['type'] ? filters['type'][0] : ''
         this.getDossierLists()
       }
     },

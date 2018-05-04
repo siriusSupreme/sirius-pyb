@@ -44,21 +44,27 @@ export default {
     DswPanel
   },
   beforeMount () {
-    const taskId = this.extraParams.taskId
-    const taskBelong = this.extraParams.taskBelong
+    // 如果不是扫描页面进来的，则查询已有图片，否则仅仅预览当前扫描过来的图片
+    if (this.extraParams.scannedFiles) {
+      this.attachmentLists = this.extraParams.scannedFiles
+      this.addedLists = this.extraParams.scannedFiles
+    } else {
+      const taskId = this.extraParams.taskId
+      const taskBelong = this.extraParams.taskBelong
 
-    this.$https.jsonp(this.$api.getAttachmentLists, {params: {taskId, taskBelong}}).then((result) => {
-      console.log(result)
-      this.attachmentLists = result.data.lists
-      this.$nextTick(() => {
-        this.betterScroll = new BScroll(this.$refs['dsw-edit-container'], {
-          mouseWheel: true,
-          scrollbar: true
+      this.$https.jsonp(this.$api.getAttachmentLists, {params: {taskId, taskBelong}}).then((result) => {
+        console.log(result)
+        this.attachmentLists = result.data.lists
+        this.$nextTick(() => {
+          this.betterScroll = new BScroll(this.$refs['dsw-edit-container'], {
+            mouseWheel: true,
+            scrollbar: true
+          })
         })
+      }).catch((reason) => {
+        this.$toastr.error('获取附件列表失败')
       })
-    }).catch((reason) => {
-      this.$toastr.error('获取附件列表失败')
-    })
+    }
 
     this.$nextTick(() => {
       this.uploader = new WebUploader.Uploader({

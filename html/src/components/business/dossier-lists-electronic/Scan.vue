@@ -3,12 +3,11 @@
     <div class="dsw-scan-wrapper">
       <p class="dsw-scan-tooltip">请安图示将案卷倒置并正面朝下放置，点击下方按钮开始扫描</p>
 
-      <p class="dsw-scan-pages">已扫描 <span>1</span> 页</p>
+      <p class="dsw-scan-pages">已扫描 <span id="dsw-scanned-count">1</span> 页</p>
 
       <p class="dsw-scan-btn-wrapper">
-        <button class="dsw-btn">开始扫描</button>
-        <button class="dsw-btn">停止扫描</button>
-        <button class="dsw-btn">预览</button>
+        <button type="button" class="dsw-btn" @click.stop="startScan" ref="dsw-start-scan">开始扫描</button>
+        <button type="button" class="dsw-btn" v-if="isScanFinished" @click.stop="previewHandler">预览</button>
       </p>
     </div>
   </dialog-container>
@@ -18,13 +17,80 @@
 
 import DialogContainer from 'components/common/dialog-container'
 
+import DswEdit from './Edit'
+
 export default {
   name: 'Scan',
   data () {
-    return {}
+    return {
+      scanner: window['fhkScan'],
+      isScanFinished: false
+    }
   },
   components: {
     DialogContainer
+  },
+  beforeDestroy () {
+    this.clearGlobalResource()
+  },
+  methods: {
+    startScan (e) {
+      let result = 0
+      const scanner = this.scanner
+
+      this.initialize()
+
+      result = scanner.OpenScanner(0)
+      if (result === -1) {
+        alert('Open scanner error, error code = ' + scanner.ErrorCode)
+        return
+      }
+
+      this.$refs['dsw-start-scan'].innerText = '扫描中……'
+      this.$refs['dsw-start-scan'].setAttribute('disabled', 'disabled')
+
+      result = scanner.StartScan(0)
+      if (result === -1) {
+        this.$refs['dsw-start-scan'].innerText = '重新扫描'
+        alert('Start scan error, error code = ' + scanner.ErrorCode)
+      } else {
+        this.$refs['dsw-start-scan'].innerText = '开始扫描'
+        this.isScanFinished = true
+      }
+
+      this.$refs['dsw-start-scan'].removeAttribute('disabled')
+
+      scanner.CloseScanner(0)
+    },
+    initialize () {
+      const scanner = this.scanner
+
+      scanner.DetectPageSize = 4
+      scanner.FileName = 'D:\\demo\\image#####'
+      scanner.FileType = 3
+      scanner.Overwrite = 2
+      scanner.PagerSupply = 1
+      scanner.PixelType = 3
+      scanner.ScanCount = -1
+      scanner.ScanTo = 0
+      scanner.ShowSourceUI = false
+    },
+    previewHandler (e) {
+      console.log(this)
+      this.$vLayer.openPage(DswEdit, {}, {
+        parent: this,
+        title: '预览编辑',
+        scannedFiles: window.scannedFiles,
+        taskId: this.extraParams.taskId,
+        taskBelong: this.extraParams.taskBelong
+      })
+      this.clearGlobalResource()
+      this.$layer.close(this.extraParams.parent.scanIndex)
+    },
+    clearGlobalResource () {
+      window.scannedFiles = []
+      window.scannedCount = 0
+    }
   }
 }
 </script >
@@ -53,7 +119,7 @@ export default {
       padding : 0 15px;
       margin : 0 5px;
       background : url("./images/btn.png") no-repeat scroll 0 0/100% 100%;
-      &:hover{
+      &:not([disabled]):hover{
         background : url("./images/btn-hover.png") no-repeat scroll 0 0/100% 100%;
       }
     }

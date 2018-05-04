@@ -66,7 +66,8 @@ export default {
       isLoadingForTable: false,
       listsData: [],
       tableData: {},
-      columns: []
+      columns: [],
+      scanIndex: 0
     }
   },
   watch: {
@@ -163,10 +164,12 @@ export default {
             taskBelong: rowData.type
           })
         } else {
-          this.$vLayer.openPage(DswScan, {}, {
-            parent: this
+          this.scanIndex = this.$vLayer.openPage(DswScan, {}, {
+            parent: this,
+            taskId: this.extraParams.id,
+            taskBelong: rowData.type
           }, {
-            area: ['400px', '240px']
+            area: ['450px', '240px']
           })
         }
       } else {

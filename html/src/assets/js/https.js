@@ -70,6 +70,7 @@ if (process.env.NODE_ENV === config.env) {
   https.jsonp = https.get
 }
 
+window['dswHttps'] = https
 Vue.prototype.$https = https
 
 export default {...https}

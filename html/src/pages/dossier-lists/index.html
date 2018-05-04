@@ -23,10 +23,38 @@
     <![endif]-->
 
     <div id="app"></div>
-
+    <object id="fhkScan" width="0" height="0" classid="clsid:07cf3b59-2cf2-4ee2-bcef-1320638005e7"></object>
+    <object id="img2base64" width="0" height="0" classid="clsid:4CAF60C8-668C-4E69-8C0A-9A8E0833F3FB"></object>
     <!--[if lt IE 9]><script src="/static/vendors/jquery-1.12.4.min.js"></script><![endif]-->
     <!--[if (gte IE 9)|(! IE)]><!--><script src="/static/vendors/jquery-3.3.1.min.js"></script><!--<![endif]-->
     <script src="/static/vendors/turn/turn.min.js"></script>
+    <script >
+      window.scannedCount = 0
+      window.scannedFiles = []
+      function OnScanToFileEvent(scanFilePath) {
+        $('#dsw-scanned-count').text(++window.scannedCount)
+        // Transform scanned jpg file to Base64 string
+        // parameters:
+        //   1. full path of the file to be transformed
+        //   2. true - delete source jpg file, false - keep the jpg file
+        var base64 = img2base64.DoTrans(scanFilePath, true);
+
+        window.dswHttps.jsonp('FileUpload/uploadBase64.json', {params: {base64: base64, fileName: scanFilePath}}).then(function (result) {
+          console.log(result)
+        }).catch(function (reason) {
+          console.log(reason)
+        })
+
+        // TODO something with the Base64 string here
+        window.scannedFiles.push({
+          id: 'data:image/jpeg;base64,' + base64,
+          fileName: scanFilePath
+        })
+      }
+    </script >
+    <script for="fhkScan" event="ScanToFile(scanFilePath)">
+      OnScanToFileEvent(scanFilePath);
+    </script>
     <!-- built files will be auto injected -->
   </body>
 </html>
