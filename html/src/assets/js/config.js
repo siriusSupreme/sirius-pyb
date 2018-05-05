@@ -8,5 +8,5 @@ export default {
   tokenName: 'token',
   // 请求基地址
   baseURL: 'http://192.168.0.18:8095/caseManager/'
-  // baseURL: 'http://192.168.0.183:8095/caseManager/'
+  // baseURL: 'http://192.168.0.188:8095/caseManager/'
 }

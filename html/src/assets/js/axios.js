@@ -16,7 +16,15 @@ const axiosInstance = axios.create({
   baseURL: process.env.NODE_ENV === config.env ? 'http://rap2api.taobao.org/app/mock/10074/' : config.baseURL,
   timeout: process.env.NODE_ENV === config.env ? 0 : 6000,
   withCredentials: true,
-  responseType: 'json'
+  responseType: 'json',
+  cancelToken: source.token,
+  transformRequest (data, header) {
+    const dataArray = Object.entries(data).map((val) => {
+      return val[0] + '=' + val[1]
+    })
+
+    return dataArray.join('&')
+  }
 })
 
 // 请求拦截器

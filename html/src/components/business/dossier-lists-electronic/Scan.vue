@@ -66,7 +66,7 @@ export default {
       const scanner = this.scanner
 
       scanner.DetectPageSize = 4
-      scanner.FileName = 'D:\\demo\\image#####'
+      scanner.FileName = `D:\\${this.extraParams.taskId}#####`
       scanner.FileType = 3
       scanner.Overwrite = 2
       scanner.PagerSupply = 1

@@ -169,7 +169,11 @@ export default {
             taskId: this.extraParams.id,
             taskBelong: rowData.type
           }, {
-            area: ['450px', '240px']
+            area: ['450px', '240px'],
+            end () {
+              window.scannedFiles = []
+              window.scannedCount = 0
+            }
           })
         }
       } else {
