@@ -4,7 +4,9 @@
     <span class="dsw-turn-page-btn dsw-turn-page-next"></span>
     <div class="dsw-turn-page-wrapper" :id="id" :dir="direction">
 
-      <div v-for="index in 32" :key="index"> Page {{index}} </div>
+      <div v-for="index in 32" :key="index">
+        <img src="./images/cover-page.png" :alt="'Page ' + index" >
+      </div>
 
     </div>
   </div>
@@ -66,6 +68,10 @@ export default {
     height : 100%;
     .page{
       background-color : blue;
+      & > img{
+        width :100%;
+        height :100%;
+      }
     }
   }
 }
