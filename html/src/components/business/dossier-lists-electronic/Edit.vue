@@ -6,8 +6,8 @@
           <li class="dsw-edit-item" v-for="(attachment, index) in attachmentLists" :key="index">
             <figure>
               <i class="fa fa-close"></i>
-              <img :src="attachment.id" v-if="attachment.id.startsWith('data')" />
-              <img :src="$api.getAttachment + 'id=' + attachment.id" v-else />
+              <img :src="attachment.id" v-if="String(attachment.id).startsWith('data')" />
+              <img :src="$api.getAttachment + '?id=' + attachment.id" v-else />
             </figure>
             <span :title="attachment.fileName">{{index}}、{{attachment.fileName}}</span>
           </li>
@@ -15,7 +15,7 @@
       </div>
 
       <div class="dsw-btn-wrapper" slot="panel-footer">
-        <span class="dsw-btn" v-web-uploader>选择文件</span>
+        <span class="dsw-btn" v-web-uploader="{server:$api.uploadAttachment}">选择文件</span>
         <button type="button" class="dsw-btn">确认上传</button>
       </div>
     </dsw-panel>
@@ -54,9 +54,11 @@ export default {
   beforeMount () {
     // 如果不是扫描页面进来的，则查询已有图片，否则仅仅预览当前扫描过来的图片
     if (this.extraParams.scannedFiles) {
+      debugger
       this.attachmentLists = this.extraParams.scannedFiles
       this.addedLists = this.extraParams.scannedFiles
     } else {
+      debugger
       const taskId = this.extraParams.taskId
       const taskBelong = this.extraParams.taskBelong
 
@@ -99,6 +101,8 @@ export default {
       overflow : hidden;
       figure{
         position : relative;
+        width : 100%;
+        height : 90%;
         padding :36px 0;
         background : url("./images/edit-bg.png") no-repeat scroll 0 0/100% 100%;
         i{
@@ -115,6 +119,10 @@ export default {
           box-shadow :0 0 1px 1px #fff;
           color : #fff;
           background-color : #285fc2;
+        }
+        img {
+          width :90%;
+          height :100%;
         }
       }
       span {

@@ -3,7 +3,7 @@
       <li class="dsw-menu-file" v-for="(menu,index) in menuLists" :key="menu.id">
         <a class="dsw-menu-file-wrapper" @click.stop.prevent="menuClickHandler($event,menu,index,path)" :href="menu.action" :ref="'dsw-menu-file-wrapper-'+menu.id" :data-path="path" :data-menu-index="index" :class="{'active':currentMenuID===menu.id}">
           <!--<i class="fa fa-cogs dsw-menu-file-icon"></i>-->
-          <img :src="$api.baseUrl+$api.getAttachment+'?id='+menu.menuIcon" v-if="menu.menuIcon" alt="Icon" class="dsw-menu-file-icon" />
+          <img :src="$api.getAttachment+'?id='+menu.menuIcon" v-if="menu.menuIcon" alt="Icon" class="dsw-menu-file-icon" />
           <span class="dsw-menu-file-title">{{ menu.text }}</span>
           <i class="fa dsw-menu-file-arrow" :class="[menu.isExpanded===true? 'fa-angle-double-down':'fa-angle-double-right']" v-if="menu.children && menu.children.length > 0"></i>
         </a>

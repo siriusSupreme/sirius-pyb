@@ -206,7 +206,7 @@ export default {
         margin : 0 15px;
         overflow : hidden;
         &.active{
-          width :630px;
+          width :450px;
         }
         .dsw-electronic-item-left{
           position : relative;

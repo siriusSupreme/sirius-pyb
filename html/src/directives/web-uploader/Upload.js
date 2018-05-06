@@ -15,7 +15,7 @@ class Upload {
     return new WebUploader.Uploader({
       auto: true,
       swf,
-      server: '',
+      server: options.value.server,
       pick: {
         id: el,
         multiple: true
@@ -32,9 +32,23 @@ class Upload {
     })
   }
 
-  initializeEvents () {
-    this.uploader.on('fileQueued', () => {
+  initializeEvents (context) {
+    const uploader = this.uploader
 
+    uploader.on('fileQueued', (file) => {
+
+    })
+
+    uploader.on('uploadSuccess', (file, response) => {
+      const _file = {
+        id: response.data.id,
+        fileName: response.data.fileName
+      }
+
+      console.log(response)
+
+      context.addedLists.push(_file)
+      context.attachmentLists.push(_file)
     })
   }
 }
