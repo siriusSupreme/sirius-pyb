@@ -52,7 +52,7 @@ export default {
       const panelBody = this.$refs['panel-body']
       const panelFooter = this.$refs['panel-footer']
 
-      const panelHeight = panel.clientHeight
+      const panelHeight = panel.clientHeight || Number.parseFloat(window.getComputedStyle(panel, null).getPropertyValue('height'))
       const panelHeadingHeight = panelHeading ? panelHeading.clientHeight : 0
       const panelFooterHeight = panelFooter ? panelFooter.clientHeight : 0
 

@@ -31,7 +31,7 @@
 
     <!--[if lt IE 9]><script src="/static/vendors/jquery-1.12.4.min.js"></script><![endif]-->
     <!--[if (gte IE 9)|(! IE)]><!--><script src="/static/vendors/jquery-3.3.1.min.js"></script><!--<![endif]-->
-    <!--[if lte IE 9]><script src="/static/js/ajax-ie9.js"></script><![endif]-->
+    <!--[if lte IE 9]><script src="/static/vendors/jquery.xdomainrequest.min.js"></script><![endif]-->
 
     <script src="/static/vendors/turn/turn.min.js"></script>
 
@@ -48,13 +48,18 @@
         var base64 = img2base64.DoTrans(scanFilePath, true);
 
         $.ajax({
-          type: 'POST',
+          type: 'post',
           crossDomain: true,
-          url: 'http://192.168.0.188:8095/caseManager/FileUpload/uploadBase64.json',
+          // contentType: 'text/plain',
+          url: 'http://192.168.0.18:8095/caseManager/FileUpload/uploadBase64.json',
           data: {base64: base64, fileName: window.encodeURIComponent(scanFilePath)},
           dataType: 'json'
         }).done(function (result) {
           console.log(result)
+          window.scannedFiles.push({
+            id: result.data.id,
+            fileName: result.data.fileName
+          })
         }).fail(function (reason) {
           console.log(reason)
         })
