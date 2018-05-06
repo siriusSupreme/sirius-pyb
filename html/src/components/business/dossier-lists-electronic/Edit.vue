@@ -15,8 +15,8 @@
       </div>
 
       <div class="dsw-btn-wrapper" slot="panel-footer">
-        <button class="dsw-btn" ref="dsw-select-btn">选择文件</button>
-        <button class="dsw-btn">确认上传</button>
+        <span class="dsw-btn" v-web-uploader>选择文件</span>
+        <button type="button" class="dsw-btn">确认上传</button>
       </div>
     </dsw-panel>
   </dialog-container>
@@ -24,24 +24,32 @@
 
 <script>
 import BScroll from 'better-scroll'
-import WebUploader from 'assets/js/web-uploader'
 
 import DialogContainer from 'components/common/dialog-container'
 import DswPanel from 'components/common/panel'
+
+import WebUploader from 'directives/web-uploader'
 
 export default {
   name: 'Edit',
   data () {
     return {
-      uploader: null,
       betterScroll: null,
       attachmentLists: [],
       addedLists: []
     }
   },
+  watch: {
+    addedLists (val, oldVal) {
+      console.log(val + '===' + oldVal)
+    }
+  },
   components: {
     DialogContainer,
     DswPanel
+  },
+  directives: {
+    WebUploader
   },
   beforeMount () {
     // 如果不是扫描页面进来的，则查询已有图片，否则仅仅预览当前扫描过来的图片
@@ -65,35 +73,6 @@ export default {
         this.$toastr.error('获取附件列表失败')
       })
     }
-
-    this.$nextTick(() => {
-      this.uploader = new WebUploader.Uploader({
-        swf: WebUploader.swf,
-        server: this.$api.uploadAttachment,
-        auto: false,
-        pick: {
-          id: this.$refs['dsw-select-btn'],
-          multiple: true
-        }
-      })
-
-      this.uploader.on('fileQueued', (file) => {
-        console.log(file)
-        this.uploader.makeThumb(file, (error, result) => {
-          if (error) {
-            console.log(error)
-          } else {
-            const fileInfo = {
-              id: result,
-              fileName: file.name
-            }
-            this.addedLists.push(fileInfo)
-            this.attachmentLists.push(fileInfo)
-            console.log(this.attachmentLists)
-          }
-        })
-      })
-    })
   },
   updated () {
     this.betterScroll && this.betterScroll.refresh()
@@ -152,6 +131,7 @@ export default {
   text-align : center;
   margin :24px 0 0;
   .dsw-btn{
+    display : inline-block;
     height : 32px;
     line-height : 32px;
     background : url("./images/btn.png") no-repeat scroll 0 0/100% 100%;
