@@ -6,7 +6,11 @@ export default {
     const qrcode = new Qrcode(vnode)
 
     el.addEventListener('click', (e) => {
-      qrcode.print()
+      if (vnode.context.currentRow) {
+        qrcode.print()
+      } else {
+        vnode.context.$toastr.warning('请选择一个案卷')
+      }
     }, false)
   },
   inserted (el, binding, vnode) {

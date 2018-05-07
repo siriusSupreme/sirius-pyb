@@ -7,6 +7,7 @@ export default {
   bind (el, binding, vnode) {
     $(el).datetimepicker({
       format: 'YYYY-MM-DD HH:mm:ss',
+      sideBySide: true,
       icons: {
         time: 'fa fa-clock-o',
         date: 'fa fa-calendar',
@@ -17,8 +18,7 @@ export default {
         today: 'fa fa-check-circle',
         clear: 'fa fa-trash',
         close: 'fa fa-remove'
-      },
-      keepOpen: true
+      }
     })
   },
   inserted (el, binding, vnode) {

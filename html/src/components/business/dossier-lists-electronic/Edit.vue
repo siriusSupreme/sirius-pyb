@@ -54,11 +54,9 @@ export default {
   beforeMount () {
     // 如果不是扫描页面进来的，则查询已有图片，否则仅仅预览当前扫描过来的图片
     if (this.extraParams.scannedFiles) {
-      debugger
       this.attachmentLists = this.extraParams.scannedFiles
       this.addedLists = this.extraParams.scannedFiles
     } else {
-      debugger
       const taskId = this.extraParams.taskId
       const taskBelong = this.extraParams.taskBelong
 

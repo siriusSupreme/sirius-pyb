@@ -1,4 +1,5 @@
 
+import qs from 'qs'
 import axios from 'axios'
 // import axios from 'axios-jsonp-pro'
 
@@ -19,11 +20,9 @@ const axiosInstance = axios.create({
   responseType: 'json',
   cancelToken: source.token,
   transformRequest (data, header) {
-    const dataArray = Object.entries(data).map((val) => {
-      return val[0] + '=' + val[1]
-    })
+    data = qs.stringfy(data)
 
-    return dataArray.join('&')
+    return data
   }
 })
 

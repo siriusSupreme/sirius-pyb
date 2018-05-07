@@ -15,6 +15,11 @@ export default {
       type: String,
       default: '按钮'
     }
+  },
+  methods: {
+    buttonHandler (e) {
+      this.$emit('dsw-btn-click', e)
+    }
   }
 }
 </script>
@@ -25,6 +30,7 @@ export default {
 
 <style lang="stylus" scoped>
 .dsw-btn{
-
+  display : inline-block;
+  background : url("./images/btn.png") no-repeat scroll 0 0/100% 100%;
 }
 </style>

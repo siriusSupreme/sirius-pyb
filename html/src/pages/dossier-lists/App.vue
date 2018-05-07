@@ -25,7 +25,7 @@
       <button type="button" class="dsw-btn" @click.stop="electronicHandler">电子卷宗</button>
       <button type="button" class="dsw-btn" @click.stop="borrowHandler">案卷借阅</button>
       <button type="button" class="dsw-btn" @click.stop="transformHandler">移交移送</button>
-      <button type="button" class="dsw-btn" @click.stop="qrcodeHandler">打印二维码</button>
+      <button type="button" class="dsw-btn" v-qrcode>打印二维码</button>
       <button type="button" class="dsw-btn" @click.stop="recordHandler">卷宗刻录</button>
       <button type="button" class="dsw-btn" @click.stop="trackHandler">案卷轨迹</button>
     </div>
@@ -45,13 +45,13 @@ import DossierListsLists from 'components/business/dossier-lists-lists'
 import DossierListsElectronic from 'components/business/dossier-lists-electronic'
 import DossierListsBorrow from 'components/business/dossier-lists-borrow'
 import DossierListsTransform from 'components/business/dossier-lists-transform'
-import DossierListsQrcode from 'components/business/dossier-lists-qrcode'
-import DossierListsRecord from 'components/business/dossier-lists-record'
 import DossierListsTrack from 'components/business/dossier-lists-track'
 
 import caseIng from './images/case-ing.png'
 import caseOver from './images/case-over.png'
 import caseNoTrack from './images/case-no-crack.png'
+
+import Qrcode from 'directives/qrcode'
 
 const CASE_ING = '104'
 const CASE_OVER = '206'
@@ -104,6 +104,9 @@ export default {
     DswPagination,
     DswTable,
     SearchBtn
+  },
+  directives: {
+    Qrcode
   },
   created () {
     //  设置过滤器
@@ -296,10 +299,14 @@ export default {
     },
     editHandler (e) {
       if (this.currentRow) {
-        this.$vLayer.openPage(DossierListsEdit, {}, {
+        this.editIndex = this.$vLayer.openPage(DossierListsEdit, {}, {
           parent: this,
           title: '详情编辑',
           id: this.currentRow.id
+        }, {
+          end: () => {
+            this.getDossierGrandsonLists()
+          }
         })
       } else {
         this.$toastr.warning('请先选择一个案卷')
@@ -332,18 +339,6 @@ export default {
       this.$vLayer.openPage(DossierListsTransform, {}, {
         parent: this,
         title: '移交移送'
-      })
-    },
-    qrcodeHandler (e) {
-      this.$vLayer.openPage(DossierListsQrcode, {}, {
-        parent: this,
-        title: '打印二维码'
-      })
-    },
-    recordHandler (e) {
-      this.$vLayer.openPage(DossierListsRecord, {}, {
-        parent: this,
-        title: '卷宗刻录'
       })
     },
     trackHandler (e) {
