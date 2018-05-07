@@ -4,8 +4,8 @@
       <div slot="panel-heading" class="dsw-search-wrapper">
         <form class="form-inline" @keydown.stop.prevent.enter="searchHandler">
           <div class="form-group">
-            <label class="control-label" >内容</label >
-            <input type="text" name="content" v-model="content" class="form-control" />
+            <label class="control-label" >关键字</label >
+            <input type="text" name="searchCode" v-model="searchCode" class="form-control" placeholder="通过案件编号/案件名称搜索"/>
           </div>
           <div class="form-group">
             <search-btn @dsw-click-btn="searchHandler"></search-btn>
@@ -15,7 +15,7 @@
 
       <dsw-table style="width: 100%;" @dsw-filter-method="filterMethodHandler" :isLoadingForTable="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
 
-      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getLogs"></dsw-pagination>
+      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getRectificationHandle"></dsw-pagination>
     </dsw-panel>
   </iframe-container>
 </template >
@@ -39,14 +39,15 @@ export default {
         pageSize: 20
       },
       dictionary: {
-        'LOG_OPT_MODULE': {},
-        'LOG_OPT_TYPE': {}
+        'CASE_CORRECT_QUESTION_LEVEL': {
+          '01': '紧急',
+          '02': '重要',
+          '03': '一般'
+        }
       },
-      moduleFilters: [],
-      typeFilters: [],
-      module: '',
-      type: '',
-      content: ''
+      levelFilters: [],
+      level: '',
+      searchCode: ''
     }
   },
   components: {
@@ -57,16 +58,11 @@ export default {
     SearchBtn
   },
   created () {
-    // 获取字典 并且 设置过滤器
-    const modulePromise = this.getDictionary('LOG_OPT_MODULE', 4).then((result) => {
-      this.setFilters('moduleFilters', 'LOG_OPT_MODULE')
-    })
-    const typePromise = this.getDictionary('LOG_OPT_TYPE', 1).then((result) => {
-      this.setFilters('typeFilters', 'LOG_OPT_TYPE')
-    })
+    this.setFilters('levelFilters', 'CASE_CORRECT_QUESTION_LEVEL')
+
     // 获取表格数据 并且 设置显示列
-    Promise.all([modulePromise, typePromise]).then((result) => {
-      this.getLogs()
+    Promise.all([]).then((result) => {
+      this.getRectificationHandle()
       this.setColumns()
     })
   },
@@ -86,19 +82,18 @@ export default {
         this[filterName].push(filter)
       }
     },
-    getLogs ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
-      const module = this.module
-      const type = this.type
-      const content = this.content
+    getRectificationHandle ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
+      const level = this.level
+      const searchCode = this.searchCode
 
       this.isLoadingForTable = true
 
-      this.$https.jsonp(this.$api.getLog, {params: {page: pageIndex, limit: recordsPerPage, module, type, content}}).then((result) => {
+      this.$https.jsonp(this.$api.getRectificationHandle, {params: {page: pageIndex, limit: recordsPerPage, level, searchCode}}).then((result) => {
         this.tableData = result.data.lists
         this.paginateInfo = result.data.pageDto
         this.isLoadingForTable = false
       }).catch((reason) => {
-        this.$toastr.error('获取日志列表失败')
+        this.$toastr.error('获取整改处理列表失败')
         this.isLoadingForTable = false
       })
     },
@@ -116,13 +111,29 @@ export default {
           overflowTitle: true
         },
         {
-          title: '操作模块',
-          field: 'module',
+          title: '优先级',
+          field: 'level',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
-            // 箭头函数 this 指向 vm；普通函数 this 指向 该列的选项
-            return this.dictionary['LOG_OPT_MODULE'][rowData[field]]
+            return this.dictionary['CASE_CORRECT_QUESTION_LEVEL'][rowData[field]]
           },
-          filters: this.moduleFilters,
+          filters: this.levelFilters,
+          width: 80,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true
+        },
+        {title: '案件编号', field: 'caseNo', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '案件名称', field: 'caseName', width: 160, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '整改内容', field: 'content', width: 160, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '提出单位', field: 'createOrgName', width: 150, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '提出人', field: 'brectifiedUserName', width: 80, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {
+          title: '提出时间',
+          field: 'startDate',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return (new Date(rowData[field])).format()
+          },
           width: 100,
           titleAlign: 'center',
           columnAlign: 'center',
@@ -130,34 +141,38 @@ export default {
           overflowTitle: true
         },
         {
-          title: '操作类型',
-          field: 'type',
+          title: '整改截止时间',
+          field: 'endTime',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
-            return this.dictionary['LOG_OPT_TYPE'][rowData[field]]
+            return (new Date(rowData[field])).format()
           },
-          filters: this.typeFilters,
-          width: 260,
+          width: 100,
           titleAlign: 'center',
           columnAlign: 'center',
           isResize: true,
           overflowTitle: true
         },
-        {title: 'IP', field: 'ip', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '操作内容', field: 'content', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '操作时间', field: 'updateTime', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true}
+        {
+          title: '操作',
+          field: 'status',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return '<a href="javascript:void(0);" class="dsw-rectification-handle-operation">详情</a>'
+          },
+          width: 80,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: false
+        }
       ]
     },
     searchHandler (e) {
-      this.getLogs()
+      this.getRectificationHandle()
     },
     filterMethodHandler (filters) {
-      if (filters['module'] && this.module !== filters['module'][0]) {
-        this.module = filters['module'][0]
-        this.getLogs()
-      }
-      if (filters['type'] && this.type !== filters['type'][0]) {
-        this.type = filters['type'][0]
-        this.getLogs()
+      if ((filters['level'] && this.level !== filters['level'][0]) || (filters['level'] === null && this.level)) {
+        this.level = filters['level'] ? filters['level'][0] : ''
+        this.getRectificationHandle()
       }
     }
   }

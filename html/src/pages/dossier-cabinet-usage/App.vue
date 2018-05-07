@@ -4,8 +4,8 @@
       <div slot="panel-heading" class="dsw-search-wrapper">
         <form class="form-inline" @keydown.stop.prevent.enter="searchHandler">
           <div class="form-group">
-            <label class="control-label" >内容</label >
-            <input type="text" name="content" v-model="content" class="form-control" />
+            <label class="control-label" >关键字</label >
+            <input type="text" name="searchCode" v-model="searchCode" class="form-control" />
           </div>
           <div class="form-group">
             <search-btn @dsw-click-btn="searchHandler"></search-btn>
@@ -15,7 +15,7 @@
 
       <dsw-table style="width: 100%;" @dsw-filter-method="filterMethodHandler" :isLoadingForTable="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
 
-      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getLogs"></dsw-pagination>
+      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getDossierCabinetUsage"></dsw-pagination>
     </dsw-panel>
   </iframe-container>
 </template >
@@ -39,14 +39,14 @@ export default {
         pageSize: 20
       },
       dictionary: {
-        'LOG_OPT_MODULE': {},
-        'LOG_OPT_TYPE': {}
+        'CELL_OPERATE_TYPE': {
+          '01': '存卷',
+          '02': '取卷'
+        }
       },
-      moduleFilters: [],
       typeFilters: [],
-      module: '',
-      type: '',
-      content: ''
+      operaType: '',
+      searchCode: ''
     }
   },
   components: {
@@ -58,15 +58,10 @@ export default {
   },
   created () {
     // 获取字典 并且 设置过滤器
-    const modulePromise = this.getDictionary('LOG_OPT_MODULE', 4).then((result) => {
-      this.setFilters('moduleFilters', 'LOG_OPT_MODULE')
-    })
-    const typePromise = this.getDictionary('LOG_OPT_TYPE', 1).then((result) => {
-      this.setFilters('typeFilters', 'LOG_OPT_TYPE')
-    })
+    this.setFilters('typeFilters', 'CELL_OPERATE_TYPE')
     // 获取表格数据 并且 设置显示列
-    Promise.all([modulePromise, typePromise]).then((result) => {
-      this.getLogs()
+    Promise.all([]).then((result) => {
+      this.getDossierCabinetUsage()
       this.setColumns()
     })
   },
@@ -86,19 +81,18 @@ export default {
         this[filterName].push(filter)
       }
     },
-    getLogs ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
-      const module = this.module
-      const type = this.type
-      const content = this.content
+    getDossierCabinetUsage ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
+      const operaType = this.operaType
+      const searchCode = this.searchCode
 
       this.isLoadingForTable = true
 
-      this.$https.jsonp(this.$api.getLog, {params: {page: pageIndex, limit: recordsPerPage, module, type, content}}).then((result) => {
+      this.$https.jsonp(this.$api.getDossierCabinetUsage, {params: {page: pageIndex, limit: recordsPerPage, operaType, searchCode}}).then((result) => {
         this.tableData = result.data.lists
         this.paginateInfo = result.data.pageDto
         this.isLoadingForTable = false
       }).catch((reason) => {
-        this.$toastr.error('获取日志列表失败')
+        this.$toastr.error('获取动态列表失败')
         this.isLoadingForTable = false
       })
     },
@@ -115,49 +109,46 @@ export default {
           isResize: true,
           overflowTitle: true
         },
-        {
-          title: '操作模块',
-          field: 'module',
-          formatter: (rowData, rowIndex, pagingIndex, field) => {
-            // 箭头函数 this 指向 vm；普通函数 this 指向 该列的选项
-            return this.dictionary['LOG_OPT_MODULE'][rowData[field]]
-          },
-          filters: this.moduleFilters,
-          width: 100,
-          titleAlign: 'center',
-          columnAlign: 'center',
-          isResize: true,
-          overflowTitle: true
-        },
+        {title: '房间名称', field: 'roomName', width: 120, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '案卷柜名称', field: 'cupboardName', width: 120, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '单元柜编号', field: 'cellCode', width: 120, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '案件编号', field: 'caseNo', width: 200, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '案件名称', field: 'caseName', width: 200, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '操作人', field: 'createUserName', width: 120, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
         {
           title: '操作类型',
-          field: 'type',
+          field: 'operaType',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
-            return this.dictionary['LOG_OPT_TYPE'][rowData[field]]
+            return this.dictionary['CELL_OPERATE_TYPE'][rowData[field]]
           },
           filters: this.typeFilters,
-          width: 260,
+          width: 120,
           titleAlign: 'center',
           columnAlign: 'center',
           isResize: true,
           overflowTitle: true
         },
-        {title: 'IP', field: 'ip', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '操作内容', field: 'content', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '操作时间', field: 'updateTime', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true}
+        {
+          title: '操作时间',
+          field: 'createTime',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return (new Date(rowData[field])).format()
+          },
+          width: 120,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: false
+        }
       ]
     },
     searchHandler (e) {
-      this.getLogs()
+      this.getDossierCabinetUsage()
     },
     filterMethodHandler (filters) {
-      if (filters['module'] && this.module !== filters['module'][0]) {
-        this.module = filters['module'][0]
-        this.getLogs()
-      }
-      if (filters['type'] && this.type !== filters['type'][0]) {
-        this.type = filters['type'][0]
-        this.getLogs()
+      if (filters['operaType'] && this.operaType !== filters['operaType'][0]) {
+        this.operaType = filters['operaType'][0]
+        this.getDossierCabinetUsage()
       }
     }
   }

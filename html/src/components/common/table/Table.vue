@@ -100,7 +100,7 @@ export default {
 
 <style lang="stylus">
 $fontColor = #23c7ed
-$borderColor = #18445a
+$borderColor = #15657c
 
 .dsw-easy-table-wrapper{
   width : 100%;

@@ -45,8 +45,6 @@ class Upload {
         fileName: response.data.fileName
       }
 
-      console.log(response)
-
       context.addedLists.push(_file)
       context.attachmentLists.push(_file)
     })

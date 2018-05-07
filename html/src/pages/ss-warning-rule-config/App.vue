@@ -1,22 +1,13 @@
 <template >
-  <iframe-container :isShowHeading="false">
+  <iframe-container :isShowHeading="false" :isShowFooter="true">
     <dsw-panel class="dsw-right-content-wrapper" :isShowFooter="true">
-      <div slot="panel-heading" class="dsw-search-wrapper">
-        <form class="form-inline" @keydown.stop.prevent.enter="searchHandler">
-          <div class="form-group">
-            <label class="control-label" >内容</label >
-            <input type="text" name="content" v-model="content" class="form-control" />
-          </div>
-          <div class="form-group">
-            <search-btn @dsw-click-btn="searchHandler"></search-btn>
-          </div>
-        </form >
-      </div>
+      <dsw-table style="width: 100%;" @dsw-filter-method="filterMethodHandler" :isLoadingForTable="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)" @dsw-custom-component='customComponentHandler'></dsw-table>
 
-      <dsw-table style="width: 100%;" @dsw-filter-method="filterMethodHandler" :isLoadingForTable="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
-
-      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getLogs"></dsw-pagination>
+      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getRuleCfgDataByPage"></dsw-pagination>
     </dsw-panel>
+    <div class="dsw-dossier-lists-btn-wrapper" slot="panel-footer">
+      <button class="dsw-btn dsw-add-btn" @click.stop="addHandler">新建</button>
+    </div>
   </iframe-container>
 </template >
 
@@ -26,6 +17,14 @@ import DswPanel from 'components/common/panel'
 import DswPagination from 'components/common/pagination'
 import DswTable from 'components/common/table'
 import SearchBtn from 'components/common/search-btn'
+
+import DswEdit from './Edit'
+import DswHidden from './Hidden'
+import DswAdd from './Add'
+
+import Vue from 'vue'
+import DswOperation from './Operation'
+Vue.component('dsw-operation', DswOperation)
 
 export default {
   name: 'App',
@@ -39,14 +38,26 @@ export default {
         pageSize: 20
       },
       dictionary: {
-        'LOG_OPT_MODULE': {},
-        'LOG_OPT_TYPE': {}
+        'RULE_TYPE_STATUS': {
+          '01': '通用规则',
+          '02': '机构规则'
+        },
+        'WT_TYPE_STATUS': {
+          '01': '其他',
+          '02': '案件处理'
+        },
+        'BIZ_TYPE_STATUS': {
+          '20': '借阅预警处理',
+          '21': '整改预警处理'
+        },
+        'YES_NO': {}
       },
-      moduleFilters: [],
-      typeFilters: [],
-      module: '',
-      type: '',
-      content: ''
+      ruleTypeStatusFilters: [],
+      wtTypeStatusFilters: [],
+      bizTypeStatusFilters: [],
+      isShowStatusFilters: [],
+      wtTypeStatus: '',
+      bizTypeStatus: ''
     }
   },
   components: {
@@ -57,16 +68,17 @@ export default {
     SearchBtn
   },
   created () {
+    //  设置过滤器
+    this.setFilters('ruleTypeStatusFilters', 'RULE_TYPE_STATUS')
+    this.setFilters('wtTypeStatusFilters', 'WT_TYPE_STATUS')
+    this.setFilters('bizTypeStatusFilters', 'BIZ_TYPE_STATUS')
     // 获取字典 并且 设置过滤器
-    const modulePromise = this.getDictionary('LOG_OPT_MODULE', 4).then((result) => {
-      this.setFilters('moduleFilters', 'LOG_OPT_MODULE')
-    })
-    const typePromise = this.getDictionary('LOG_OPT_TYPE', 1).then((result) => {
-      this.setFilters('typeFilters', 'LOG_OPT_TYPE')
+    const isShowPromise = this.getDictionary('YES_NO', 'YES_NO').then((result) => {
+      this.setFilters('isShowStatusFilters', 'YES_NO')
     })
     // 获取表格数据 并且 设置显示列
-    Promise.all([modulePromise, typePromise]).then((result) => {
-      this.getLogs()
+    Promise.all([isShowPromise]).then((result) => {
+      this.getRuleCfgDataByPage()
       this.setColumns()
     })
   },
@@ -86,19 +98,18 @@ export default {
         this[filterName].push(filter)
       }
     },
-    getLogs ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
-      const module = this.module
-      const type = this.type
-      const content = this.content
+    getRuleCfgDataByPage ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
+      const wtType = this.wtTypeStatus
+      const bizType = this.bizTypeStatus
 
       this.isLoadingForTable = true
 
-      this.$https.jsonp(this.$api.getLog, {params: {page: pageIndex, limit: recordsPerPage, module, type, content}}).then((result) => {
+      this.$https.jsonp(this.$api.getCaseRuleCfgListByPage, {params: {page: pageIndex, limit: recordsPerPage, wtType, bizType}}).then((result) => {
         this.tableData = result.data.lists
         this.paginateInfo = result.data.pageDto
         this.isLoadingForTable = false
       }).catch((reason) => {
-        this.$toastr.error('获取日志列表失败')
+        this.$toastr.error('获取预警规则配置列表失败')
         this.isLoadingForTable = false
       })
     },
@@ -116,48 +127,104 @@ export default {
           overflowTitle: true
         },
         {
-          title: '操作模块',
-          field: 'module',
+          title: '规则类型',
+          field: 'type',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
             // 箭头函数 this 指向 vm；普通函数 this 指向 该列的选项
-            return this.dictionary['LOG_OPT_MODULE'][rowData[field]]
+            return this.dictionary['RULE_TYPE_STATUS'][rowData[field]]
           },
           filters: this.moduleFilters,
-          width: 100,
+          width: 60,
           titleAlign: 'center',
           columnAlign: 'center',
           isResize: true,
           overflowTitle: true
         },
         {
-          title: '操作类型',
-          field: 'type',
+          title: '预警分类',
+          field: 'wtType',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
-            return this.dictionary['LOG_OPT_TYPE'][rowData[field]]
+            return this.dictionary['WT_TYPE_STATUS'][rowData[field]]
           },
-          filters: this.typeFilters,
-          width: 260,
+          filters: this.wtTypeStatusFilters,
+          width: 60,
           titleAlign: 'center',
           columnAlign: 'center',
           isResize: true,
           overflowTitle: true
         },
-        {title: 'IP', field: 'ip', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '操作内容', field: 'content', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '操作时间', field: 'updateTime', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true}
+        {
+          title: '业务分类',
+          field: 'bizType',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return this.dictionary['BIZ_TYPE_STATUS'][rowData[field]]
+          },
+          filters: this.bizTypeStatusFilters,
+          width: 60,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true
+        },
+        {title: '预警时限', field: 'warnTlimit', width: 60, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '警报时限', field: 'alarmTlimit', width: 60, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {
+          title: '投屏是否显示',
+          field: 'isShow',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return this.dictionary['YES_NO'][rowData[field]]
+          },
+          width: 60,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true
+        },
+        {title: '投屏描述', field: 'showDesc', width: 160, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {
+          title: '操作',
+          componentName: 'dsw-operation',
+          width: 100,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true
+        }
       ]
     },
-    searchHandler (e) {
-      this.getLogs()
-    },
     filterMethodHandler (filters) {
-      if (filters['module'] && this.module !== filters['module'][0]) {
-        this.module = filters['module'][0]
-        this.getLogs()
+      if ((filters['wtType'] && this.wtTypeStatus !== filters['wtType'][0]) || (filters['wtType'] === null && this.wtTypeStatus)) {
+        this.wtTypeStatus = filters['wtType'] ? filters['wtType'][0] : ''
+        this.getRuleCfgDataByPage()
       }
-      if (filters['type'] && this.type !== filters['type'][0]) {
-        this.type = filters['type'][0]
-        this.getLogs()
+      if ((filters['bizType'] && this.bizTypeStatus !== filters['bizType'][0]) || (filters['bizType'] === null && this.bizTypeStatus)) {
+        this.bizTypeStatus = filters['bizType'] ? filters['bizType'][0] : ''
+        this.getRuleCfgDataByPage()
+      }
+    },
+    addHandler (e) {
+      this.$vLayer.openPage(DswAdd, {}, {
+        parent: this,
+        title: '新增'
+      })
+    },
+    customComponentHandler ({type, index, rowData}) {
+      if (rowData) {
+        if (type === 'edit') {
+          this.$vLayer.openPage(DswEdit, {}, {
+            parent: this,
+            title: '预览编辑',
+            ruleId: rowData.id
+          })
+        } else {
+          this.$vLayer.openPage(DswHidden, {}, {
+            parent: this
+          }, {
+            area: ['400px', '240px']
+          })
+        }
+      } else {
+        this.$toastr.warning('请选择操作栏选择相对应的按钮！')
       }
     }
   }

@@ -93,7 +93,9 @@ export default {
       subStatus: '',
       type: '',
       searchCode: '',
-      currentRow: null
+      currentRow: null,
+      addIndex: 0,
+      editIndex: 0
     }
   },
   components: {
@@ -283,9 +285,13 @@ export default {
       this.currentRow = rowData
     },
     addHandler (e) {
-      this.$vLayer.openPage(DossierListsAdd, {}, {
+      this.addIndex = this.$vLayer.openPage(DossierListsAdd, {}, {
         parent: this,
         title: '新增'
+      }, {
+        end: () => {
+          this.getDossierGrandsonLists()
+        }
       })
     },
     editHandler (e) {

@@ -1,27 +1,27 @@
 
 class Qrcode {
-  constructor () {
-    this.qrcode = Qrcode.initialize()
+  constructor (vnode) {
+    this.vnode = vnode
   }
-  static initialize () {
-    var orgName,date,caseCode,caseName,pname,codeRemark;
-    orgName = document.getElementById("org_name").value;
+
+  print () {
+    const vnode = this.vnode
+    let orgName,date,caseCode,caseName,pname,codeRemark;
+    orgName = vnode.context.$data.curentRow.orgName;
     caseName = document.getElementById("case_name").value;
     caseCode = document.getElementById("case_code").value;
     date = document.getElementById("dy_date").value;
     pname = document.getElementById("pname").value;
     codeRemark=caseCode;
 
-    var TSCObj;
-    var i;
-    TSCObj = new ActiveXObject("TSCActiveX.TSCLIB");
+    const TSCObj = new ActiveXObject("TSCActiveX.TSCLIB");
     //	TSCObj.ActiveXabout();
     //连接打印机
-    i=TSCObj.ActiveXopenport ("TSC TTP-244 Pro");
-    if(i==0){
-      return 0;
+    const i=TSCObj.ActiveXopenport ("TSC TTP-244 Pro");
+    if (i === 0) {
+      return 0
     }
-    var ulpcxLocation = "C:\\atta\\UL.PCX";
+    const ulpcxLocation = "C:\\atta\\UL.PCX";
 
     TSCObj.ActiveXdownloadpcx (ulpcxLocation,"UL.PCX");
     //清除缓存
@@ -45,27 +45,28 @@ class Qrcode {
     TSCObj.ActiveXwindowsfont(15, 2, 40, 0, 0, 0, "微软雅黑", caseCode);
     TSCObj.ActiveXwindowsfont(15, 25, 35, 0, 0, 0, "微软雅黑", "——————————————————");
 
-    if(caseName.length > 11){
-      var pCName=caseName.substring(0,11);
-      var lCName = caseName.substring(11);
+    if (caseName.length > 11) {
+      let pCName=caseName.substring(0,11);
+      let lCName = caseName.substring(11);
       TSCObj.ActiveXwindowsfont (15, 50, 30, 0, 0, 0, "微软雅黑", "案件名称:"+pCName);
       TSCObj.ActiveXwindowsfont (15, 80, 30, 0, 0, 0, "微软雅黑", "        "+lCName);
+
       TSCObj.ActiveXwindowsfont (15, 110, 30, 0, 0, 0, "微软雅黑", "主办民警:"+pname);
       TSCObj.ActiveXwindowsfont (15, 140, 30, 0, 0, 0, "微软雅黑", "主办单位:"+orgName);
       TSCObj.ActiveXwindowsfont (15, 170, 30, 0, 0, 0, "微软雅黑", "打印日期:"+date);
-    }else{
+    } else {
       TSCObj.ActiveXwindowsfont (15, 50, 30, 0, 0, 0, "微软雅黑", "案件名称:"+caseName);
+
       TSCObj.ActiveXwindowsfont (15, 80, 30, 0, 0, 0, "微软雅黑", "主办民警:"+pname);
-      //
       TSCObj.ActiveXwindowsfont (15, 110, 30, 0, 0, 0, "微软雅黑", "主办单位:"+orgName);
       TSCObj.ActiveXwindowsfont (15, 140, 30, 0, 0, 0, "微软雅黑", "打印日期:"+date);
     }
-    if(type=="1"){
+    if (type === "1") {
       // 打印条形码
       TSCObj.ActiveXbarcode ("15", "190", "128", "90", "0", "0", "2", "2", codeRemark);
-    }else{
+    } else {
       // 打印二维码
-      var command = "QRCODE 350,80,L,5,A,0,M1,S3,\""+codeRemark+"\"";
+      const command = "QRCODE 350,80,L,5,A,0,M1,S3,\""+codeRemark+"\"";
       TSCObj.ActiveXsendcommand (command);
     }
     //打印份数

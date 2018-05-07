@@ -20,9 +20,24 @@ Object.defineProperty(Vue.prototype, '$api', {
       getLog: 'Log/queryPage.json',
       getDossierLists: 'CaseHeaderRpc/list.json',
       getDossierInfo: 'CaseHeaderRpc/detail.json',
+      getBorrowListByPage: 'CaseBorrowRpc/listBorrow.json',
       getDossierSubLists: 'CaseHeaderRpc/listFirstElecArchVo.json',
       getDossierGrandsonLists: 'CaseHeaderRpc/listSecondElecArchVo.json',
-      getAttachmentLists: 'FileUpload/listAttach.json'
+      getAttachmentLists: 'FileUpload/listAttach.json',
+      getRectificationHandle: 'CaseCorrectQuestionRpc/list.json',
+      getRectificationConfirm: 'CaseCorrectQuestionRpc/listByConfirm.json',
+      getDossierTransform: 'CaseTransferRpc/list.json',
+      getBellTransform: 'CaseTransferRpc/verifyList.json',
+      getWarnListByPage: 'WarnRpc/getCaseListByWarningTypeId.json',
+      getBorrowAuditListByPage: 'CaseBorrowRpc/listAudit.json',
+      getCaseRuleCfgListByPage: 'RuleRpc/getRuleListByPage.json',
+      getRoleListByPage: 'Role/queryPage.json',
+      getRuleDetailById: 'RuleRpc/getRuleDetailById.json',
+      getRoleDetailById: 'Role/findRoleDetailByRoleId.json',
+      saveRole: 'Role/saveRole.json',
+      getDossierCabinetUsage: 'RoomRpc/listCellOperationLog.json',
+      getRoleMenuSelectedListByRoleId: 'Role/findRoleMenuSelectedListByRoleId.json',
+      saveDossier: 'CaseHeaderRpc/add.json'
     }
   }
 })

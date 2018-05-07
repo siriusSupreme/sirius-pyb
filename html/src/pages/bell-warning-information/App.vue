@@ -15,7 +15,7 @@
 
       <dsw-table style="width: 100%;" @dsw-filter-method="filterMethodHandler" :isLoadingForTable="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
 
-      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getLogs"></dsw-pagination>
+      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getWarnDataByPage"></dsw-pagination>
     </dsw-panel>
   </iframe-container>
 </template >
@@ -39,13 +39,31 @@ export default {
         pageSize: 20
       },
       dictionary: {
-        'LOG_OPT_MODULE': {},
-        'LOG_OPT_TYPE': {}
+        'WARN_TYPE_STATUS': {
+          '01': '预警',
+          '02': '报警'
+        },
+        'WT_TYPE_STATUS': {
+          '01': '其他',
+          '02': '案件处理'
+        },
+        'BIZ_TYPE_STATUS': {
+          '20': '借阅预警处理',
+          '21': '整改预警处理'
+        },
+        'CASE_STATUS': {
+          '01': '在办',
+          '02': '未破',
+          '03': '已结'
+        }
       },
-      moduleFilters: [],
-      typeFilters: [],
-      module: '',
-      type: '',
+      warnTypeStatusFilters: [],
+      wtTypeStatusFilters: [],
+      bizTypeStatusFilters: [],
+      caseStatusFilters: [],
+      warnTypeStatus: '',
+      wtTypeStatus: '',
+      bizTypeStatus: '',
       content: ''
     }
   },
@@ -57,27 +75,18 @@ export default {
     SearchBtn
   },
   created () {
-    // 获取字典 并且 设置过滤器
-    const modulePromise = this.getDictionary('LOG_OPT_MODULE', 4).then((result) => {
-      this.setFilters('moduleFilters', 'LOG_OPT_MODULE')
-    })
-    const typePromise = this.getDictionary('LOG_OPT_TYPE', 1).then((result) => {
-      this.setFilters('typeFilters', 'LOG_OPT_TYPE')
-    })
+    //  设置过滤器
+    this.setFilters('warnTypeStatusFilters', 'WARN_TYPE_STATUS')
+    this.setFilters('wtTypeStatusFilters', 'WT_TYPE_STATUS')
+    this.setFilters('bizTypeStatusFilters', 'BIZ_TYPE_STATUS')
+    this.setFilters('caseStatusFilters', 'CASE_STATUS')
     // 获取表格数据 并且 设置显示列
-    Promise.all([modulePromise, typePromise]).then((result) => {
-      this.getLogs()
+    Promise.all([]).then((result) => {
+      this.getWarnDataByPage()
       this.setColumns()
     })
   },
   methods: {
-    getDictionary (type, code) {
-      return this.$https.jsonp(this.$api.getDictionary, {params: {type, code}}).then((result) => {
-        result.data.lists.forEach((val) => {
-          this.dictionary[type][val.code] = val.name
-        })
-      })
-    },
     setFilters (filterName, filterType) {
       const _filterType = this.dictionary[filterType]
 
@@ -86,19 +95,20 @@ export default {
         this[filterName].push(filter)
       }
     },
-    getLogs ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
-      const module = this.module
-      const type = this.type
-      const content = this.content
+    getWarnDataByPage ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
+      const warnType = this.warnTypeStatus
+      const wtType = this.wtTypeStatus
+      const bizType = this.bizTypeStatus
+      const caseName = this.content
 
       this.isLoadingForTable = true
 
-      this.$https.jsonp(this.$api.getLog, {params: {page: pageIndex, limit: recordsPerPage, module, type, content}}).then((result) => {
+      this.$https.jsonp(this.$api.getWarnListByPage, {params: {page: pageIndex, limit: recordsPerPage, warnType, wtType, bizType, caseName}}).then((result) => {
         this.tableData = result.data.lists
         this.paginateInfo = result.data.pageDto
         this.isLoadingForTable = false
       }).catch((reason) => {
-        this.$toastr.error('获取日志列表失败')
+        this.$toastr.error('获取预警消息处理列表失败')
         this.isLoadingForTable = false
       })
     },
@@ -116,13 +126,56 @@ export default {
           overflowTitle: true
         },
         {
-          title: '操作模块',
-          field: 'module',
+          title: '警报状态',
+          field: 'warnType',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
             // 箭头函数 this 指向 vm；普通函数 this 指向 该列的选项
-            return this.dictionary['LOG_OPT_MODULE'][rowData[field]]
+            return this.dictionary['WARN_TYPE_STATUS'][rowData[field]]
           },
-          filters: this.moduleFilters,
+          filters: this.warnTypeStatusFilters,
+          width: 40,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true
+        },
+        {title: '案件编号', field: 'caseNo', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '案件编号', field: 'caseName', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {
+          title: '案件状态',
+          field: 'caseStatus',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return this.dictionary['CASE_STATUS'][rowData[field]]
+          },
+          filters: this.caseStatusFilters,
+          width: 40,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true},
+        {
+          title: '业务分类',
+          field: 'bizType',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return this.dictionary['BIZ_TYPE_STATUS'][rowData[field]]
+          },
+          filters: this.bizTypeStatusFilters,
+          width: 40,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true
+        },
+        {title: '主办单位', field: 'hostUnitName', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '主办民警', field: 'hostPName', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {
+          title: '截止时间',
+          field: 'endDate',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            if (rowData[field]) {
+              return (new Date(rowData[field])).format()
+            }
+          },
           width: 100,
           titleAlign: 'center',
           columnAlign: 'center',
@@ -130,34 +183,47 @@ export default {
           overflowTitle: true
         },
         {
-          title: '操作类型',
-          field: 'type',
+          title: '预警时间',
+          field: 'warnDate',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
-            return this.dictionary['LOG_OPT_TYPE'][rowData[field]]
+            if (rowData[field]) {
+              return (new Date(rowData[field])).format()
+            }
           },
-          filters: this.typeFilters,
-          width: 260,
+          width: 100,
           titleAlign: 'center',
           columnAlign: 'center',
           isResize: true,
           overflowTitle: true
         },
-        {title: 'IP', field: 'ip', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '操作内容', field: 'content', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '操作时间', field: 'updateTime', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true}
+        {
+          title: '操作',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return 1
+          },
+          width: 100,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true
+        }
       ]
     },
     searchHandler (e) {
-      this.getLogs()
+      this.getWarnDataByPage()
     },
     filterMethodHandler (filters) {
-      if (filters['module'] && this.module !== filters['module'][0]) {
-        this.module = filters['module'][0]
-        this.getLogs()
+      if ((filters['warnType'] && this.warnTypeStatus !== filters['warnType'][0]) || (filters['warnType'] === null && this.warnTypeStatus)) {
+        this.warnTypeStatus = filters['warnType'] ? filters['warnType'][0] : ''
+        this.getWarnDataByPage()
       }
-      if (filters['type'] && this.type !== filters['type'][0]) {
-        this.type = filters['type'][0]
-        this.getLogs()
+      if ((filters['wtType'] && this.wtTypeStatus !== filters['wtType'][0]) || (filters['wtType'] === null && this.wtTypeStatus)) {
+        this.wtTypeStatus = filters['wtType'] ? filters['wtType'][0] : ''
+        this.getWarnDataByPage()
+      }
+      if ((filters['bizType'] && this.bizTypeStatus !== filters['bizType'][0]) || (filters['bizType'] === null && this.bizTypeStatus)) {
+        this.bizTypeStatus = filters['bizType'] ? filters['bizType'][0] : ''
+        this.getWarnDataByPage()
       }
     }
   }

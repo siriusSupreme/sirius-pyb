@@ -2,20 +2,20 @@
   <iframe-container :isShowHeading="false">
     <dsw-panel class="dsw-right-content-wrapper" :isShowFooter="true">
       <div slot="panel-heading" class="dsw-search-wrapper">
-        <form class="form-inline" @keydown.stop.prevent.enter="searchHandler">
+        <form class="form-inline" @keydown.stop.prevent.enter="searchTransform">
           <div class="form-group">
-            <label class="control-label" >内容</label >
-            <input type="text" name="content" v-model="content" class="form-control" />
+            <label class="control-label" >关键字</label >
+            <input type="text" name="searchCode" v-model="searchCode" class="form-control" placeholder="通过案件编号/案件名称搜索"/>
           </div>
           <div class="form-group">
-            <search-btn @dsw-click-btn="searchHandler"></search-btn>
+            <search-btn @dsw-click-btn="searchTransform"></search-btn>
           </div>
         </form >
       </div>
 
       <dsw-table style="width: 100%;" @dsw-filter-method="filterMethodHandler" :isLoadingForTable="isLoadingForTable" :tableData="tableData" :columns="columns" :columnWidthDrag="true" :pagingIndex="paginateInfo.pageSize*(paginateInfo.currentPage-1)"></dsw-table>
 
-      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getLogs"></dsw-pagination>
+      <dsw-pagination slot="panel-footer" :currentPage="paginateInfo.currentPage" :totalRecords="paginateInfo.total" :recordsPerPage="paginateInfo.pageSize" @dsw-pager-change="getBellTransform"></dsw-pagination>
     </dsw-panel>
   </iframe-container>
 </template >
@@ -39,14 +39,21 @@ export default {
         pageSize: 20
       },
       dictionary: {
-        'LOG_OPT_MODULE': {},
-        'LOG_OPT_TYPE': {}
+        'CASE_TRANSFER_TYPE': {
+          '01': '内部移交',
+          '02': '外部移交',
+          '03': '移送'
+        },
+        'CASE_TRANSFER_STATUS': {
+          '01': '待审核',
+          '02': '已转移',
+          '03': '已退回',
+          '04': '已拒绝'
+        }
       },
-      moduleFilters: [],
       typeFilters: [],
-      module: '',
       type: '',
-      content: ''
+      searchCode: ''
     }
   },
   components: {
@@ -58,15 +65,11 @@ export default {
   },
   created () {
     // 获取字典 并且 设置过滤器
-    const modulePromise = this.getDictionary('LOG_OPT_MODULE', 4).then((result) => {
-      this.setFilters('moduleFilters', 'LOG_OPT_MODULE')
-    })
-    const typePromise = this.getDictionary('LOG_OPT_TYPE', 1).then((result) => {
-      this.setFilters('typeFilters', 'LOG_OPT_TYPE')
-    })
+    this.setFilters('typeFilters', 'CASE_TRANSFER_TYPE')
+
     // 获取表格数据 并且 设置显示列
-    Promise.all([modulePromise, typePromise]).then((result) => {
-      this.getLogs()
+    Promise.all([]).then((result) => {
+      this.getBellTransform()
       this.setColumns()
     })
   },
@@ -86,19 +89,18 @@ export default {
         this[filterName].push(filter)
       }
     },
-    getLogs ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
-      const module = this.module
+    getBellTransform ({pageIndex, recordsPerPage} = {pageIndex: this.paginateInfo.currentPage, recordsPerPage: this.paginateInfo.pageSize}) {
       const type = this.type
-      const content = this.content
+      const searchCode = this.searchCode
 
       this.isLoadingForTable = true
 
-      this.$https.jsonp(this.$api.getLog, {params: {page: pageIndex, limit: recordsPerPage, module, type, content}}).then((result) => {
+      this.$https.jsonp(this.$api.getBellTransform, {params: {page: pageIndex, limit: recordsPerPage, type, searchCode}}).then((result) => {
         this.tableData = result.data.lists
         this.paginateInfo = result.data.pageDto
         this.isLoadingForTable = false
       }).catch((reason) => {
-        this.$toastr.error('获取日志列表失败')
+        this.$toastr.error('获取移送移交列表失败')
         this.isLoadingForTable = false
       })
     },
@@ -115,14 +117,31 @@ export default {
           isResize: true,
           overflowTitle: true
         },
+        {title: '案件编号', field: 'caseNo', width: 120, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '案件名称', field: 'caseName', width: 160, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
         {
-          title: '操作模块',
-          field: 'module',
+          title: '案卷操作',
+          field: 'type',
           formatter: (rowData, rowIndex, pagingIndex, field) => {
-            // 箭头函数 this 指向 vm；普通函数 this 指向 该列的选项
-            return this.dictionary['LOG_OPT_MODULE'][rowData[field]]
+            return this.dictionary['CASE_TRANSFER_TYPE'][rowData[field]]
           },
-          filters: this.moduleFilters,
+          filters: this.typeFilters,
+          width: 80,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: true
+        },
+        {title: '接收对象', field: 'orgName', width: 120, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '移送原因', field: 'reason', width: 160, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '承办人', field: 'createUserName', width: 120, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {title: '承办单位', field: 'createOrgName', width: 120, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
+        {
+          title: '提交时间',
+          field: 'createTime',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return (new Date(rowData[field])).format()
+          },
           width: 100,
           titleAlign: 'center',
           columnAlign: 'center',
@@ -130,34 +149,35 @@ export default {
           overflowTitle: true
         },
         {
-          title: '操作类型',
-          field: 'type',
-          formatter: (rowData, rowIndex, pagingIndex, field) => {
-            return this.dictionary['LOG_OPT_TYPE'][rowData[field]]
-          },
-          filters: this.typeFilters,
-          width: 260,
+          title: '审核人',
+          field: 'auditUserName',
+          width: 100,
           titleAlign: 'center',
           columnAlign: 'center',
           isResize: true,
           overflowTitle: true
         },
-        {title: 'IP', field: 'ip', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '操作内容', field: 'content', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true},
-        {title: '操作时间', field: 'updateTime', width: 260, titleAlign: 'center', columnAlign: 'center', isResize: true, overflowTitle: true}
+        {
+          title: '操作',
+          field: 'status',
+          formatter: (rowData, rowIndex, pagingIndex, field) => {
+            return '<a href="javascript:void(0);" class="dsw-dossier-transform-operation">详情</a>'
+          },
+          width: 80,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          isResize: true,
+          overflowTitle: false
+        }
       ]
     },
-    searchHandler (e) {
-      this.getLogs()
+    searchTransform (e) {
+      this.getBellTransform()
     },
     filterMethodHandler (filters) {
-      if (filters['module'] && this.module !== filters['module'][0]) {
-        this.module = filters['module'][0]
-        this.getLogs()
-      }
       if (filters['type'] && this.type !== filters['type'][0]) {
         this.type = filters['type'][0]
-        this.getLogs()
+        this.getBellTransform()
       }
     }
   }
