@@ -8,14 +8,14 @@ import './web-uploader.styl'
 class Upload {
   constructor (el, options, vnode) {
     this.uploader = Upload.initialize(el, options)
-    this.initializeEvents(vnode.context)
+    this.initializeEvents(vnode)
   }
 
   static initialize (el, options) {
     return new WebUploader.Uploader({
       auto: true,
       swf,
-      server: options.value.server,
+      server: options.server,
       pick: {
         id: el,
         multiple: true
@@ -23,7 +23,7 @@ class Upload {
       accept: {
         title: '',
         extensions: '',
-        mimeTypes: ''
+        mimeTypes: 'image/*'
       },
       prepareNextFile: true,
       chunked: true,
@@ -32,7 +32,7 @@ class Upload {
     })
   }
 
-  initializeEvents (context) {
+  initializeEvents (vnode) {
     const uploader = this.uploader
 
     uploader.on('fileQueued', (file) => {
@@ -45,8 +45,7 @@ class Upload {
         fileName: response.data.fileName
       }
 
-      context.addedLists.push(_file)
-      context.attachmentLists.push(_file)
+      vnode.context.attachmentLists.push(_file)
     })
   }
 }

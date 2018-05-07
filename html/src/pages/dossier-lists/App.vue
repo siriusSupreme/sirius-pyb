@@ -323,7 +323,8 @@ export default {
         this.$vLayer.openPage(DossierListsElectronic, {}, {
           parent: this,
           title: '电子卷宗',
-          id: this.currentRow.id
+          id: this.currentRow.id,
+          name: this.currentRow.name
         })
       } else {
         this.$toastr.warning('请先选择一个案卷')

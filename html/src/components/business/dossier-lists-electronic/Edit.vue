@@ -3,11 +3,10 @@
     <dsw-panel :is-show-heading="false" :is-show-footer="true">
       <div class="dsw-edit-container" ref="dsw-edit-container">
         <ul class="dsw-edit-lists">
-          <li class="dsw-edit-item" v-for="(attachment, index) in attachmentLists" :key="index">
+          <li class="dsw-edit-item" v-for="(attachment, index) in attachmentLists" :key="index" @click.stop="previewHandler($event, index)">
             <figure>
-              <i class="fa fa-close"></i>
-              <img :src="attachment.id" v-if="String(attachment.id).startsWith('data')" />
-              <img :src="$api.getAttachment + '?id=' + attachment.id" v-else />
+              <i class="fa fa-close" @click.stop="deleteFile($event,index)"></i>
+              <img :src="$api.getAttachment + '?id=' + attachment.id" />
             </figure>
             <span :title="attachment.fileName">{{index}}、{{attachment.fileName}}</span>
           </li>
@@ -16,7 +15,7 @@
 
       <div class="dsw-btn-wrapper" slot="panel-footer">
         <span class="dsw-btn" v-web-uploader="{server:$api.uploadAttachment}">选择文件</span>
-        <button type="button" class="dsw-btn">确认上传</button>
+        <button type="button" class="dsw-btn" @click.stop="updateHandler">保存上传</button>
       </div>
     </dsw-panel>
   </dialog-container>
@@ -35,8 +34,7 @@ export default {
   data () {
     return {
       betterScroll: null,
-      attachmentLists: [],
-      addedLists: []
+      attachmentLists: []
     }
   },
   watch: {
@@ -55,13 +53,11 @@ export default {
     // 如果不是扫描页面进来的，则查询已有图片，否则仅仅预览当前扫描过来的图片
     if (this.extraParams.scannedFiles) {
       this.attachmentLists = this.extraParams.scannedFiles
-      this.addedLists = this.extraParams.scannedFiles
     } else {
       const taskId = this.extraParams.taskId
       const taskBelong = this.extraParams.taskBelong
 
       this.$https.jsonp(this.$api.getAttachmentLists, {params: {taskId, taskBelong}}).then((result) => {
-        console.log(result)
         this.attachmentLists = result.data.lists
         this.$nextTick(() => {
           this.betterScroll = new BScroll(this.$refs['dsw-edit-container'], {
@@ -76,6 +72,44 @@ export default {
   },
   updated () {
     this.betterScroll && this.betterScroll.refresh()
+  },
+  methods: {
+    updateHandler (e) {
+      const ids = this.attachmentLists.map((val) => {
+        return val.id
+      }).join(',')
+      const taskId = this.extraParams.taskId
+      const taskBelong = this.extraParams.taskBelong
+      const remark = this.extraParams.name
+
+      this.$https.post(this.$api.updateAttachment, {ids, taskId, taskBelong, remark}).then((result) => {
+        if (result.code === 0) {
+          this.$toastr.success('保存上传成功')
+          this.$layer.close(this.extraParams.parent.editIndex)
+        }
+      }).catch((reason) => {
+        this.$toastr.error('保存上传失败')
+      })
+    },
+    deleteFile (e, index) {
+      this.attachmentLists.splice(index, 1)
+    },
+    previewHandler (e, index) {
+      const data = this.attachmentLists.map((val) => {
+        return {
+          alt: val.fileName,
+          src: `${this.$api.getAttachment}?id=${val.id}`
+        }
+      })
+
+      this.$layer.photos({
+        photos: {
+          title: this.extraParams.name,
+          start: index,
+          data
+        }
+      })
+    }
   }
 }
 </script>

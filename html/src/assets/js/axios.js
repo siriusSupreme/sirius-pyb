@@ -20,7 +20,7 @@ const axiosInstance = axios.create({
   responseType: 'json',
   cancelToken: source.token,
   transformRequest (data, header) {
-    data = qs.stringfy(data)
+    data = qs.stringify(data)
 
     return data
   }

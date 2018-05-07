@@ -26,7 +26,7 @@
               <dsw-panel :is-show-footer="true">
                 <span slot="panel-heading" style="white-space: nowrap;">材料部分</span>
 
-                <dsw-table style="width: 100%;" :isl-loading-for-table="isLoadingForTable" :tableData="tableData[dossier.type]" :columns="columns" :columnWidthDrag="true" :pagingIndex="0" :row-click="rowClickHandler" @dsw-custom-component='customComponentHandler' :row-hover-color="'rgb(25, 45, 84)'"></dsw-table>
+                <dsw-table style="width: 100%;" :isl-loading-for-table="isLoadingForTable" :tableData="tableData[dossier.type]" :columns="columns" :columnWidthDrag="true" :pagingIndex="0" :row-click="rowClickHandler" @dsw-custom-component='customComponentHandler' :row-click-color="'rgb(25, 45, 84)'" :row-hover-color="'rgb(25, 45, 84)'"></dsw-table>
 
                 <button class="dsw-btn" slot="panel-footer" @click.stop="previewHandler($event,dossier.type)">预览该卷</button>
               </dsw-panel>
@@ -67,7 +67,8 @@ export default {
       listsData: [],
       tableData: {},
       columns: [],
-      scanIndex: 0
+      scanIndex: 0,
+      editIndex: 0
     }
   },
   watch: {
@@ -157,17 +158,19 @@ export default {
     customComponentHandler ({type, index, rowData}) {
       if (rowData) {
         if (type === 'edit') {
-          this.$vLayer.openPage(DswEdit, {}, {
+          this.editIndex = this.$vLayer.openPage(DswEdit, {}, {
             parent: this,
             title: '预览编辑',
             taskId: this.extraParams.id,
-            taskBelong: rowData.type
+            taskBelong: rowData.type,
+            name: this.extraParams.name
           })
         } else {
           this.scanIndex = this.$vLayer.openPage(DswScan, {}, {
             parent: this,
             taskId: this.extraParams.id,
-            taskBelong: rowData.type
+            taskBelong: rowData.type,
+            name: this.extraParams.name
           }, {
             area: ['450px', '240px'],
             end () {
@@ -181,7 +184,16 @@ export default {
       }
     },
     previewHandler (e, type) {
-      this.$vLayer.openPage(DswPreview)
+      if (this.currentRow) {
+        this.$vLayer.openPage(DswPreview, {}, {
+          parent: this,
+          taskId: this.extraParams.id,
+          taskBelong: this.currentRow.type,
+          name: this.extraParams.name
+        })
+      } else {
+        this.$toastr.warning('请选择一个案卷')
+      }
     }
   }
 }

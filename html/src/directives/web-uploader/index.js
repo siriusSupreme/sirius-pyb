@@ -3,7 +3,7 @@ import Upload from './Upload'
 
 export default {
   bind (el, binding, vnode) {
-    const upload = new Upload(el, binding, vnode)
+    const upload = new Upload(el, binding.value, vnode)
 
     el.setAttribute('web-uploader', upload)
   },

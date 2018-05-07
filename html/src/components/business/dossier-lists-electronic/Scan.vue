@@ -24,7 +24,8 @@ export default {
   data () {
     return {
       scanner: window['fhkScan'],
-      isScanFinished: false
+      isScanFinished: false,
+      editIndex: 0
     }
   },
   components: {
@@ -76,13 +77,13 @@ export default {
       scanner.ShowSourceUI = false
     },
     previewHandler (e) {
-      console.log(this)
-      this.$vLayer.openPage(DswEdit, {}, {
+      this.editIndex = this.$vLayer.openPage(DswEdit, {}, {
         parent: this,
         title: '预览编辑',
         scannedFiles: window.scannedFiles,
         taskId: this.extraParams.taskId,
-        taskBelong: this.extraParams.taskBelong
+        taskBelong: this.extraParams.taskBelong,
+        name: this.extraParams.name
       })
       this.clearGlobalResource()
       this.$layer.close(this.extraParams.parent.scanIndex)

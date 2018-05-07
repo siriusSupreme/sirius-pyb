@@ -3,9 +3,13 @@
     <span class="dsw-turn-page-btn dsw-turn-page-prev"></span>
     <span class="dsw-turn-page-btn dsw-turn-page-next"></span>
     <div class="dsw-turn-page-wrapper" :id="id" :dir="direction">
-
-      <div v-for="index in 32" :key="index">
-        <img src="./images/cover-page.png" :alt="'Page ' + index" >
+      <template v-if="pages.length">
+        <div v-for="(page, index) in pages" :key="index">
+          <img :src="$api.getAttachment + '?id=' + page.id" :alt="'Page ' + index" :title="page.fileName">
+        </div>
+      </template>
+      <div v-else>
+        <img src="./images/cover-page.png" alt="empty" title="empty">
       </div>
 
     </div>
@@ -37,6 +41,14 @@ export default {
     }
   },
   created () {
+    // this.$nextTick(() => {
+    //   $(`#${this.id}`).turn({
+    //     autoCenter: true
+    //   })
+    // })
+  },
+  updated () {
+    // $(`#${this.id}`).turn('resize')
     this.$nextTick(() => {
       $(`#${this.id}`).turn({
         autoCenter: true

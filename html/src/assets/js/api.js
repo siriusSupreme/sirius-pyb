@@ -37,7 +37,8 @@ Object.defineProperty(Vue.prototype, '$api', {
       saveRole: 'Role/saveRole.json',
       getDossierCabinetUsage: 'RoomRpc/listCellOperationLog.json',
       getRoleMenuSelectedListByRoleId: 'Role/findRoleMenuSelectedListByRoleId.json',
-      saveDossier: 'CaseHeaderRpc/add.json'
+      saveDossier: 'CaseHeaderRpc/add.json',
+      updateAttachment: 'FileUpload/updateAttach.json'
     }
   }
 })
