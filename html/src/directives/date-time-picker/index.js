@@ -1,7 +1,7 @@
 
 import laydate from 'layui-src/src/lay/modules/laydate'
 // import 'layui-src/src/css/modules/laydate/default/font.css'
-import 'layui-src/src/css/modules/laydate/default/laydate.css'
+import 'layui-src/dist/css/modules/laydate/default/laydate.css'
 
 export default {
   bind (el, binding, vnode) {

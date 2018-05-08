@@ -15,8 +15,6 @@ class Qrcode {
     const codeRemark = caseCode
     const type = 2
 
-    debugger
-
     const TSCObj = new window.ActiveXObject('TSCActiveX.TSCLIB')
     // TSCObj.ActiveXabout();
     // 连接打印机
