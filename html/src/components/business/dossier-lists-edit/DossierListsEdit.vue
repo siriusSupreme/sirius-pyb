@@ -30,8 +30,7 @@
           <div class="form-group form-group-sm">
             <label class="control-label col-sm-3 dsw-required" >立案时间：</label >
             <div class="col-sm-9">
-              <!--<input type='text' name="regDate" v-model="info.regDate" ref="regDate" class="form-control" v-validate="'required'" data-vv-as="立案时间" />-->
-              <date-picker :date="{time:info.regDate}"></date-picker>
+              <input type='text' name="regDate" ref="regDate" class="form-control" v-model="info.regDate" v-date-time-picker v-validate="'required'" data-vv-as="立案时间" />
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -73,7 +72,7 @@ import DialogContainer from 'components/common/dialog-container'
 import DswPanel from 'components/common/panel'
 
 import BetterScroll from 'directives/better-scroll'
-import DatePicker from 'vue-datepicker/vue-datepicker-es6'
+import DateTimePicker from 'directives/date-time-picker'
 
 import 'assets/js/vee-validate'
 
@@ -104,11 +103,11 @@ export default {
   },
   components: {
     DialogContainer,
-    DswPanel,
-    DatePicker
+    DswPanel
   },
   directives: {
-    BetterScroll
+    BetterScroll,
+    DateTimePicker
   },
   beforeMount () {
     this.getInfo()
