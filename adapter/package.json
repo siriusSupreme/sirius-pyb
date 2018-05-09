@@ -14,8 +14,32 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "animate.css": "^3.6.1",
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "better-scroll": "^1.10.3",
+    "bootstrap": "^4.1.1",
+    "codemirror": "^5.37.0",
+    "echarts": "^4.1.0",
+    "element-ui": "^2.3.7",
+    "font-awesome": "^4.7.0",
+    "highlightjs": "^9.10.0",
+    "jquery": "^3.3.1",
+    "layui-src": "^2.2.5",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.1",
+    "qs": "^6.5.2",
+    "socket.io": "^2.1.0",
+    "stompjs": "^2.3.3",
+    "toastr": "^2.1.4",
+    "vee-validate": "^2.0.9",
+    "velocity-animate": "^1.5.1",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-easytable": "^1.7.0",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
+    "webuploader": "^0.1.8",
+    "ztree": "^3.5.24"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
