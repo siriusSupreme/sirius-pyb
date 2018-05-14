@@ -1,11 +1,11 @@
 <template >
-  
+
 </template >
 
 <script >
-  export default {
-    name: "Input"
-  }
+export default {
+  name: 'Input'
+}
 </script >
 
 <style scoped >

@@ -1,0 +1,11 @@
+{
+  "name": "pretty",
+  "version": "1.0.0",
+  "description": "pretty project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sirius",
+  "license": "ISC"
+}
