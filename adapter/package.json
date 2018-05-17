@@ -21,6 +21,7 @@
     "bootstrap": "^4.1.1",
     "codemirror": "^5.37.0",
     "echarts": "^4.1.0",
+    "echarts-gl": "^1.1.1",
     "element-ui": "^2.3.8",
     "font-awesome": "^4.7.0",
     "highlightjs": "^9.10.0",
@@ -98,7 +99,7 @@
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
-    "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-bundle-analyzer": "^2.12.0",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },
