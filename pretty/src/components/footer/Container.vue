@@ -1,10 +1,10 @@
 <template >
-
+  <section><slot></slot></section>
 </template >
 
 <script >
 export default {
-  name: 'Input'
+  name: 'Container'
 }
 </script >
 
