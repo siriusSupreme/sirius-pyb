@@ -1,5 +1,5 @@
 <template >
-  <section><slot></slot></section>
+  <section class="ss-container"><slot></slot></section>
 </template >
 
 <script >
@@ -8,6 +8,8 @@ export default {
 }
 </script >
 
-<style scoped >
+<style lang="stylus" scoped >
+.ss-container{
 
+}
 </style >
