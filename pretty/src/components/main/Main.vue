@@ -1,13 +1,13 @@
 <template >
-  <section><slot></slot></section>
+  <main><slot></slot></main>
 </template >
 
 <script >
 export default {
-  name: 'Container'
+  name: 'Main'
 }
 </script >
 
-<style scoped >
+<style lang="stylus" scoped >
 
 </style >

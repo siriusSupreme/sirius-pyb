@@ -1,10 +1,10 @@
 <template >
-  <aside><slot></slot></aside>
+  <header><slot></slot></header>
 </template >
 
 <script >
 export default {
-  name: 'Aside'
+  name: 'Header'
 }
 </script >
 

@@ -3,4 +3,5 @@
 .idea
 
 case_manager
+case_manager_terminal
 Would skip repository case_manager/
