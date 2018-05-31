@@ -1,8 +1,7 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
-  </div>
+  <section class="app" id="app">
+    <router-view></router-view>
+  </section>
 </template>
 
 <script>
@@ -11,13 +10,18 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="stylus">
+.app {
+  position relative;
+  height 100%;
+  min-height 1024px;
+  overflow hidden;
+  -webkit-font-smoothing antialiased;
+  -moz-osx-font-smoothing grayscale;
+  .ss-container{
+    position relative;
+    height 100%;
+    overflow hidden;
+  }
 }
 </style>
