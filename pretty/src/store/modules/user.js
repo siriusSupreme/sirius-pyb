@@ -6,7 +6,7 @@ const user = {
   namespaced: true,
   state () {
     return {
-      id: 0,
+      userId: 0,
       roleId: '',
       realName: '',
       account: '',
@@ -21,8 +21,8 @@ const user = {
       state.token = token
     },
     setUserInfo (state, userInfo) {
-      let {id, roleId, realName, account, orgcode: orgCode, orgName} = userInfo
-      state.id = id
+      let {id: userId, roleId, realName, account, orgcode: orgCode, orgName} = userInfo
+      state.userId = userId
       state.roleId = roleId
       state.realName = realName
       state.account = account
@@ -35,21 +35,21 @@ const user = {
       try {
         let result = await loginByCardNo(cardNo)
         if (result.code) {
-          Message.error(result.msg)
           throw new Error(result.msg)
         } else {
           commit('setToken', result.data.token)
           setToken(result.data.token)
         }
       } catch (e) {
-        return Promise().reject(e)
+        Message.error(e.message)
+        return Promise.reject(e)
       }
     },
-    async logout ({commit, dispatch, state, rootState, getters, rootGetters}) {
+    logout ({commit, dispatch, state, rootState, getters, rootGetters}) {
       commit('setToken', '')
       removeToken()
     },
-    async getUserInfoByToken ({commit, dispatch, state, rootState, getters, rootGetters}) {
+    getUserInfoByToken ({commit, dispatch, state, rootState, getters, rootGetters}) {
       return getUserInfoByToken(state.token).then(result => {
         if (result.code) {
           Message.error(result.msg)

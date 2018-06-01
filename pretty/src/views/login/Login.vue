@@ -32,8 +32,8 @@ export default {
       if (val.length === 10) {
         this.loginByCardNo(val).then(() => {
           this.$router.push('/index')
-          this.cardNo = ''
         })
+        this.cardNo = ''
       }
     }
   },

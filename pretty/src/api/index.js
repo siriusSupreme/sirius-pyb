@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getCabinetLists (userId) {
+export function getCabinetListsByUserId (userId) {
   return request({
     method: 'get',
     url: '/RoomRpc/listUserCupboardCells.json',
@@ -8,7 +8,23 @@ export function getCabinetLists (userId) {
   })
 }
 
-export function storeDossier (cellId) {
+export function storeDossierByCellId (cellId) {
+  return request({
+    method: 'get',
+    url: '/RoomRpc/addCaseCell.json',
+    params: {cellId}
+  })
+}
+
+export function fetchDossierByDossierId (caseId) {
+  return request({
+    method: 'get',
+    url: '/RoomRpc/takeCase.json',
+    params: {caseId}
+  })
+}
+
+export function getDossierListsByCellId (cellId) {
   return request({
     method: 'get',
     url: '/RoomRpc/listAllCaseByCellId.json',
@@ -16,25 +32,10 @@ export function storeDossier (cellId) {
   })
 }
 
-export function fetchDossier () {
+export function searchCabinet (userId, caseNo) {
   return request({
     method: 'get',
-    url: '/RoomRpc/listAllCaseByCellId.json'
-  })
-}
-
-export function getDossierLists (cellId) {
-  return request({
-    method: 'get',
-    url: '/RoomRpc/listAllCaseByCellId.json',
-    params: {cellId}
-  })
-}
-
-export function searchCabinet (data) {
-  return request({
-    method: 'get',
-    url: '',
-    params: data
+    url: '/RoomRpc/listUserCaseCell.json',
+    params: {userId, caseNo}
   })
 }

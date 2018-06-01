@@ -8,7 +8,7 @@
       </div>
       <div class="index-user-wrapper">
         <span class="index-my-cabinet">( {{cabinetLists.length}} )</span>
-        <span class="index-user-info">当前用户      {{'李盼'}}</span>
+        <span class="index-user-info">当前用户      {{userName}}</span>
       </div>
     </header>
     <!--头部 end-->
@@ -47,7 +47,7 @@
       <div class="index-dossier-lists-wrapper" ref="index-dossier-lists-wrapper">
         <ul class="index-dossier-lists" ref="index-dossier-lists">
           <li class="index-dossier-item" v-for="(dossier, index) in dossierLists" :key="index">
-            <div class="dossier-wrapper" v-for="(item, i) in dossier" :key="i">
+            <div class="dossier-wrapper" :class="{active: item.caseId === currentCaseId}" v-for="item in dossier" :key="item.caseId" @click.stop="dossierClickHandler(item)">
               <p class="dossier-name">{{item.name}}</p>
             </div>
           </li>
@@ -59,8 +59,8 @@
         </ul>
       </div>
       <div class="index-btn-wrapper">
-        <button type="button" class="index-btn index-store">存   卷</button>
-        <button type="button" class="index-btn index-fetch">取   卷</button>
+        <button type="button" class="index-btn index-store" @click.stop="storeDossierHandler">存   卷</button>
+        <button type="button" class="index-btn index-fetch" @click.stop="fetchDossierHandler">取   卷</button>
       </div>
     </div>
     <!--卷宗列表 end-->
@@ -70,7 +70,7 @@
 <script >
 import BScroll from 'better-scroll'
 import {createNamespacedHelpers} from 'vuex'
-import {getCabinetLists, getDossierLists} from '@/api/index'
+import {getCabinetListsByUserId, getDossierListsByCellId, searchCabinet} from '@/api/index'
 
 const {mapActions, mapState} = createNamespacedHelpers('user')
 
@@ -87,18 +87,20 @@ export default {
       dossierLists: [],
       dossierTotalCount: 0,
       currentCellId: 0,
-      currentCell: {}
+      currentCell: {},
+      currentCaseId: 0,
+      currentCase: {}
     }
   },
   computed: {
     ...mapState({
-      userId: 'id'
+      userId: state => state.userId,
+      userName: 'realName'
     })
   },
   created () {
     this.getUserInfoByToken().then(() => {
       this.getCabinetLists()
-      // this.getDossierLists()
     })
 
     this.updateDatetime()
@@ -110,20 +112,24 @@ export default {
         this.$router.push('/login')
       })
     },
-    getCabinetLists () {
-      getCabinetLists(this.userId).then(result => {
+    searchHandler (e) {
+      let userId = this.userId
+      let caseNo = this.keywords
+
+      this.resetState()
+      this.cabinetLists = []
+
+      searchCabinet(userId, caseNo).then(result => {
         if (result.code) {
           this.$message.error(result.msg)
         } else {
           this.cabinetLists = result.data.lists
 
           if (this.cabinetLists.length) {
-            this.currentCell = this.cabinetLists[0]
-            this.currentCellId = this.cabinetLists[0]['cellId']
-            this.cabinetClickHandler(this.currentCell)
+            this.cabinetClickHandler(this.cabinetLists[0])
             this.$nextTick(() => {
-              this.initCabinetSlider()
-              this.initCabinetWidth()
+              this.initSlider('cabinetSlider', 'index-cabinet-lists-wrapper')
+              this.initSliderWidth('index-cabinet-lists')
             })
           }
         }
@@ -131,15 +137,71 @@ export default {
         this.$message.error(error.msg)
       })
     },
-    getDossierLists () {
+    getCabinetLists () {
+      getCabinetListsByUserId(this.userId).then(result => {
+        if (result.code) {
+          this.$message.error(result.msg)
+        } else {
+          this.cabinetLists = result.data.lists
+
+          if (this.cabinetLists.length) {
+            this.cabinetClickHandler(this.cabinetLists[0])
+            this.$nextTick(() => {
+              this.initSlider('cabinetSlider', 'index-cabinet-lists-wrapper')
+              this.initSliderWidth('index-cabinet-lists')
+            })
+          }
+        }
+      }, error => {
+        this.$message.error(error.msg)
+      })
+    },
+    cabinetClickHandler (cell) {
+      if (cell.cellId === this.currentCellId) return
+
       let sliceCount = 10
-      let dossierLists = Array.from({length: Math.round(Math.random() * 200)}, (v, i) => i)
+      let dossierLists = []
 
+      this.resetState()
+
+      this.currentCell = cell
+      this.currentCellId = cell.cellId
+
+      getDossierListsByCellId(cell.cellId).then(result => {
+        if (result.code) {
+          this.$message.error(result.msg)
+        } else {
+          dossierLists = result.data.lists
+          this.dossierTotalCount = dossierLists.length
+
+          if (this.dossierTotalCount) {
+            this.currentCase = dossierLists[0]
+            this.currentCaseId = this.currentCase.caseId
+            for (let i = 0, len = dossierLists.length; i < len; i += sliceCount) {
+              this.dossierLists.push(dossierLists.slice(i, i + sliceCount))
+            }
+            this.$nextTick(() => {
+              this.initSlider('dossierSlider', 'index-dossier-lists-wrapper')
+              this.initSliderWidth('index-dossier-lists')
+            })
+          }
+        }
+      }, error => {
+        this.$message.error(error.msg)
+      })
+    },
+    resetState () {
       this.dossierLists = []
-
-      for (let i = 0, len = dossierLists.length; i < len; i += sliceCount) {
-        this.dossierLists.push(dossierLists.slice(i, i + sliceCount))
-      }
+      this.dossierTotalCount = 0
+      this.currentPageIndex = 0
+      this.currentCell = {}
+      this.currentCellId = 0
+      this.currentCase = {}
+      this.currentCaseId = 0
+    },
+    dossierClickHandler (dossier) {
+      this.currentCase = dossier
+      this.currentCaseId = this.currentCase.caseId
     },
     updateDatetime () {
       let timer = window.setInterval(() => {
@@ -150,8 +212,8 @@ export default {
         window.clearInterval(timer)
       })
     },
-    initCabinetWidth () {
-      let listsElement = this.$refs['index-cabinet-lists']
+    initSliderWidth (ref) {
+      let listsElement = this.$refs[ref]
       let children = Array.from(listsElement.children)
       let width = 0
 
@@ -161,8 +223,10 @@ export default {
 
       listsElement.style.width = width + 'px'
     },
-    initCabinetSlider () {
-      this.cabinetSlider = new BScroll(this.$refs['index-cabinet-lists-wrapper'], {
+    initSlider (slider, ref) {
+      this[slider] && this[slider].destroy()
+
+      this[slider] = new BScroll(this.$refs[ref], {
         scrollX: true,
         scrollY: false,
         bindToWrapper: false,
@@ -173,40 +237,12 @@ export default {
         }
       })
 
-      this.cabinetSlider.on('scrollEnd', ({x, y}) => {
-        let {pageX, pageY} = this.cabinetSlider.getCurrentPage()
-        console.log(pageX)
-        console.log(pageY)
-      })
-    },
-    cabinetClickHandler (cell) {
-      let sliceCount = 10
-      let dossierLists = []
-      this.dossierLists = []
-      this.dossierTotalCount = 0
-      this.currentCell = cell
-      this.currentCellId = cell.cellId
-
-      getDossierLists(cell.cellId).then(result => {
-        if (result.code) {
-          this.$message.error(result.msg)
-        } else {
-          dossierLists = result.data.lists
-          this.dossierTotalCount = dossierLists.length
-
-          if (this.dossierTotalCount) {
-            for (let i = 0, len = dossierLists.length; i < len; i += sliceCount) {
-              this.dossierLists.push(dossierLists.slice(i, i + sliceCount))
-            }
-            this.$nextTick(() => {
-              this.initDossierSlider()
-              this.initDossierWidth()
-            })
-          }
-        }
-      }, error => {
-        this.$message.error(error.msg)
-      })
+      if (slider === 'dossierSlider') {
+        this[slider].on('scrollEnd', ({x, y}) => {
+          let {pageX} = this.dossierSlider.getCurrentPage()
+          this.currentPageIndex = pageX
+        })
+      }
     },
     cabinetPrevHandler (e) {
       this.cabinetSlider.prev()
@@ -214,45 +250,9 @@ export default {
     cabinetNextHandler (e) {
       this.cabinetSlider.next()
     },
-    initDossierWidth () {
-      let listsElement = this.$refs['index-dossier-lists']
-      let children = Array.from(listsElement.children)
-      let width = 0
-
-      children.forEach((el) => {
-        width += el.clientWidth
-      })
-
-      listsElement.style.width = width + 'px'
-    },
-    initDossierSlider () {
-      this.dossierSlider && this.dossierSlider.destroy()
-
-      this.dossierSlider = new BScroll(this.$refs['index-dossier-lists-wrapper'], {
-        scrollX: true,
-        scrollY: false,
-        bindToWrapper: false,
-        stopPropagation: true,
-        snap: {
-          loop: true,
-          threshold: 0.1
-        }
-      })
-
-      this.dossierSlider.on('scrollEnd', ({x, y}) => {
-        let {pageX} = this.dossierSlider.getCurrentPage()
-        this.currentPageIndex = pageX
-      })
-    },
-    dossierClickHandler (e) {
-
-    },
     indicateDotHandler (pageX) {
       this.currentPageIndex = pageX
       this.dossierSlider.goToPage(pageX)
-    },
-    searchHandler (e) {
-
     }
   }
 }
@@ -358,12 +358,15 @@ export default {
         .index-cabinet-item{
           float left;
           padding 0 10px;
+          height 196px;
           .cabinet-wrapper{
             position relative;
             width 154px;
-            height 196px;
+            height 190px;
+            margin-top 3px;
             font-size 14px;
             cursor pointer;
+            border-radius 10px;
             background url("./images/cabinet-bg.png") no-repeat scroll 0 0/100% 100%;
             .cabinet-index{
               position absolute;
@@ -395,8 +398,11 @@ export default {
               color #045877;
               background url("./images/cabinet-store.png") no-repeat scroll 0 0/100% 100%;
             }
-            &.active .cabinet-store-count{
-              color #ff541f;
+            &.active {
+              box-shadow: 0 0 6px 2px #e0e40f;
+              .cabinet-store-count{
+                color #ff541f;
+              }
             }
           }
         }
@@ -461,6 +467,13 @@ export default {
             margin 10px;
             cursor pointer;
             background url("./images/dossier-bg.png") no-repeat scroll 0 0/100% 100%;
+            &.active{
+              transform scale(1.05);
+              box-shadow 0 0 5px 2px #16cac4;
+            }
+            &:hover{
+              transform scale(1.05);
+            }
             .dossier-name{
               writing-mode tb-rl;
               text-align left;

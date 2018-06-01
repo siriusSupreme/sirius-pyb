@@ -8,6 +8,9 @@ import store from './store'
 import Element from 'element-ui'
 import App from './App'
 
+import Layer from '@/plugins/layer'
+import Toastr from '@/plugins/toastr'
+
 import 'bootstrap/scss/bootstrap.scss'
 import 'font-awesome/scss/font-awesome.scss'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -25,6 +28,9 @@ Vue.config.productionTip = false
 Vue.use(Element, {
   size: 'small'
 })
+
+Vue.use(Layer)
+Vue.use(Toastr)
 
 /* eslint-disable no-new */
 new Vue({
