@@ -8,27 +8,35 @@ export function getCabinetListsByUserId (userId) {
   })
 }
 
-export function storeDossierByCellId (cellId) {
+export function storeDossierByCellId (cellId, caseId) {
   return request({
-    method: 'get',
+    method: 'post',
     url: '/RoomRpc/addCaseCell.json',
-    params: {cellId}
+    data: {cellId, caseId}
   })
 }
 
-export function fetchDossierByDossierId (caseId) {
+export function getDossierInfoByCaseNo (caseNo) {
   return request({
     method: 'get',
-    url: '/RoomRpc/takeCase.json',
-    params: {caseId}
+    url: '/CaseHeaderRpc/queryByCode.json',
+    params: {caseNo}
   })
 }
 
-export function getDossierListsByCellId (cellId) {
+export function fetchDossierByDossierId (cellId, caseId) {
+  return request({
+    method: 'post',
+    url: '/RoomRpc/takeCase.json',
+    data: {cellId, caseId}
+  })
+}
+
+export function getDossierListsByCellId (cellId, caseNo) {
   return request({
     method: 'get',
     url: '/RoomRpc/listAllCaseByCellId.json',
-    params: {cellId}
+    params: {cellId, caseNo}
   })
 }
 

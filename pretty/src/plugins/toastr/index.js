@@ -1,9 +1,10 @@
+import merge from 'lodash/merge'
 import toastr from 'toastr'
 import 'toastr/toastr.scss'
 
 export default {
   install (Vue, options = {}) {
-    toastr.options = Object.assign({}, {
+    toastr.options = merge({}, {
       debug: process.env !== 'production',
       closeButton: true,
       positionClass: 'toast-top-center',

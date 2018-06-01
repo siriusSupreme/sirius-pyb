@@ -15,7 +15,7 @@
 
     <!--搜索 start-->
     <div class="index-search-wrapper">
-      <input class="index-search-input" v-model="keywords" type="text" placeholder="请输入案件编号" />
+      <input class="index-search-input" v-model="keywords" type="text" placeholder="请输入案件编号" @keydown.enter="searchHandler" />
       <button type="button" class="index-search-button" @click.stop="searchHandler"></button>
     </div>
     <!--搜索 end-->
@@ -27,8 +27,8 @@
           <li class="index-cabinet-item" v-for="(cabinet, index) in cabinetLists" :key="cabinet.cellId">
             <div class="cabinet-wrapper" :class="{active: currentCellId === cabinet.cellId}" @click.stop="cabinetClickHandler(cabinet)">
               <span class="cabinet-index">{{String(index+1).padStart(2, '0')}}</span>
-              <span class="cabinet-bottom">{{`案管柜 ${cabinet.cellCode}`}}</span>
-              <span class="cabinet-store">存卷 <span class="cabinet-store-count">{{cabinet.caseCount}}</span> 份</span>
+              <span class="cabinet-bottom">{{cabinet.cupboardName || '案管柜'}}--{{cabinet.cellCode}}</span>
+              <span class="cabinet-store">存卷 <span class="cabinet-store-count">{{cabinet.caseCount || 0}}</span> 份</span>
             </div>
           </li>
         </ul>
@@ -41,7 +41,7 @@
     <!--卷宗列表 start-->
     <div class="index-dossier-wrapper">
       <div class="index-dossier-header">
-        <p class="index-dossier-title">案管柜    {{currentCell.cellCode}}</p>
+        <p class="index-dossier-title">{{currentCell.cupboardName || '案管柜'}}--{{currentCell.cellCode}}</p>
         <p class="index-dossier-count">( {{dossierTotalCount}} )</p>
       </div>
       <div class="index-dossier-lists-wrapper" ref="index-dossier-lists-wrapper">
@@ -72,6 +72,9 @@ import BScroll from 'better-scroll'
 import {createNamespacedHelpers} from 'vuex'
 import {getCabinetListsByUserId, getDossierListsByCellId, searchCabinet} from '@/api/index'
 
+import Store from './Store'
+import Fetch from './Fetch'
+
 const {mapActions, mapState} = createNamespacedHelpers('user')
 
 export default {
@@ -89,7 +92,8 @@ export default {
       currentCellId: 0,
       currentCell: {},
       currentCaseId: 0,
-      currentCase: {}
+      currentCase: {},
+      dialogIndex: 0
     }
   },
   computed: {
@@ -161,13 +165,14 @@ export default {
 
       let sliceCount = 10
       let dossierLists = []
+      let caseNo = this.keywords
 
       this.resetState()
 
       this.currentCell = cell
       this.currentCellId = cell.cellId
 
-      getDossierListsByCellId(cell.cellId).then(result => {
+      getDossierListsByCellId(cell.cellId, caseNo).then(result => {
         if (result.code) {
           this.$message.error(result.msg)
         } else {
@@ -202,6 +207,43 @@ export default {
     dossierClickHandler (dossier) {
       this.currentCase = dossier
       this.currentCaseId = this.currentCase.caseId
+    },
+    storeDossierHandler (e) {
+      if (!this.currentCellId) {
+        this.$message.warning('请选择一个案卷柜')
+        return
+      }
+      this.dialogIndex = this.$layer.openComponent(Store, {
+        data: {
+          parent: this,
+          cupboardName: this.currentCell.cupboardName,
+          cellCode: this.currentCell.cellCode,
+          cellId: this.currentCellId
+        }
+      }, {
+        closeBtn: false,
+        area: ['574px', '370px'],
+        end: () => {
+          if (!this.dialogIndex) {
+            this.cabinetClickHandler(this.currentCell)
+          }
+        }
+      })
+    },
+    fetchDossierHandler (e) {
+      if (!this.currentCaseId) {
+        this.$message.warning('请选择一份案卷')
+        return
+      }
+      this.dialogIndex = this.$layer.openComponent(Fetch, {data: {parent: this, cellId: this.currentCellId, caseId: this.currentCaseId}}, {
+        closeBtn: false,
+        area: ['402px', '259px'],
+        end: () => {
+          if (!this.dialogIndex) {
+            this.cabinetClickHandler(this.currentCell)
+          }
+        }
+      })
     },
     updateDatetime () {
       let timer = window.setInterval(() => {
@@ -469,7 +511,8 @@ export default {
             background url("./images/dossier-bg.png") no-repeat scroll 0 0/100% 100%;
             &.active{
               transform scale(1.05);
-              box-shadow 0 0 5px 2px #16cac4;
+              /*box-shadow 0 0 5px 2px #16cac4;*/
+              border 2px solid #ec2d11;
             }
             &:hover{
               transform scale(1.05);
@@ -525,6 +568,9 @@ export default {
         outline none;
         cursor pointer;
         margin 0 20px;
+        &:hover{
+          transform scale(1.05);
+        }
       }
       .index-store{
         background url("./images/dossier-store.png") no-repeat scroll 0 0/100% 100%;
