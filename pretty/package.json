@@ -43,6 +43,7 @@
     "toastr": "^2.1.4",
     "vee-validate": "^2.0.9",
     "velocity-animate": "^1.5.1",
+    "video.js": "^7.0.3",
     "vue": "^2.5.2",
     "vue-easytable": "^1.7.1",
     "vue-form-generator": "^2.2.2",
