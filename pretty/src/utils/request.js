@@ -3,7 +3,7 @@ import {Message, Loading} from 'element-ui'
 import {getToken} from '@/utils/auth-token'
 
 const axiosInstance = axios.create({
-  baseURL: 'http://192.168.0.128:8095/caseManager/'
+  baseURL: 'http://192.168.0.18:8095/caseManager/'
 })
 
 let loadingInstance = null

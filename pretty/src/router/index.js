@@ -8,7 +8,7 @@ Vue.use(Router)
 let _import = require('./import-' + process.env.NODE_ENV)
 
 let router = new Router({
-  mode: 'hash',
+  mode: 'history',
   base: '/',
   routes: [
     {
