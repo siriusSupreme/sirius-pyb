@@ -34,6 +34,7 @@
     "lodash": "^4.17.10",
     "mockjs": "^1.0.1-beta3",
     "moment": "^2.22.2",
+    "pdfjs-dist": "^2.0.489",
     "popper.js": "^1.14.3",
     "qs": "^6.5.2",
     "screenfull": "^3.3.2",
