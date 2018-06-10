@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import 'babel-polyfill'
 import Vue from 'vue'
+import {sync} from 'vuex-router-sync'
 import router from './router'
 import store from './store'
 
@@ -31,6 +32,8 @@ Vue.use(Element, {
 
 Vue.use(Layer)
 Vue.use(Toastr)
+
+sync(store, router)
 
 /* eslint-disable no-new */
 new Vue({
