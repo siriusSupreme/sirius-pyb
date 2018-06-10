@@ -1,0 +1,21 @@
+// 使用appearance改变webkit浏览器的默认外观
+input,
+select {
+  -webkit-appearance none
+  appearance none
+}
+// 禁用select默认箭头
+select::-ms-expand {
+  display none
+}
+// 禁用radio和checkbox默认样式
+input[type=radio]::-ms-check,
+input[type=checkbox]::-ms-check {
+  display none
+}
+// 禁用pc端表单输入框默认清除按钮
+input[type=text]::-ms-clear,
+input[type=tel]::-ms-clear,
+input[type=number]::-ms-clear {
+  display none
+}
