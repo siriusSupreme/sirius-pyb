@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import {getToken} from '@/utils/auth-token'
+// import { getToken } from '@/utils/auth-token'
 
 Vue.use(Router)
 
@@ -19,14 +19,7 @@ let router = new Router({
       component: _import('index/Index'),
       props: true,
       meta: {},
-      children: [
-        {
-          path: 'cabinet/:cellId',
-          name: 'dossier',
-          component: _import('index/Dossier'),
-          props: true
-        }
-      ],
+      children: [],
       beforeEnter: (to, from, next) => {
         // TODO 只在 第一次 进入 该路由时 触发
         next()
@@ -38,6 +31,16 @@ let router = new Router({
       component: _import('login/Login')
     },
     {
+      path: '/cabinet',
+      name: 'cabinet',
+      component: _import('cabinet/Cabinet')
+    },
+    {
+      path: '/dossier',
+      name: 'dossier',
+      component: _import('dossier/Dossier')
+    },
+    {
       path: '/*',
       redirect: '/index'
     }
@@ -45,19 +48,17 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login' && !getToken()) {
-    next('/login')
-  } else {
-    next()
-  }
+  // if (to.name !== 'login' && !getToken()) {
+  //   next('/login')
+  // } else {
+  //   next()
+  // }
 })
 
 router.beforeResolve((to, from, next) => {
   next()
 })
 
-router.afterEach((to, from) => {
-
-})
+router.afterEach((to, from) => {})
 
 export default router

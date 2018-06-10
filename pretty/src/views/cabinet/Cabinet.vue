@@ -1,5 +1,5 @@
 <template >
-  <div></div>
+  <article>Cabinet</article>
 </template >
 
 <script >
@@ -8,6 +8,5 @@ export default {
 }
 </script >
 
-<style scoped >
-
+<style lang="stylus" scoped >
 </style >
