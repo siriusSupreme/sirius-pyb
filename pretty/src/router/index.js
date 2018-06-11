@@ -19,12 +19,10 @@ let router = new Router({
       component: _import('index/Index'),
       props: true,
       meta: {},
-      children: (require => {
-        return require.keys().map(key => {
-          let route = require(key)
-          return route.default || route
-        })
-      })(require.context('./children', false, /[\w-]+.js$/)),
+      children: (() => {
+        let route = require('./children/index')
+        return route.default || route
+      })(),
       beforeEnter: (to, from, next) => {
         // TODO 只在 第一次 进入 该路由时 触发
         next()

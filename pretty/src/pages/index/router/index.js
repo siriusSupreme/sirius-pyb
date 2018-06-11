@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth-token'
 
 Vue.use(Router)
 
-let _import = require('./import-' + process.env.NODE_ENV)
+const PATH = 'pages/index/views/'
 
 let router = new Router({
   mode: 'history',
@@ -16,15 +16,11 @@ let router = new Router({
       alias: ['/index'],
       name: 'index',
       caseSensitive: false,
-      component: _import('index/Index'),
+      component: () => import(`${PATH}index/Index`),
       props: true,
       meta: {},
-      children: (require => {
-        return require.keys().map(key => {
-          let route = require(key)
-          return route.default || route
-        })
-      })(require.context('./children', false, /[\w-]+.js$/)),
+      children:
+        require('./children/index').default || require('./children/index'),
       beforeEnter: (to, from, next) => {
         // TODO 只在 第一次 进入 该路由时 触发
         next()
@@ -33,17 +29,7 @@ let router = new Router({
     {
       path: '/login',
       name: 'login',
-      component: _import('login/Login')
-    },
-    {
-      path: '/cabinet',
-      name: 'cabinet',
-      component: _import('cabinet/Cabinet')
-    },
-    {
-      path: '/dossier',
-      name: 'dossier',
-      component: _import('dossier/Dossier')
+      component: resolve => require([`${PATH}login/Login`], resolve)
     },
     {
       path: '/*',
