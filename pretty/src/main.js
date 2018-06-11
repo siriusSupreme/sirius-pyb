@@ -14,7 +14,7 @@ import Toastr from '@/plugins/toastr'
 
 import 'bootstrap/scss/bootstrap.scss'
 import 'font-awesome/scss/font-awesome.scss'
-import 'element-ui/lib/theme-chalk/index.css'
+import '@/assets/scss/element-ui.scss'
 import '@/assets/stylus/common.styl'
 
 import * as filters from './filters'
@@ -34,6 +34,7 @@ Vue.use(Layer)
 Vue.use(Toastr)
 
 sync(store, router)
+console.log(process.env)
 
 /* eslint-disable no-new */
 new Vue({
