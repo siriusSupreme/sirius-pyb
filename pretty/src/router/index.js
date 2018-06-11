@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// import { getToken } from '@/utils/auth-token'
+import { getToken } from '@/utils/auth-token'
 
 Vue.use(Router)
 
@@ -48,11 +48,11 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  // if (to.name !== 'login' && !getToken()) {
-  //   next('/login')
-  // } else {
-  //   next()
-  // }
+  if (to.name !== 'login' && !getToken()) {
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 router.beforeResolve((to, from, next) => {

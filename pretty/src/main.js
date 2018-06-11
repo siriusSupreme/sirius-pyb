@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import 'babel-polyfill'
 import Vue from 'vue'
-import {sync} from 'vuex-router-sync'
+import { sync } from 'vuex-router-sync'
 import router from './router'
 import store from './store'
 
@@ -41,6 +41,6 @@ new Vue({
   router,
   store,
   render (h) {
-    return (<App />)
+    return <App />
   }
 })
