@@ -1,5 +1,6 @@
-import Vue from 'vue'
 import camelCase from 'lodash/camelCase'
+
+let modules = {}
 
 const requireContext = require.context(
   // 其组件目录的相对路径
@@ -35,3 +36,5 @@ requireContext.keys().forEach(fileName => {
 
   modules[moduleName] = moduleStore.default || moduleStore
 })
+
+export default modules
