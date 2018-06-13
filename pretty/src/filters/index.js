@@ -1,37 +1,27 @@
 import Vue from 'vue'
-import camelCase from 'lodash/camelCase'
 
 const requireContext = require.context(
-  // 其组件目录的相对路径
-  './modules',
+  // 其过滤器目录的相对路径
+  './',
   // 是否查询其子目录
-  true,
-  // 匹配基础组件文件名的正则表达式
-  /[a-z]\w+\.js$/
+  false,
+  // 匹配过滤器文件名的正则表达式
+  /[\w-]+\.js$/
 )
 
 requireContext.keys().forEach(fileName => {
-  if (fileName === './index.js') {
-    return
-  }
+  if (fileName === './index.js') return
 
-  // 获取模块
-  let moduleStore = {}
-  if (/\w\//.test(fileName)) {
-    if (/index\.js$/.test(fileName)) {
-      moduleStore = requireContext(fileName)
-    } else {
-      return
-    }
-  } else {
-    moduleStore = requireContext(fileName)
-  }
+  // 获取过滤器配置
+  let filterConfig = requireContext(fileName)
 
-  // 获取模块的 camelCase 命名
-  const moduleName = camelCase(
-    // 剥去文件名开头的 `'./` 和结尾的扩展名
-    fileName.replace(/\.\/([^./]*).+$/, '$1')
-  )
+  // 如果这个过滤器选项是通过 `export default` 导出的，
+  // 那么就会优先使用 `.default`，
+  // 否则回退到使用模块的根。
+  filterConfig = filterConfig.default || filterConfig
 
-  modules[moduleName] = moduleStore.default || moduleStore
+  // register global utility filters.
+  Object.keys(filterConfig).forEach(filter => {
+    Vue.filter(filter, filterConfig[filter])
+  })
 })

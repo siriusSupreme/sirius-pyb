@@ -6,9 +6,12 @@ const merge = require('webpack-merge')
 const path = require('path')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+// const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+
+const { getPlugins } = require('./mpa')
+let { plugins } = getPlugins(false)
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -52,6 +55,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     }
   },
   plugins: [
+    ...plugins,
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),
@@ -59,11 +63,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     // new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
     // new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
-      inject: true
-    }),
+    // new HtmlWebpackPlugin({
+    //   filename: 'index.html',
+    //   template: 'index.html',
+    //   inject: true
+    // }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {

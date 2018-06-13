@@ -3,41 +3,50 @@
 const path = require('path')
 const fs = require('fs')
 const glob = require('glob')
-const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const {config, seo} =  require('./mpa-config')
-const files = glob.sync('./src/pages/*/*.js')
+const { config, seo } = require('./mpa-config')
+const files = glob.sync(`${config.basePath}pages/*/*.js`)
 
 function getEntries () {
   let entries = {}
+  let setEntry = file => {
+    let page = path.basename(path.dirname(file))
+    let pageEntry = seo[page] && seo[page]['entry']
 
-  files.forEach(function (file, index) {
-    const page = path.basename(path.dirname(file))
-    let pageEntry=seo[page] && seo[page]['entry']
+    pageEntry = Array.isArray(pageEntry) ? pageEntry : []
 
-    pageEntry=Array.isArray(pageEntry)?pageEntry:[]
+    entries[page] = config.commonEntry.concat(pageEntry, file)
+  }
 
-    entries[ page ] = config.commonEntry.concat(pageEntry, file)
-  })
+  // 生成入口文件
+  if (config.mode === 'single' || config.mode === 'all') {
+    setEntry(`${config.basePath}/main.js`)
+  }
+
+  if (config.mode === 'multiple' || config.mode === 'all') {
+    files.forEach(setEntry)
+  }
 
   return entries
 }
 
-
 function getPlugins (optimize = false) {
   let plugins = []
+  let cacheGroups = {}
   let pages = []
 
   let options = {
-    title:'',
+    title: '',
     filename: '',
     template: '',
-    // chunks:['manifest','vendor','app'],
-    chunks  : [],
-    inject  : true,
-    xhtml   : true,
+    templateParameters: {},
+    meta: {},
+    chunks: [],
+    excludeChunks: [],
+    inject: true,
+    xhtml: true,
 
     // necessary to consistently work with multiple chunks via CommonsChunkPlugin
     chunksSortMode: 'dependency'
@@ -46,72 +55,71 @@ function getPlugins (optimize = false) {
   if (optimize) {
     options = webpackMerge(options, {
       minify: {
-        collapseBooleanAttributes  : true,
+        collapseBooleanAttributes: true,
         collapseWhitespace: true,
         collapseInlineTagWhitespace: true,
-        keepClosingSlash           : true,
-        minifyCSS                  : true,
-        minifyJS                   : true,
-        minifyURLs                 : true,
-        removeAttributeQuotes      : true,
-        removeComments:true,
-        removeEmptyAttributes      : true,
-        removeRedundantAttributes  : true,
-        sortAttributes             : true,
-        sortClassName              : true,
-        useShortDoctype            : true,
+        keepClosingSlash: true,
+        minifyCSS: true,
+        minifyJS: true,
+        minifyURLs: true,
+        removeAttributeQuotes: true,
+        removeComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        sortAttributes: true,
+        sortClassName: true,
+        useShortDoctype: true
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
-      },
+      }
     })
   }
 
-  files.forEach(function (file, index) {
-    const basename = path.basename(file, '.js')
-    const dirname = path.dirname(file)
-    const page = path.basename(dirname)
+  let setPlugins = file => {
+    let dirname = path.dirname(file)
+    let page = path.basename(dirname)
 
-    const templateName=(seo[page] && seo[page]['templateName']) || config.defaultTemplateName
-    const pageTemplateHtml= dirname + '/' + templateName
+    let templateName =
+      (seo[page] && seo[page]['templateName']) || config.defaultTemplateName
+    let pageTemplateHtml = dirname + '/' + templateName
 
-    options.title = (seo[page] && seo[page].title) || config.defaultTitle
-    options.filename = (seo[page] && seo[page].fileName) || (page + '.html')
-    options.template = fs.existsSync(pageTemplateHtml) ? pageTemplateHtml : config.defaultTemplateFile
-    // options.chunks.push.apply(options.chunks,['common',page])
-    options.chunks = [ 'manifest', 'vendor', 'common' ].concat(page)
+    options.title = (seo[page] && seo[page].title) || page
+    options.filename = (seo[page] && seo[page].fileName) || page + '.html'
+    options.template = fs.existsSync(pageTemplateHtml)
+      ? pageTemplateHtml
+      : config.defaultTemplateFile
+    options.chunks = config.cacheGroups.concat(page)
 
-    const htmlWebpackPlugin = new HtmlWebpackPlugin(options)
+    let htmlWebpackPlugin = new HtmlWebpackPlugin(options)
 
     pages.push(page)
     plugins.push(htmlWebpackPlugin)
-  })
+  }
 
-  const commonsChunkPlugin = new webpack.optimize.CommonsChunkPlugin({
-                                                                        name     : 'common',
-                                                                        // filename : 'common',
-                                                                        chunks   : pages,
-                                                                        minChunks: pages.length
-                                                                        // minChunks: function (module, count) {
-                                                                        //   if (/(assets|static)/.test(module.resource) && !/node_modules/.test(module.resource)){
-                                                                        //     console.log(module.context)
-                                                                        //     console.log(module.resource+'========'+count)
-                                                                        //   }
-                                                                        //
-                                                                        //   return (module.context && module.resource && /(assets|static)/.test(module.resource) && !/node_modules/.test(module.resource))
-                                                                        // }
-                                                                      })
-  const asyncCommonsChunkPlugin=new webpack.optimize.CommonsChunkPlugin({
-                                                                     names: pages,
-                                                                     async: 'vendor-async',
-                                                                     children: true,
-                                                                     // deepChildren: true,
-                                                                     minChunks: 3
-                                                                   })
+  // 生成页面
+  if (config.mode === 'single' || config.mode === 'all') {
+    setPlugins(`${config.basePath}/main.js`)
+  }
 
-  return plugins.concat([commonsChunkPlugin,asyncCommonsChunkPlugin])
+  if (config.mode === 'multiple' || config.mode === 'all') {
+    files.forEach(setPlugins)
+  }
+
+  // 代码提取
+  cacheGroups = {
+    commons: {
+      priority: 0,
+      reuseExistingChunk: true,
+      chunks: chunk => {
+        return pages.includes(chunk.name)
+      }
+    }
+  }
+
+  return { plugins, cacheGroups }
 }
 
-
 module.exports = {
-  getEntries, getPlugins
+  getEntries,
+  getPlugins
 }

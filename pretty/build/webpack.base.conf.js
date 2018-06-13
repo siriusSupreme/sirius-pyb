@@ -6,6 +6,8 @@ const vueLoaderConfig = require('./vue-loader.conf')
 const { VueLoaderPlugin } = require('vue-loader')
 const Dotenv = require('dotenv-webpack')
 
+const { getEntries } = require('./mpa')
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -23,9 +25,10 @@ const createLintingRule = () => ({
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
-  entry: {
-    app: './src/main.js'
-  },
+  // entry: {
+  //   app: './src/main.js'
+  // },
+  entry: getEntries(),
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -67,11 +70,11 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('images/[name].[hash:7].[ext]')
         }
       },
       {
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac|swf)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,
