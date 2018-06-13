@@ -26,7 +26,6 @@ Vue.use(Element, {
 })
 
 sync(store, router)
-console.log(process.env)
 
 /* eslint-disable no-new */
 new Vue({

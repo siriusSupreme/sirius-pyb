@@ -18,8 +18,5 @@ requireContext.keys().forEach(fileName => {
   // 如果这个混入对象选项是通过 `export default` 导出的，
   // 那么就会优先使用 `.default`，
   // 否则回退到使用模块的根。
-  mixinConfig = mixinConfig.default || mixinConfig
-
-  // register global utility mixins.
-  Vue.mixin(mixinConfig)
+  Vue.mixin(mixinConfig.default || mixinConfig)
 })
