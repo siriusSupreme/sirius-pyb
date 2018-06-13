@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import { getToken } from '@/utils/auth-token'
-
 Vue.use(Router)
 
 let _import = require('./import-' + process.env.NODE_ENV)
@@ -51,11 +49,7 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login' && !getToken()) {
-    next('/login')
-  } else {
-    next()
-  }
+  next()
 })
 
 router.beforeResolve((to, from, next) => {

@@ -88,7 +88,7 @@ function getPlugins (optimize = false) {
     let pageTemplateHtml = dirname + '/' + templateName
 
     options.title = (seo[page] && seo[page].title) || page
-    options.filename = (seo[page] && seo[page].fileName) || page + '.html'
+    options.filename = (seo[page] && seo[page].fileName) || `${page}.html`
     options.template = fs.existsSync(pageTemplateHtml)
       ? pageTemplateHtml
       : config.defaultTemplateFile
