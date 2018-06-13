@@ -13,11 +13,11 @@ import 'font-awesome/scss/font-awesome.scss'
 import '@/assets/scss/element-ui.scss'
 import '@/assets/stylus/common.styl'
 
-import './components'
-import './directives'
-import './plugins'
-import './filters'
-import './mixins'
+import '@/components'
+import '@/directives'
+import '@/plugins'
+import '@/filters'
+import '@/mixins'
 
 Vue.config.productionTip = false
 

@@ -42,25 +42,29 @@ const webpackConfig = merge(baseWebpackConfig, {
       chunks: 'all',
       minSize: 30000,
       minChunks: 1,
-      maxAsyncRequests: 5,
-      maxInitialRequests: 3,
+      maxAsyncRequests: 8,
+      maxInitialRequests: 5,
       automaticNameDelimiter: '~',
       name: true,
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
           priority: 0,
           reuseExistingChunk: true
         },
         'async-vendors': {
+          name: 'async-vendors',
           priority: 0,
           reuseExistingChunk: true,
           chunks: 'async'
         },
-        cacheGroups
+        ...cacheGroups
       }
     },
-    runtimeChunk: 'single'
+    runtimeChunk: {
+      name: 'manifest'
+    }
   },
   plugins: [
     ...plugins,

@@ -5,18 +5,18 @@ import { getToken } from '@/utils/auth-token'
 
 Vue.use(Router)
 
-const PATH = 'pages/index/views/'
+// const PATH = '@/pages/index/views/'
 
 let router = new Router({
   mode: 'history',
-  base: '/',
+  base: '/mobile',
   routes: [
     {
       path: '/',
       alias: ['/index'],
       name: 'index',
       caseSensitive: false,
-      component: () => import(`${PATH}index/Index`),
+      component: () => import('@/pages/mobile/views/index/Index'),
       props: true,
       meta: {},
       children:
@@ -29,7 +29,8 @@ let router = new Router({
     {
       path: '/login',
       name: 'login',
-      component: resolve => require([`${PATH}login/Login`], resolve)
+      component: resolve =>
+        require(['@/pages/mobile/views/login/Login'], resolve)
     },
     {
       path: '/*',

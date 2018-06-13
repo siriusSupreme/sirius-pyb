@@ -11,7 +11,7 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
 const { getPlugins } = require('./mpa')
-let { plugins } = getPlugins(false)
+let { plugins, rewrites } = getPlugins(false)
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -32,9 +32,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
+        ...rewrites,
         {
           from: /.*/,
-          to: path.posix.join(config.dev.assetsPublicPath, 'index.html')
+          to: path.posix.join(config.dev.assetsPublicPath, 'root.html')
         }
       ]
     },

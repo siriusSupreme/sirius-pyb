@@ -9,7 +9,7 @@ let _import = require('./import-' + process.env.NODE_ENV)
 
 let router = new Router({
   mode: 'history',
-  base: '/',
+  base: '/root',
   routes: [
     {
       path: '/',

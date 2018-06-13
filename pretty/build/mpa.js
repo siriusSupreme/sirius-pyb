@@ -6,6 +6,9 @@ const glob = require('glob')
 const webpackMerge = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+const {
+  dev: { assetsPublicPath }
+} = require('../config')
 const { config, seo } = require('./mpa-config')
 const files = glob.sync(`${config.basePath}pages/*/*.js`)
 
@@ -22,7 +25,7 @@ function getEntries () {
 
   // 生成入口文件
   if (config.mode === 'single' || config.mode === 'all') {
-    setEntry(`${config.basePath}/main.js`)
+    setEntry(`${config.basePath}main.js`)
   }
 
   if (config.mode === 'multiple' || config.mode === 'all') {
@@ -35,13 +38,14 @@ function getEntries () {
 function getPlugins (optimize = false) {
   let plugins = []
   let cacheGroups = {}
+  let rewrites = []
   let pages = []
 
   let options = {
     title: '',
     filename: '',
     template: '',
-    templateParameters: {},
+    // templateParameters: {},
     meta: {},
     chunks: [],
     excludeChunks: [],
@@ -90,15 +94,21 @@ function getPlugins (optimize = false) {
       : config.defaultTemplateFile
     options.chunks = config.cacheGroups.concat(page)
 
+    let rewrite = {
+      from: new RegExp(`^/${options.filename.slice(0, -5)}`),
+      to: path.posix.join(assetsPublicPath, options.filename)
+    }
+
     let htmlWebpackPlugin = new HtmlWebpackPlugin(options)
 
     pages.push(page)
+    rewrites.push(rewrite)
     plugins.push(htmlWebpackPlugin)
   }
 
   // 生成页面
   if (config.mode === 'single' || config.mode === 'all') {
-    setPlugins(`${config.basePath}/main.js`)
+    setPlugins(`${config.basePath}main.js`)
   }
 
   if (config.mode === 'multiple' || config.mode === 'all') {
@@ -108,15 +118,17 @@ function getPlugins (optimize = false) {
   // 代码提取
   cacheGroups = {
     commons: {
+      name: 'commons',
       priority: 0,
       reuseExistingChunk: true,
       chunks: chunk => {
         return pages.includes(chunk.name)
-      }
+      },
+      minChunks: 2
     }
   }
 
-  return { plugins, cacheGroups }
+  return { plugins, cacheGroups, rewrites }
 }
 
 module.exports = {

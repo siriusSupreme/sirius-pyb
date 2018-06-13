@@ -1,6 +1,6 @@
 module.exports = {
   config: {
-    mode: 'single', // single multiple all
+    mode: 'all', // single multiple all
     basePath: './src/',
     cacheGroups: ['manifest', 'vendors', 'commons'],
     commonEntry: ['babel-polyfill'],
@@ -11,16 +11,13 @@ module.exports = {
   seo: {
     src: {
       title: 'pretty-src',
-      fileName: 'spa'
+      fileName: 'root.html'
     },
     index: {
       title: 'index',
-      entry: []
-    },
-    login: {
-      title: 'login',
-      templateName: 'login.html',
-      fileName: 'login.html'
+      entry: [],
+      templateName: 'index.html',
+      fileName: 'index.html'
     }
   }
 }
