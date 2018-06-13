@@ -32,6 +32,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
+        {
+          from: /^\/$/,
+          to: path.posix.join(config.dev.assetsPublicPath, 'root.html')
+        },
         ...rewrites,
         {
           from: /.*/,
