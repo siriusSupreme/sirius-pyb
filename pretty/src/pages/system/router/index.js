@@ -7,14 +7,14 @@ Vue.use(Router)
 
 let router = new Router({
   mode: 'history',
-  base: '/mobile',
+  base: '/system',
   routes: [
     {
       path: '/',
       alias: ['/index'],
       name: 'index',
       caseSensitive: false,
-      component: () => import('@/pages/mobile/views/index/Index'),
+      component: () => import('@/pages/system/views/index/Index'),
       props: true,
       meta: {},
       children:
@@ -28,7 +28,7 @@ let router = new Router({
       path: '/login',
       name: 'login',
       component: resolve =>
-        require(['@/pages/mobile/views/login/Login'], resolve)
+        require(['@/pages/system/views/login/Login'], resolve)
     },
     {
       path: '/*',

@@ -1,12 +1,12 @@
 <template>
   <article>
-    Mobile-Index
+    Terminal-Index
   </article>
 </template>
 
 <script>
 export default {
-  name: 'Index'
+  name: 'Login'
 }
 </script>
 
