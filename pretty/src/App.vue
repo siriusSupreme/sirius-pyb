@@ -16,7 +16,6 @@ export default {
 .app {
   position: relative;
   height: 100%;
-  min-height: 1024px;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
