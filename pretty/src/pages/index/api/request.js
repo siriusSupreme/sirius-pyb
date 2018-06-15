@@ -2,7 +2,7 @@
 import { Url, Http, Resource } from 'vue-resource'
 
 import Token from '@/utils/Token'
-import { TOKEN_KEY, TOKEN_NAME } from './config'
+import { TOKEN_KEY, TOKEN_NAME } from '../config'
 import { Loading } from 'element-ui'
 
 const token = new Token(TOKEN_KEY)

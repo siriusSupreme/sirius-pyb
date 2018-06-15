@@ -3,7 +3,7 @@
 ```bash
 1、所有请求地址必须以 / 开头，或者使用完整地址
 
-2、通用配置统一写在 config.js 文件；个性化配置统一写在 根目录 的 .env 文件里，并且 严禁 提交 .env 文件，然后在 config.js 文件里通过 process.env.XXX 引入
+2、通用配置统一写在 config/XXXXXX.js 文件；个性化配置统一写在 根目录 的 .env 文件里，并且 严禁 提交 .env 文件，然后在 config/XXXXXX.js 文件里通过 process.env.XXX 引入
 
 3、每一个配置项 必须要有 详尽 说明
 

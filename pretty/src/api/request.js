@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 
 import Token from '@/utils/Token'
-import { BASE_URL, API_PREFIX, TOKEN_KEY, TOKEN_NAME } from './config'
+import { BASE_URL, API_PREFIX, TOKEN_KEY, TOKEN_NAME } from '../config'
 import { Message, Loading } from 'element-ui'
 
 const MEGA = 1024 * 1024

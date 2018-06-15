@@ -10,7 +10,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 // const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const { getPlugins } = require('./mpa')
 let { plugins, cacheGroups } = getPlugins(true)
@@ -33,10 +33,30 @@ const webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    chunkFilename: utils.assetsPath('js/[name].[id].[chunkhash].js')
   },
   optimization: {
     minimize: true,
+    minimizer: [
+      new UglifyJsPlugin({
+        test: [/\.js/i],
+        cache: true,
+        parallel: true,
+        sourceMap: config.build.productionSourceMap,
+        extractComments: true,
+        uglifyOptions: {
+          toplevel: true,
+          keep_classnames: false,
+          keep_fnames: true,
+          compress: {
+            drop_console: true,
+            drop_debugger: true,
+            toplevel: true,
+            warnings: false
+          }
+        }
+      })
+    ],
     noEmitOnErrors: true,
     splitChunks: {
       chunks: 'all',

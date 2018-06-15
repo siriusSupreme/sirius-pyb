@@ -16,6 +16,12 @@ function getEntries () {
   let entries = {}
   let setEntry = file => {
     let page = path.basename(path.dirname(file))
+
+    if (config.excludeEntries.includes(page)) return
+    if (config.includeEntries.length && !config.includeEntries.includes(page)) {
+      return
+    }
+
     let pageEntry = seo[page] && seo[page]['entry']
 
     pageEntry = Array.isArray(pageEntry) ? pageEntry : []
@@ -82,6 +88,11 @@ function getPlugins (optimize = false) {
   let setPlugins = file => {
     let dirname = path.dirname(file)
     let page = path.basename(dirname)
+
+    if (config.excludeEntries.includes(page)) return
+    if (config.includeEntries.length && !config.includeEntries.includes(page)) {
+      return
+    }
 
     let templateName =
       (seo[page] && seo[page]['templateName']) || config.defaultTemplateName

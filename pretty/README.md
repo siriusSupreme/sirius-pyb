@@ -5,7 +5,8 @@
 ## Build Setup
 
 ```bash
-严禁 提交 .env 文件
+1、严禁 提交 .env 文件
+2、运行时 一定要注意 .env 文件的 MODE 配置项
 
 # install dependencies
 npm install
