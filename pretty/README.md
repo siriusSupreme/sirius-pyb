@@ -1,10 +1,12 @@
-# adapter
+# pretty
 
 > A Vue.js project
 
 ## Build Setup
 
-``` bash
+```bash
+严禁 提交 .env 文件
+
 # install dependencies
 npm install
 

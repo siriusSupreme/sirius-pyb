@@ -25,7 +25,7 @@ function getEntries () {
 
   // 生成入口文件
   if (config.mode === 'single' || config.mode === 'all') {
-    setEntry(`${config.basePath}main.js`)
+    setEntry(`${config.basePath}index.js`)
   }
 
   if (config.mode === 'multiple' || config.mode === 'all') {
@@ -108,7 +108,7 @@ function getPlugins (optimize = false) {
 
   // 生成页面
   if (config.mode === 'single' || config.mode === 'all') {
-    setPlugins(`${config.basePath}main.js`)
+    setPlugins(`${config.basePath}index.js`)
   }
 
   if (config.mode === 'multiple' || config.mode === 'all') {
