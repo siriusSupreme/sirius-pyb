@@ -33,13 +33,13 @@ const webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[name].[id].[chunkhash].js')
+    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   optimization: {
     minimize: true,
     minimizer: [
       new UglifyJsPlugin({
-        test: [/\.js/i],
+        test: [/\.js($|\?)/i],
         cache: true,
         parallel: true,
         sourceMap: config.build.productionSourceMap,
