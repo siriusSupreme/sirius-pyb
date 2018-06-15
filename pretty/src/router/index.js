@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { index } from './children.js'
 
 Vue.use(Router)
 
@@ -17,10 +18,7 @@ let router = new Router({
       component: _import('index/Index'),
       props: true,
       meta: {},
-      children: (() => {
-        let route = require('./children/index')
-        return route.default || route
-      })(),
+      children: index.default || index,
       beforeEnter: (to, from, next) => {
         // TODO 只在 第一次 进入 该路由时 触发
         next()
