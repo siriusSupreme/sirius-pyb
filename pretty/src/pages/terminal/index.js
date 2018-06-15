@@ -14,6 +14,7 @@ import '@/assets/scss/element-ui.scss'
 import '@/assets/stylus/common.styl'
 
 import '@/components'
+import './components'
 import '@/directives'
 import '@/plugins'
 import '@/filters'

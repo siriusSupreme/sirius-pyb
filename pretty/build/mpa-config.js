@@ -6,6 +6,7 @@ module.exports = {
     commonEntry: [
       'babel-polyfill',
       '@/assets/js/adapter',
+      '@/assets/js/browser-check',
       '@/assets/js/request-animation-frame'
     ],
     defaultTitle: 'sirius',
