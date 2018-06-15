@@ -15,7 +15,7 @@ let router = new Router({
       alias: ['/index'],
       name: 'index',
       caseSensitive: false,
-      component: () => import('@/pages/system/views/index/Index'),
+      component: () => import('@/pages/system/views/index/Index.vue'),
       props: true,
       meta: {},
       children: index.default || index,
@@ -28,7 +28,7 @@ let router = new Router({
       path: '/login',
       name: 'login',
       component: resolve =>
-        require(['@/pages/system/views/login/Login'], resolve)
+        require(['@/pages/system/views/login/Login.vue'], resolve)
     },
     {
       path: '/*',
