@@ -1,8 +1,8 @@
-<template >
+<template>
   <article>Dossier</article>
-</template >
+</template>
 
-<script >
+<script>
 export default {
   name: 'Dossier',
   beforeCreate () {
@@ -48,7 +48,7 @@ export default {
     next()
   }
 }
-</script >
+</script>
 
 <style lang="stylus" scoped >
 </style >

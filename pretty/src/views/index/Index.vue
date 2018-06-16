@@ -1,4 +1,4 @@
-<template >
+<template>
   <article>
     <ul>
       <li>
@@ -12,9 +12,9 @@
       </li>
     </ul>
   </article>
-</template >
+</template>
 
-<script >
+<script>
 export default {
   name: 'Index',
   data () {
@@ -65,10 +65,10 @@ export default {
     next()
   }
 }
-</script >
+</script>
 
-<style lang="stylus" scoped >
+<style lang="stylus" scoped>
 .active {
   color: red;
 }
-</style >
+</style>
