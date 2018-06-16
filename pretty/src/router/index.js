@@ -21,23 +21,39 @@ let router = new Router({
       children: index.default || index,
       beforeEnter: (to, from, next) => {
         // TODO 只在 第一次 进入 该路由时 触发
+        console.log('index-beforeEnter')
         next()
       }
     },
     {
       path: '/login',
       name: 'login',
-      component: _import('login/Login')
+      component: _import('login/Login'),
+      beforeEnter: (to, from, next) => {
+        // TODO 只在 第一次 进入 该路由时 触发
+        console.log('login-beforeEnter')
+        next()
+      }
     },
     {
       path: '/cabinet',
       name: 'cabinet',
-      component: _import('cabinet/Cabinet')
+      component: _import('cabinet/Cabinet'),
+      beforeEnter: (to, from, next) => {
+        // TODO 只在 第一次 进入 该路由时 触发
+        console.log('cabinet-beforeEnter')
+        next()
+      }
     },
     {
       path: '/dossier',
       name: 'dossier',
-      component: _import('dossier/Dossier')
+      component: _import('dossier/Dossier'),
+      beforeEnter: (to, from, next) => {
+        // TODO 只在 第一次 进入 该路由时 触发
+        console.log('dossier-beforeEnter')
+        next()
+      }
     },
     {
       path: '/*',
@@ -47,13 +63,17 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  console.log('beforeEach')
   next()
 })
 
 router.beforeResolve((to, from, next) => {
+  console.log('beforeResolve')
   next()
 })
 
-router.afterEach((to, from) => {})
+router.afterEach((to, from) => {
+  console.log('afterEach')
+})
 
 export default router
