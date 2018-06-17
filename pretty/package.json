@@ -52,6 +52,7 @@
     "vue-easytable": "^1.7.1",
     "vue-form-generator": "^2.2.2",
     "vue-fullpage.js": "0.0.1",
+    "vue-lazyload": "^1.2.6",
     "vue-multiselect": "^2.1.0",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",

@@ -11,15 +11,53 @@
         <router-link :class="{active: currentIndex === 2}" @click.native='currentIndex = 2' to='/login'>login</router-link>
       </li>
     </ul>
+
+    <button type="button" @click.stop='showHandler'>show——{{showText}}</button>
+    <p>
+      show
+      <show-component></show-component>
+    </p>
+    <button type="button" @click.stop='ifHandler'>if——{{ifText}}</button>
+    <p>
+      if
+      <if-component></if-component>
+    </p>
+    <router-link to='link/1'></router-link>
+    <router-link to='link/2'></router-link>
+    <p>
+      if
+      <router-view></router-view>
+    </p>
   </article>
 </template>
 
 <script>
+import ShowComponent from './ShowComponent.vue'
+import IfComponent from './IfComponent.vue'
+
 export default {
   name: 'Index',
   data () {
     return {
-      currentIndex: -1
+      currentIndex: -1,
+      isShow: true,
+      showText: true,
+      isIf: true,
+      ifText: true
+    }
+  },
+  components: {
+    ShowComponent,
+    IfComponent
+  },
+  methods: {
+    showHandler (e) {
+      this.isShow = !this.isShow
+      this.showText = this.isShow
+    },
+    ifHandler (e) {
+      this.isIf = !this.isIf
+      this.ifText = this.isIf
     }
   },
   beforeCreate () {
