@@ -15,15 +15,15 @@
     <button type="button" @click.stop='showHandler'>show——{{showText}}</button>
     <p>
       show
-      <show-component></show-component>
+      <show-component v-show="isShow"></show-component>
     </p>
     <button type="button" @click.stop='ifHandler'>if——{{ifText}}</button>
     <p>
       if
-      <if-component></if-component>
+      <if-component v-if='isIf'></if-component>
     </p>
-    <router-link to='link/1'></router-link>
-    <router-link to='link/2'></router-link>
+    <router-link to='link/1'>link-1</router-link>
+    <router-link to='link/2'>link-2</router-link>
     <p>
       if
       <router-view></router-view>

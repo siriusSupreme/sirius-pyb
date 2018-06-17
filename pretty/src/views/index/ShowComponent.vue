@@ -1,50 +1,50 @@
 <template>
-  <article>Dossier</article>
+  <article>ShowComponent</article>
 </template>
 
 <script>
 export default {
-  name: 'Dossier',
+  name: 'ShowComponent',
   beforeCreate () {
-    console.log('dossier-beforeCreate')
+    console.log('ShowComponent-beforeCreate')
   },
   created () {
-    console.log('dossier-created')
+    console.log('ShowComponent-created')
   },
   beforeMount () {
-    console.log('dossier-beforeMount')
+    console.log('ShowComponent-beforeMount')
   },
   mounted () {
-    console.log('dossier-mounted')
+    console.log('ShowComponent-mounted')
   },
   activated () {
-    console.log('dossier-activated')
+    console.log('ShowComponent-activated')
   },
   deactivated () {
-    console.log('dossier-deactivated')
+    console.log('ShowComponent-deactivated')
   },
   beforeUpdate () {
-    console.log('dossier-beforeUpdate')
+    console.log('ShowComponent-beforeUpdate')
   },
   updated () {
-    console.log('dossier-updated')
+    console.log('ShowComponent-updated')
   },
   beforeDestroy () {
-    console.log('dossier-beforeDestroy')
+    console.log('ShowComponent-beforeDestroy')
   },
   destroyed () {
-    console.log('dossier-destroyed')
+    console.log('ShowComponent-destroyed')
   },
   beforeRouteEnter (to, from, next) {
-    console.log('dossier-beforeRouteEnter')
+    console.log('ShowComponent-beforeRouteEnter')
     next()
   },
   beforeRouteUpdate (to, from, next) {
-    console.log('dossier-beforeRouteUpdate')
+    console.log('ShowComponent-beforeRouteUpdate')
     next()
   },
   beforeRouteLeave (to, from, next) {
-    console.log('dossier-beforeRouteLeave')
+    console.log('ShowComponent-beforeRouteLeave')
     next()
   }
 }

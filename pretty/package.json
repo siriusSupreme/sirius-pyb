@@ -33,6 +33,7 @@
     "jsrsasign": "^8.0.12",
     "layui-src": "^2.3.0",
     "lodash": "^4.17.10",
+    "magnify": "^2.3.0",
     "mockjs": "^1.0.1-beta3",
     "moment": "^2.22.2",
     "pdfjs-dist": "^2.0.489",
