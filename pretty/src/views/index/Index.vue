@@ -1,7 +1,7 @@
 <template>
   <article>
     <ul>
-      <li>
+      <li id='demo' data-a='1' data-b='true' data-c='{x:1}' data-d="{y:2}">
         <router-link :class="{active: currentIndex === 0}" @click.native='currentIndex = 0' to='/cabinet'>cabinet</router-link>
       </li>
       <li>
