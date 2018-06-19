@@ -1,6 +1,8 @@
 /* istanbul ignore next */
 
 import Vue from 'vue'
+import camelCase from 'lodash/camelCase'
+import kebabCase from 'lodash/kebabCase'
 
 const isServer = Vue.prototype.$isServer
 const SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g
@@ -188,29 +190,49 @@ export function setStyle (element, styleName, value) {
 
 /**
  * 设置 或者 获取 data 属性
- * params element
- * params attr
- * params val
+ * @param {Element} element
+ * @param {String, Array, Object, null} attr
+ * @param {String, null} val
  */
 export function data (element, attr = null, val = null) {
   let attributes = Object.create(null)
 
   if (attr === null) {
     // 获取全部 data 属性
-    attributes = element.dataset || element.attributes
+    attributes = element.dataset
+    if (!attributes) {
+      Array.from(element.attributes, node => {
+        let nodeName = node.nodeName || node.name
+        let matches = nodeName.match(/^data-([\w-]+)/i)
+        if (matches) {
+          attributes[camelCase(matches[1])] =
+            node.nodeValue || node.textContent || node.value
+        }
+      })
+    }
+
+    return attributes
   } else if (typeof attr === 'string' && val === null) {
     // 获取指定 data 属性
-    element.getAttribute(`data-${attr}`)
+    attributes[camelCase(attr)] = element.getAttribute(
+      `data-${kebabCase(attr)}`
+    )
+
+    return attributes
   } else if (typeof attr === 'string' && val !== null) {
     // 设置指定 data 属性
-    element.setAttribute(`data-${attr}`, val)
+    element.setAttribute(`data-${kebabCase(attr)}`, val)
   } else if (Array.isArray(attr)) {
     // 获取指定 data 属性
     attr.forEach(k => {
-      attributes[k] = element.getAttribute(`data-${k}`)
+      attributes[camelCase(k)] = element.getAttribute(`data-${kebabCase(k)}`)
     })
-  } else if (attr !== null && typeof attr === 'object') {
+
+    return attributes
+  } else if (typeof attr === 'object') {
     // 设置指定 data 属性
-    element.setAttribute(`data-${attr}`, val)
+    Object.keys(attr).forEach(k => {
+      element.setAttribute(`data-${kebabCase(k)}`, attr[k])
+    })
   }
 }
