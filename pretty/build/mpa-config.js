@@ -11,7 +11,7 @@ module.exports = {
     ],
     includeEntries: [], // 只打包指定的入口文件
     excludeEntries: [], // 不打包指定的入口文件
-    defaultTitle: 'sirius',
+    defaultTitle: '',
     defaultTemplateName: 'index.html',
     defaultTemplateFile: './src/pages/index.html'
   },

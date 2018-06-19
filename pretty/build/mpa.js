@@ -17,7 +17,9 @@ function getEntries () {
   let setEntry = file => {
     let page = path.basename(path.dirname(file))
 
-    if (config.excludeEntries.includes(page)) return
+    if (config.excludeEntries.length && config.excludeEntries.includes(page)) {
+      return
+    }
     if (config.includeEntries.length && !config.includeEntries.includes(page)) {
       return
     }
@@ -89,7 +91,9 @@ function getPlugins (optimize = false) {
     let dirname = path.dirname(file)
     let page = path.basename(dirname)
 
-    if (config.excludeEntries.includes(page)) return
+    if (config.excludeEntries.length && config.excludeEntries.includes(page)) {
+      return
+    }
     if (config.includeEntries.length && !config.includeEntries.includes(page)) {
       return
     }
@@ -98,7 +102,7 @@ function getPlugins (optimize = false) {
       (seo[page] && seo[page]['templateName']) || config.defaultTemplateName
     let pageTemplateHtml = dirname + '/' + templateName
 
-    options.title = (seo[page] && seo[page].title) || page
+    options.title = (seo[page] && seo[page].title) || config.defaultTitle || page
     options.filename = (seo[page] && seo[page].fileName) || `${page}.html`
     options.template = fs.existsSync(pageTemplateHtml)
       ? pageTemplateHtml
