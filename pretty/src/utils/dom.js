@@ -14,7 +14,7 @@ const trim = string => {
   return (string || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '')
 }
 /* istanbul ignore next */
-const camelCase = name => {
+const _camelCase = name => {
   return name
     .replace(SPECIAL_CHARS_REGEXP, (_, separator, letter, offset) => {
       return offset ? letter.toUpperCase() : letter
@@ -128,7 +128,7 @@ export const getStyle =
     ? (element, styleName) => {
       if (isServer) return
       if (!element || !styleName) return null
-      styleName = camelCase(styleName)
+      styleName = _camelCase(styleName)
       if (styleName === 'float') {
         styleName = 'styleFloat'
       }
@@ -152,7 +152,7 @@ export const getStyle =
     : (element, styleName) => {
       if (isServer) return
       if (!element || !styleName) return null
-      styleName = camelCase(styleName)
+      styleName = _camelCase(styleName)
       if (styleName === 'float') {
         styleName = 'cssFloat'
       }
@@ -177,7 +177,7 @@ export function setStyle (element, styleName, value) {
       }
     }
   } else {
-    styleName = camelCase(styleName)
+    styleName = _camelCase(styleName)
     if (styleName === 'opacity' && ieVersion < 9) {
       element.style.filter = isNaN(value)
         ? ''
