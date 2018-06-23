@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 
 const PREFIX = 'gs-'
 
-export default class Storage {
+class Storage {
   storage = null
   tradition = false
 
@@ -66,3 +66,5 @@ export default class Storage {
     }
   }
 }
+
+export default Storage
