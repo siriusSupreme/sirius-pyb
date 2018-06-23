@@ -1,20 +1,26 @@
 import Cookies from 'js-cookie'
 
+const PREFIX = 'gs-'
+
 class Token {
   constructor (tokenKey) {
-    this.tokenKey = tokenKey
+    this.tokenKey = PREFIX + tokenKey
   }
 
-  getToken () {
-    return Cookies.get(this.tokenKey)
+  getToken (all = false) {
+    return all === true ? Cookies.get() : Cookies.get(this.tokenKey)
   }
 
-  setToken (token) {
-    return Cookies.set(this.tokenKey, token)
+  getTokenJson () {
+    return Cookies.getJSON(this.tokenKey)
+  }
+
+  setToken () {
+    return Cookies.set.apply(Cookies, Array.from(arguments).unshift(this.tokenKey))
   }
 
   removeToken () {
-    return Cookies.remove(this.tokenKey)
+    return Cookies.remove.apply(Cookies, Array.from(arguments).unshift(this.tokenKey))
   }
 }
 

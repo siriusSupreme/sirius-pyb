@@ -236,3 +236,7 @@ export function data (element, attr = null, val = null) {
     })
   }
 }
+
+export function isHTMLElement (element) {
+  return window.HTMLElement ? element instanceof HTMLElement : ('nodeType' in element ? element.nodeType === 1 : false)
+}

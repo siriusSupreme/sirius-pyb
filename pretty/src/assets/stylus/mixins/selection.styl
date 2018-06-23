@@ -1,6 +1,6 @@
 // 设置选中样式
-selection()
-  &::selection
+selection(selector = '')
+  {selector}::selection
     {block}
-  &::-moz-selection
+  {selector}::-moz-selection
     {block}

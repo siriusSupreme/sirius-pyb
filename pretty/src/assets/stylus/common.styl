@@ -1,19 +1,22 @@
 @import "./variable.styl"
 @import './functions.styl'
 
-@import "./mixins/index.styl"
-@import "./extends/index.styl"
 @import "./blocks/index.styl"
+@import "./extends/index.styl"
+@import "./mixins/index.styl"
+
+@import './reset.styl'
 
 html{
   height 100%
   font-size 100px
   body{
     height 100%
-    min-height $clientHeight
+    min-height 100%
     font normal normal normal 16px/1.15 'Microsoft YaHei', 'sans-serif'
-    font-size 0.16rem
+    font-size px2rem(16px)
     color #23c7ed
-    overflow hidden
+    overflow visible
+    @require './beautify-form.styl'
   }
 }

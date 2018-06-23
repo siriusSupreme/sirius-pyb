@@ -18,14 +18,9 @@ export default {
 .app {
   position: relative;
   height: 100%;
+  min-height: $clientHeight;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  .ss-container {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-  }
 }
 </style>
