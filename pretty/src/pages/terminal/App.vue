@@ -13,18 +13,14 @@ export default {
 </script>
 
 <style lang="stylus">
+@import './assets/stylus/variable.styl';
+
 .app {
   position: relative;
   height: 100%;
-  min-height: 1024px;
+  min-height: $clientHeight;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  .ss-container {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-  }
 }
 </style>

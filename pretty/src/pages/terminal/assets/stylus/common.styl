@@ -1,0 +1,18 @@
+@import "~@/assets/stylus/blocks/index.styl"
+@import "~@/assets/stylus/extends/index.styl"
+@import "~@/assets/stylus/mixins/index.styl"
+
+@import "./variable.styl"
+@import './functions.styl'
+
+html{
+  body{
+    font-size $globalFontSize
+    color $globalFontColor
+    overflow visible
+
+    +placeholder() {
+      color $formPlaceholderFontColor
+    }
+  }
+}

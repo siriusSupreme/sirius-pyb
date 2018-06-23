@@ -1,17 +1,21 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import { sync } from 'vuex-router-sync'
+import {
+  sync
+} from 'vuex-router-sync'
 import router from './router'
 import store from './store'
 
 import Element from 'element-ui'
 import App from './App'
 
+import 'normalize.css'
 import 'bootstrap/scss/bootstrap.scss'
 import 'font-awesome/scss/font-awesome.scss'
 import '@/assets/scss/element-ui.scss'
 import '@/assets/stylus/common.styl'
+import './assets/stylus/common.styl'
 
 import '@/components'
 import './components'
@@ -19,6 +23,10 @@ import '@/directives'
 import '@/plugins'
 import '@/filters'
 import '@/mixins'
+
+import FastClick from 'fastclick'
+
+FastClick.attach(document.body)
 
 Vue.config.productionTip = false
 
@@ -34,6 +42,6 @@ new Vue({
   router,
   store,
   render (h) {
-    return <App />
+    return <App / >
   }
 })

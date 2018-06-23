@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style lang="stylus">
-@import '~@/assets/stylus/variable.styl';
+@import './assets/stylus/variable.styl';
 
 .app {
   position: relative;
