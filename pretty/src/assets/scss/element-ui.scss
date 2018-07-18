@@ -1,1 +1,4 @@
-@import './element-variables.scss'
+@import './element-variables.scss';
+.el-textarea__inner {
+  resize: none;
+}

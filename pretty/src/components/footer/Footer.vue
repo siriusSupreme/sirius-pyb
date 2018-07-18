@@ -1,13 +1,20 @@
-<template >
-  <footer><slot></slot></footer>
-</template >
+<template>
+  <footer class="gs-footer" :style="{ height }">
+    <slot></slot>
+  </footer>
+</template>
 
-<script >
+<script>
 export default {
-  name: 'Footer'
+  name: 'Footer',
+
+  componentName: 'GsFooter',
+
+  props: {
+    height: {
+      type: String,
+      default: '60px'
+    }
+  }
 }
-</script >
-
-<style lang="stylus" scoped >
-
-</style >
+</script>

@@ -6,7 +6,7 @@ const requireContext = require.context(
   // 是否查询其子目录
   false,
   // 匹配过滤器文件名的正则表达式
-  /[\w-]+\.js$/
+  /\/[\w-]+\.js$/
 )
 
 requireContext.keys().forEach(fileName => {

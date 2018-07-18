@@ -1,0 +1,28 @@
+@import '../functions.styl'
+
+vCenter = @block {
+  position absolute unless @position
+  top 50% unless @top
+  right auto unless @right
+  bottom auto unless @bottom
+  left auto unless @left
+  transform translate(0, -50%)
+}
+
+hCenter = @block {
+  position absolute unless @position
+  top auto unless @top
+  right auto unless @right
+  bottom auto unless @bottom
+  left 50% unless @left
+  transform translate(-50%, 0)
+}
+
+middleCenter = @block{
+  position absolute unless @position
+  top 50% unless @top
+  right auto unless @right
+  bottom auto unless @bottom
+  left 50% unless @left
+  transform translate(-50%, -50%)
+}

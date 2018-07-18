@@ -2,24 +2,28 @@ import Vue from 'vue'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 
+let previousPath = null
+
 const requireContext = require.context(
   // 其指令目录的相对路径
   './',
   // 是否查询其子目录
   true,
   // 匹配指令文件名的正则表达式
-  /[A-Z]\w+\.js$/
+  /^\.\/(?:[a-z][^/]*\/)?([A-Z]\w+|index)\.js$/
 )
 
 requireContext.keys().forEach(fileName => {
+  if (fileName === './index.js' || (previousPath && fileName.startsWith(previousPath[0]))) return
+
   // 获取指令配置
   let directiveConfig = {}
 
+  previousPath = fileName.match(/^\.\/([a-z][^/]*)/)
+
   try {
-    if (/\.\/[a-z]/.test(fileName)) {
-      directiveConfig = requireContext(
-        fileName.replace(/[A-Z]\w+\.js$/, 'index.js')
-      )
+    if (previousPath) {
+      directiveConfig = requireContext(fileName.replace(/\/[A-Z]\w+\.js$/, '/index.js'))
     } else {
       directiveConfig = requireContext(fileName)
     }
@@ -31,7 +35,7 @@ requireContext.keys().forEach(fileName => {
   let directiveName = upperFirst(
     camelCase(
       // 剥去文件名开头的 `'./` 和结尾的扩展名
-      fileName.replace(/^\.\/.*([A-Z]\w+)\.js$/, '$1')
+      previousPath ? previousPath[1] : fileName.replace(/^\.\/([A-Z]\w+)\.js$/, '$1')
     )
   )
 

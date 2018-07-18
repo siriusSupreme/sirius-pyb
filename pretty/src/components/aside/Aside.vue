@@ -1,26 +1,20 @@
-<template >
-  <aside :style="styleCss"><slot></slot></aside>
-</template >
+<template>
+  <aside class="gs-aside" :style="{ width }">
+    <slot></slot>
+  </aside>
+</template>
 
-<script >
+<script>
 export default {
   name: 'Aside',
+
+  componentName: 'GsAside',
+
   props: {
     width: {
       type: String,
-      default: '200px'
-    }
-  },
-  computed: {
-    styleCss () {
-      return {
-        width: this.width
-      }
+      default: '300px'
     }
   }
 }
-</script >
-
-<style lang="stylus" scoped >
-
-</style >
+</script>

@@ -1,13 +1,20 @@
-<template >
-  <header><slot></slot></header>
-</template >
+<template>
+  <header class="gs-header" :style="{ height }">
+    <slot></slot>
+  </header>
+</template>
 
-<script >
+<script>
 export default {
-  name: 'Header'
+  name: 'Header',
+
+  componentName: 'GsHeader',
+
+  props: {
+    height: {
+      type: String,
+      default: '60px'
+    }
+  }
 }
-</script >
-
-<style lang="stylus" scoped >
-
-</style >
+</script>

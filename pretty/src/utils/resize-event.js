@@ -23,7 +23,7 @@ export const addResizeListener = function (element, fn) {
     element.__ro__.observe(element)
   }
   element.__resizeListeners__.push(fn)
-};
+}
 
 /* istanbul ignore next */
 export const removeResizeListener = function (element, fn) {

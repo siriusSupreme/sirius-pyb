@@ -1,11 +1,11 @@
-import Clipboard from './clipboard'
+import Clipboard from './Clipboard'
 
 const install = function (Vue) {
   Vue.directive('Clipboard', Clipboard)
 }
 
 if (window.Vue) {
-  window.clipboard = Clipboard
+  window.Clipboard = Clipboard
   Vue.use(install) // eslint-disable-line
 }
 

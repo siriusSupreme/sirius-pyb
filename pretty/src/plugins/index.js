@@ -1,23 +1,27 @@
 import Vue from 'vue'
 
+let previousPath = null
+
 const requireContext = require.context(
   // 其插件目录的相对路径
   './',
   // 是否查询其子目录
   true,
   // 匹配插件文件名的正则表达式
-  /[A-Z]\w+\.js$/
+  /^\.\/(?:[a-z][^/]*\/)?([A-Z]\w+|index)\.js$/
 )
 
 requireContext.keys().forEach(fileName => {
+  if (fileName === './index.js' || (previousPath && fileName.startsWith(previousPath[0]))) return
+
   // 获取插件配置
   let pluginConfig = {}
 
+  previousPath = fileName.match(/^\.\/[a-z][^/]*/)
+
   try {
-    if (/\.\/[a-z]/.test(fileName)) {
-      pluginConfig = requireContext(
-        fileName.replace(/[A-Z]\w+\.js$/, 'index.js')
-      )
+    if (previousPath) {
+      pluginConfig = requireContext(fileName.replace(/\/[A-Z]\w+\.js$/, '/index.js'))
     } else {
       pluginConfig = requireContext(fileName)
     }

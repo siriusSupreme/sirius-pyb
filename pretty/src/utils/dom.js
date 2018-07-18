@@ -240,3 +240,18 @@ export function data (element, attr = null, val = null) {
 export function isHTMLElement (element) {
   return window.HTMLElement ? element instanceof HTMLElement : ('nodeType' in element ? element.nodeType === 1 : false)
 }
+
+export function getVendorPrefixProp (prop) {
+  let elementStyle = document.createElement('div').style
+
+  let vendors = ['webkit', 'moz', 'ms', 'o', '']
+
+  for (let vendor of vendors) {
+    let perfectProp = camelCase(`${vendor}-${prop}`)
+    if (elementStyle[perfectProp] !== undefined) {
+      return perfectProp
+    }
+  }
+
+  return false
+}

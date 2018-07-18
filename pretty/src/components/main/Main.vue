@@ -1,13 +1,12 @@
-<template >
-  <main><slot></slot></main>
-</template >
+<template>
+  <main class="gs-main">
+    <slot></slot>
+  </main>
+</template>
 
-<script >
+<script>
 export default {
-  name: 'Main'
+  name: 'Main',
+  componentName: 'GsMain'
 }
-</script >
-
-<style lang="stylus" scoped >
-
-</style >
+</script>

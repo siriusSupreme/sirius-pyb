@@ -47,7 +47,7 @@ let loadingInstance = null
 
 axiosInstance.interceptors.request.use(
   options => {
-    let _token = token.getToken()
+    let _token = token.get()
     if (_token) {
       options.headers[TOKEN_NAME] = _token
     }

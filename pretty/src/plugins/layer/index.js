@@ -15,18 +15,25 @@ export default {
       // documentFragment.appendChild(tempWrapper)
       // tempWrapper.appendChild(component.$mount().$el)
 
+      let end = layerOptions.end
+      end && delete layerOptions.end
+
       process.env.NODE_ENV === 'development' ? console.log(component) : void (0)
 
       return this.open(merge({}, {
         type: 1,
         title: false,
         // content: 'tempWrapper.innerHTML',
-        skin: 'sirius',
+        skin: 'gs-layer',
         area: ['80%', '80%'],
         resize: false,
         scrollbar: false,
         success (layero, index) {
           layero.find('.layui-layer-content').append(component.$mount().$el)
+        },
+        end () {
+          end && typeof end === 'function' && end()
+          component.$destroy()
         }
       }, layerOptions))
     }

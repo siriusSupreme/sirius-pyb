@@ -1,7 +1,7 @@
 import camelCase from 'lodash/camelCase'
 
 let modules = {}
-let loadedModules = new Set()
+let lastFilePath = ''
 
 const requireContext = require.context(
   // 其仓库目录的相对路径
@@ -9,23 +9,16 @@ const requireContext = require.context(
   // 是否查询其子目录
   true,
   // 匹配仓库文件名的正则表达式
-  /[a-z]\w+\.js$/
+  /^\.\/(?:[a-zA-Z][^/]*\/)?([a-zA-Z][\w-]*)\.js$/
 )
 
 requireContext.keys().forEach(fileName => {
-  let [, filePath, folderName] = fileName.match(/^(\.\/([^/]*)).*$/)
+  let [filePath, folderName] = fileName.match(/^\.\/([^/.]+)(\.js)?/)
 
-  let pos = folderName.indexOf('.')
-
-  if (pos < 0) folderName = folderName.substring(0)
-  else folderName = folderName.substring(0, pos)
+  if (lastFilePath === filePath) return
 
   // 获取模块的 camelCase 命名
   let moduleName = camelCase(folderName)
-
-  if (loadedModules.has(moduleName)) return
-
-  loadedModules.add(moduleName)
 
   // 获取模块
   let moduleStore = {}
