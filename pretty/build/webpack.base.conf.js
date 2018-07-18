@@ -3,10 +3,14 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
-const { VueLoaderPlugin } = require('vue-loader')
+const {
+  VueLoaderPlugin
+} = require('vue-loader')
 const Dotenv = require('dotenv-webpack')
 
-const { getEntries } = require('./mpa')
+const {
+  getEntries
+} = require('./mpa')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -17,6 +21,7 @@ const createLintingRule = () => ({
   loader: 'eslint-loader',
   enforce: 'pre',
   include: [resolve('src'), resolve('test')],
+  exclude: [/assets\/vendors\/.*\.js$/],
   options: {
     fix: true,
     failOnWarning: true,
@@ -35,10 +40,9 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath:
-      process.env.NODE_ENV === 'production'
-        ? config.build.assetsPublicPath
-        : config.dev.assetsPublicPath
+    publicPath: process.env.NODE_ENV === 'production'
+      ? config.build.assetsPublicPath
+      : config.dev.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -95,7 +99,10 @@ module.exports = {
     ]
   },
   plugins: [
-    new Dotenv({ safe: true, systemvars: false }),
+    new Dotenv({
+      safe: true,
+      systemvars: false
+    }),
     new VueLoaderPlugin()
   ],
   node: {
