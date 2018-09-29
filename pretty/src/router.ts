@@ -4,10 +4,12 @@ import Home from "./views/Home.vue";
 
 Vue.use(Router);
 
-export default new Router({
+let router = new Router({
+  mode: "history",
+  base: "/x",
   routes: [
     {
-      path: "/",
+      path: "/a",
       name: "home",
       component: Home
     },
@@ -19,6 +21,20 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue")
+    },
+    {
+      path: "/",
+      // redirect: "/a"
+      alias: "/b",
+      component: Home
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  console.log(to);
+  console.log(from);
+  next();
+});
+
+export default router;
