@@ -1,7 +1,10 @@
+.DS_Store
 
-
+.git
+.svn
 .idea
 .vscode
 
 case-manager
 dsw
+order

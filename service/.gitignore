@@ -2,7 +2,6 @@
 .env
 composer.lock
 
-
 runtime
 thinkphp
 vendor
