@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+/* 菜单层级样式设置 */
+.nav-list>li>.submenu li>.submenu>li>.submenu>li>.submenu>li>a {
+    padding-left: 54px;
+}
+
+/* pace 样式 */
+.pace {
+    background-color: transparent;
+}
+
+.pace .pace-progress {
+    height: 6px;
+}
+
+a.disabled,
+a[disabled] {
+    pointer-events: none;
+}
+
+
+/*按钮组样式*/
+.btn {
+    border-radius: 4px;
+}
+
+.btn-group>.btn:first-child {
+    margin: 0;
+}
+
+.btn-group>.btn,
+.btn-group>.btn+.btn {
+    margin: 0;
+}
+
+
+/*下拉菜单*/
+.dropdown-menu {
+    min-width: 0;
+}
+
+.btn-group>.btn.btn-sm>.caret {
+    margin-top: -1px;
+}
+
+/*WebUploader*/
+.webuploader-pick {
+    background: none;
+    padding: 0;
+}
+
+/*bootstrap-tagsinput*/
+.bootstrap-tagsinput input {
+    border: none;
+    box-shadow: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0 6px;
+    margin: 0;
+    width: auto;
+    max-width: inherit;
+}
