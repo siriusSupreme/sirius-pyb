@@ -6,8 +6,8 @@
     global.cancelAnimationFrame = global.cancelAnimationFrame || global.cancelRequestAnimationFrame;
 
     for (var i=0; !global.requestAnimationFrame && i<vendors.length ; i++ ){
-        global.requestAnimationFrame=win[vendors[i]+'RequestAnimationFrame'];
-        global.cancelAnimationFrame=win[vendors[i]+'CancelAnimationFrame'] || win[vendors[i]+'CancelRequestAnimationFrame'];
+        global.requestAnimationFrame=global[vendors[i]+'RequestAnimationFrame'];
+        global.cancelAnimationFrame=global[vendors[i]+'CancelAnimationFrame'] || global[vendors[i]+'CancelRequestAnimationFrame'];
     }
 
     if (!global.requestAnimationFrame){
