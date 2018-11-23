@@ -82,4 +82,5 @@
   text-align: left;
   overflow: hidden;
   color: #ffcd35;
+  word-break: break-all;
 }
