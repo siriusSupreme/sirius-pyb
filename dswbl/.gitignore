@@ -1,0 +1,33 @@
+.DS_Store
+node_modules
+/dist
+
+/test/e2e/reports/
+/test/unit/coverage/
+selenium-debug.log
+
+# local env files
+.env
+.env.local
+.env.*.local
+package-lock.json
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+.git
+.svn
+# .gitee
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+# *.sw*
+
+# .gitattributes
+eloamCamera.exe

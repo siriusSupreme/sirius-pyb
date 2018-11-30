@@ -1,0 +1,652 @@
+{
+  "list": [ {
+      "type": "grid",
+      "name": "栅格布局",
+      "icon": "icon-grid-",
+      "columns": [ {
+        "span": 12,
+        "list": [ {
+          "type": "input",
+          "name": "当前案由",
+          "icon": "icon-input",
+          "options": {
+            "width": "100%",
+            "defaultValue": "",
+            "required": false,
+            "dataType": "string",
+            "pattern": "",
+            "placeholder": "",
+            "remoteFunc": "func_1543306432000_88489"
+          },
+          "key": "1543306432000_88489",
+          "model": "caseMsg",
+          "rules": [ {
+            "type": "string",
+            "message": "当前案由格式不正确"
+          } ]
+        } ]
+      } ],
+      "options": {
+        "gutter": 0,
+        "justify": "start",
+        "align": "top",
+        "remoteFunc": "func_1543306415000_39058"
+      },
+      "key": "1543306415000_39058",
+      "model": "grid_1543306415000_39058",
+      "rules": []
+    },
+    {
+      "type": "grid",
+      "name": "栅格布局",
+      "icon": "icon-grid-",
+      "columns": [ {
+          "span": 12,
+          "list": [ {
+            "type": "select",
+            "name": "笔录格式",
+            "icon": "icon-select",
+            "options": {
+              "defaultValue": "",
+              "multiple": false,
+              "disabled": false,
+              "clearable": true,
+              "placeholder": "",
+              "required": true,
+              "showLabel": false,
+              "width": "100%",
+              "options": [ {
+                  "value": "公安部格式"
+                },
+                {
+                  "value": "蒙文版"
+                },
+                {
+                  "value": "藏文版"
+                }
+              ],
+              "remote": false,
+              "filterable": false,
+              "remoteOptions": [],
+              "props": {
+                "value": "value",
+                "label": "label"
+              },
+              "remoteFunc": "func_1543306324000_32"
+            },
+            "key": "1543306324000_32",
+            "model": "blFormat",
+            "rules": [ {
+              "required": true,
+              "message": "笔录格式必须填写"
+            } ]
+          } ]
+        },
+        {
+          "span": 12,
+          "list": [ {
+            "type": "input",
+            "name": "警情编号",
+            "icon": "icon-input",
+            "options": {
+              "width": "100%",
+              "defaultValue": "",
+              "required": false,
+              "dataType": "string",
+              "pattern": "",
+              "placeholder": "",
+              "remoteFunc": "func_1543306332000_15205"
+            },
+            "key": "1543306332000_15205",
+            "model": "alarmNo",
+            "rules": [ {
+              "type": "string",
+              "message": "警情编号格式不正确"
+            } ]
+          } ]
+        }
+      ],
+      "options": {
+        "gutter": 0,
+        "justify": "start",
+        "align": "top",
+        "remoteFunc": "func_1543306306000_97427"
+      },
+      "key": "1543306306000_97427",
+      "model": "grid_1543306306000_97427",
+      "rules": []
+    },
+    {
+      "type": "grid",
+      "name": "栅格布局",
+      "icon": "icon-grid-",
+      "columns": [ {
+          "span": 12,
+          "list": [ {
+            "type": "date",
+            "name": "案发时间",
+            "icon": "icon-date",
+            "options": {
+              "defaultValue": "",
+              "readonly": false,
+              "disabled": false,
+              "editable": true,
+              "clearable": true,
+              "placeholder": "",
+              "startPlaceholder": "",
+              "endPlaceholder": "",
+              "type": "datetime",
+              "format": "yyyy-MM-dd HH:mm:ss",
+              "timestamp": false,
+              "required": true,
+              "width": "100%",
+              "remoteFunc": "func_1543306639000_91398"
+            },
+            "key": "1543306639000_91398",
+            "model": "caseTime",
+            "rules": [ {
+              "required": true,
+              "message": "案发时间必须填写"
+            } ]
+          } ]
+        },
+        {
+          "span": 12,
+          "list": [ {
+            "type": "input",
+            "name": "案件编号",
+            "icon": "icon-input",
+            "options": {
+              "width": "100%",
+              "defaultValue": "",
+              "required": false,
+              "dataType": "string",
+              "pattern": "",
+              "placeholder": "",
+              "remoteFunc": "func_1543306590000_68635"
+            },
+            "key": "1543306590000_68635",
+            "model": "caseNo",
+            "rules": [ {
+              "type": "string",
+              "message": "案件编号格式不正确"
+            } ]
+          } ]
+        }
+      ],
+      "options": {
+        "gutter": 0,
+        "justify": "start",
+        "align": "top",
+        "remoteFunc": "func_1543306579000_18850"
+      },
+      "key": "1543306579000_18850",
+      "model": "grid_1543306579000_18850",
+      "rules": []
+    },
+    {
+      "type": "grid",
+      "name": "栅格布局",
+      "icon": "icon-grid-",
+      "columns": [ {
+        "span": 24,
+        "list": [ {
+          "type": "input",
+          "name": "案件名称",
+          "icon": "icon-input",
+          "options": {
+            "width": "100%",
+            "defaultValue": "",
+            "required": false,
+            "dataType": "string",
+            "pattern": "",
+            "placeholder": "",
+            "remoteFunc": "func_1543306693000_41502"
+          },
+          "key": "1543306693000_41502",
+          "model": "caseName",
+          "rules": [ {
+            "type": "string",
+            "message": "案件名称格式不正确"
+          } ]
+        } ]
+      } ],
+      "options": {
+        "gutter": 0,
+        "justify": "start",
+        "align": "top",
+        "remoteFunc": "func_1543306684000_97421"
+      },
+      "key": "1543306684000_97421",
+      "model": "grid_1543306684000_97421",
+      "rules": []
+    },
+    {
+      "type": "grid",
+      "name": "栅格布局",
+      "icon": "icon-grid-",
+      "columns": [ {
+          "span": 6,
+          "list": [ {
+            "type": "input",
+            "name": "民警一",
+            "icon": "icon-input",
+            "options": {
+              "width": "100%",
+              "defaultValue": "",
+              "required": true,
+              "dataType": "string",
+              "pattern": "",
+              "placeholder": "",
+              "remoteFunc": "func_1543306761000_78504"
+            },
+            "key": "1543306761000_78504",
+            "model": "hostPNo",
+            "rules": [ {
+                "type": "string",
+                "message": "民警一格式不正确"
+              },
+              {
+                "required": true,
+                "message": "民警一必须填写"
+              }
+            ]
+          } ]
+        },
+        {
+          "span": 6,
+          "list": [ {
+            "type": "input",
+            "name": "姓名",
+            "icon": "icon-input",
+            "options": {
+              "width": "100%",
+              "defaultValue": "",
+              "required": true,
+              "dataType": "string",
+              "pattern": "",
+              "placeholder": "",
+              "remoteFunc": "func_1543306764000_77700"
+            },
+            "key": "1543306764000_77700",
+            "model": "hostPName",
+            "rules": [ {
+                "type": "string",
+                "message": "姓名格式不正确"
+              },
+              {
+                "required": true,
+                "message": "姓名必须填写"
+              }
+            ]
+          } ]
+        },
+        {
+          "span": 12,
+          "list": [ {
+            "type": "input",
+            "name": "所属单位",
+            "icon": "icon-input",
+            "options": {
+              "width": "100%",
+              "defaultValue": "",
+              "required": false,
+              "dataType": "string",
+              "pattern": "",
+              "placeholder": "",
+              "remoteFunc": "func_1543306767000_65575"
+            },
+            "key": "1543306767000_65575",
+            "model": "hostUnitName",
+            "rules": [ {
+              "type": "string",
+              "message": "所属单位格式不正确"
+            } ]
+          } ]
+        }
+      ],
+      "options": {
+        "gutter": 0,
+        "justify": "start",
+        "align": "top",
+        "remoteFunc": "func_1543306741000_83330"
+      },
+      "key": "1543306741000_83330",
+      "model": "grid_1543306741000_83330",
+      "rules": []
+    },
+    {
+      "type": "grid",
+      "name": "栅格布局",
+      "icon": "icon-grid-",
+      "columns": [ {
+          "span": 6,
+          "list": [ {
+            "type": "input",
+            "name": "民警二",
+            "icon": "icon-input",
+            "options": {
+              "width": "100%",
+              "defaultValue": "",
+              "required": true,
+              "dataType": "string",
+              "pattern": "",
+              "placeholder": "",
+              "remoteFunc": "func_1543306845000_91865"
+            },
+            "key": "1543306845000_91865",
+            "model": "joinPNo",
+            "rules": [ {
+                "type": "string",
+                "message": "民警二格式不正确"
+              },
+              {
+                "required": true,
+                "message": "民警二必须填写"
+              }
+            ]
+          } ]
+        },
+        {
+          "span": 6,
+          "list": [ {
+            "type": "input",
+            "name": "姓名",
+            "icon": "icon-input",
+            "options": {
+              "width": "100%",
+              "defaultValue": "",
+              "required": true,
+              "dataType": "string",
+              "pattern": "",
+              "placeholder": "",
+              "remoteFunc": "func_1543306847000_96833"
+            },
+            "key": "1543306847000_96833",
+            "model": "joinPName",
+            "rules": [ {
+                "type": "string",
+                "message": "姓名格式不正确"
+              },
+              {
+                "required": true,
+                "message": "姓名必须填写"
+              }
+            ]
+          } ]
+        },
+        {
+          "span": 12,
+          "list": [ {
+            "type": "input",
+            "name": "所属单位",
+            "icon": "icon-input",
+            "options": {
+              "width": "100%",
+              "defaultValue": "",
+              "required": false,
+              "dataType": "string",
+              "pattern": "",
+              "placeholder": "",
+              "remoteFunc": "func_1543306850000_61562"
+            },
+            "key": "1543306850000_61562",
+            "model": "joinUnitName",
+            "rules": [ {
+              "type": "string",
+              "message": "所属单位格式不正确"
+            } ]
+          } ]
+        }
+      ],
+      "options": {
+        "gutter": 0,
+        "justify": "start",
+        "align": "top",
+        "remoteFunc": "func_1543306827000_93046"
+      },
+      "key": "1543306827000_93046",
+      "model": "grid_1543306827000_93046",
+      "rules": []
+    },
+    {
+      "type": "grid",
+      "name": "栅格布局",
+      "icon": "icon-grid-",
+      "columns": [ {
+          "span": 12,
+          "list": [ {
+            "type": "input",
+            "name": "记录人",
+            "icon": "icon-input",
+            "options": {
+              "width": "100%",
+              "defaultValue": "",
+              "required": false,
+              "dataType": "string",
+              "pattern": "",
+              "placeholder": "",
+              "remoteFunc": "func_1543306939000_95229"
+            },
+            "key": "1543306939000_95229",
+            "model": "witnessName",
+            "rules": [ {
+              "type": "string",
+              "message": "记录人格式不正确"
+            } ]
+          } ]
+        },
+        {
+          "span": 12,
+          "list": [ {
+            "type": "input",
+            "name": "地点",
+            "icon": "icon-input",
+            "options": {
+              "width": "100%",
+              "defaultValue": "",
+              "required": false,
+              "dataType": "string",
+              "pattern": "",
+              "placeholder": "",
+              "remoteFunc": "func_1543306942000_42916"
+            },
+            "key": "1543306942000_42916",
+            "model": "place",
+            "rules": [ {
+              "type": "string",
+              "message": "地点格式不正确"
+            } ]
+          } ]
+        }
+      ],
+      "options": {
+        "gutter": 0,
+        "justify": "start",
+        "align": "top",
+        "remoteFunc": "func_1543306931000_59095"
+      },
+      "key": "1543306931000_59095",
+      "model": "grid_1543306931000_59095",
+      "rules": []
+    },
+    {
+      "type": "grid",
+      "name": "栅格布局",
+      "icon": "icon-grid-",
+      "columns": [ {
+          "span": 12,
+          "list": [ {
+            "type": "date",
+            "name": "开始时间",
+            "icon": "icon-date",
+            "options": {
+              "defaultValue": "",
+              "readonly": false,
+              "disabled": false,
+              "editable": true,
+              "clearable": true,
+              "placeholder": "",
+              "startPlaceholder": "",
+              "endPlaceholder": "",
+              "type": "datetime",
+              "format": "yyyy-MM-dd HH:mm:ss",
+              "timestamp": false,
+              "required": true,
+              "width": "100%",
+              "remoteFunc": "func_1543306960000_1266"
+            },
+            "key": "1543306960000_1266",
+            "model": "startTime",
+            "rules": [ {
+              "required": true,
+              "message": "开始时间必须填写"
+            } ]
+          } ]
+        },
+        {
+          "span": 12,
+          "list": [ {
+            "type": "date",
+            "name": "结束时间",
+            "icon": "icon-date",
+            "options": {
+              "defaultValue": "",
+              "readonly": false,
+              "disabled": false,
+              "editable": true,
+              "clearable": true,
+              "placeholder": "",
+              "startPlaceholder": "",
+              "endPlaceholder": "",
+              "type": "datetime",
+              "format": "yyyy-MM-dd HH:mm:ss",
+              "timestamp": false,
+              "required": true,
+              "width": "100%",
+              "remoteFunc": "func_1543306963000_65126"
+            },
+            "key": "1543306963000_65126",
+            "model": "endTime",
+            "rules": [ {
+              "required": true,
+              "message": "结束时间必须填写"
+            } ]
+          } ]
+        }
+      ],
+      "options": {
+        "gutter": 0,
+        "justify": "start",
+        "align": "top",
+        "remoteFunc": "func_1543306934000_76675"
+      },
+      "key": "1543306934000_76675",
+      "model": "grid_1543306934000_76675",
+      "rules": []
+    },
+    {
+      "type": "grid",
+      "name": "栅格布局",
+      "icon": "icon-grid-",
+      "columns": [ {
+          "span": 12,
+          "list": [ {
+            "type": "select",
+            "name": "询问次数",
+            "icon": "icon-select",
+            "options": {
+              "defaultValue": "",
+              "multiple": false,
+              "disabled": false,
+              "clearable": true,
+              "placeholder": "",
+              "required": true,
+              "showLabel": false,
+              "width": "100%",
+              "options": [ {
+                  "value": "1"
+                },
+                {
+                  "value": "2"
+                },
+                {
+                  "value": "3"
+                },
+                {
+                  "value": "4"
+                },
+                {
+                  "value": "5"
+                },
+                {
+                  "value": "6"
+                },
+                {
+                  "value": "7"
+                },
+                {
+                  "value": "8"
+                },
+                {
+                  "value": "9"
+                }
+              ],
+              "remote": false,
+              "filterable": false,
+              "remoteOptions": [],
+              "props": {
+                "value": "value",
+                "label": "label"
+              },
+              "remoteFunc": "func_1543307087000_71049"
+            },
+            "key": "1543307087000_71049",
+            "model": "count",
+            "rules": [ {
+              "required": true,
+              "message": "询问次数必须填写"
+            } ]
+          } ]
+        },
+        {
+          "span": 12,
+          "list": [ {
+            "type": "input",
+            "name": "询问对象",
+            "icon": "icon-input",
+            "options": {
+              "width": "100%",
+              "defaultValue": "",
+              "required": false,
+              "dataType": "string",
+              "pattern": "",
+              "placeholder": "",
+              "remoteFunc": "func_1543307060000_75499"
+            },
+            "key": "1543307060000_75499",
+            "model": "inquiryObj",
+            "rules": [ {
+              "type": "string",
+              "message": "询问对象格式不正确"
+            } ]
+          } ]
+        }
+      ],
+      "options": {
+        "gutter": 0,
+        "justify": "start",
+        "align": "top",
+        "remoteFunc": "func_1543307028000_84611"
+      },
+      "key": "1543307028000_84611",
+      "model": "grid_1543307028000_84611",
+      "rules": []
+    }
+  ],
+  "config": {
+    "labelWidth": 85,
+    "labelPosition": "right",
+    "size": "mini"
+  }
+}
