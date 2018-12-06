@@ -5,7 +5,7 @@
  * @param {Number|String} radius
  */
 function _Circle( x, y, radius ) {
-  Coordinate.call( this, x, y )
+  _Coordinate.call( this, x, y )
 
   this.radius = radius
   this.diameter = radius * 2

@@ -6,7 +6,7 @@ var draw = SVG( 'output' ).size( 2000, 1000 );
 
 var dishtext;
 
-alert( "Welcome to Taste World" )
+// alert( "Welcome to Taste World" )
 
 
 function parameter( x, y, c1, c2 ) {
@@ -177,7 +177,7 @@ function parameter( x, y, c1, c2 ) {
         var cookingsteptext = draw.text( "Cooking steps' content\n" ).move( x + 100, y + 220 );
         var cusinesnutrienttext = draw.text( "Cusines' nutrient content\n" ).move( x + 100, y + 380 );
         console.log( "cooking steps and cusines' nutrient have not load" )
-        alert( "sorry, I haven't finished this, I will add subsequent steps later." )
+        // alert( "sorry, I haven't finished this, I will add subsequent steps later." )
       }
     }
   }

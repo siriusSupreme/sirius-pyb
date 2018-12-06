@@ -3,10 +3,10 @@
  * @param {Number} x
  * @param {Number} y
  */
-function Coordinate( x, y ) {
+function _Coordinate( x, y ) {
   this.x = x
   this.y = y
 }
 
-Coordinate.width = 300
-Coordinate.height = 500
+_Coordinate.width = 300
+_Coordinate.height = 500

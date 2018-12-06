@@ -6,7 +6,7 @@
  * @param {Number|String} y0
  */
 function _Line( x, y, x0, y0 ) {
-  Coordinate.call( this, x, y )
+  _Coordinate.call( this, x, y )
 
   this.x0 = x0
   this.y0 = y0
