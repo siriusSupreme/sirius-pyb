@@ -1,18 +1,18 @@
-var chineseMenus = [ {
-  description: 'Orange Chicken',
-  thumb: 'images/delish-sticky-orange-chicken.jpg'
+var chineseMenus = [{
+    description: 'Orange Chicken',
+    thumb: 'images/delish-sticky-orange-chicken.jpg'
 }, {
-  description: 'Orange Chicken',
-  thumb: 'images/delish-sticky-orange-chicken.jpg'
-} ]
+    description: 'Orange Chicken',
+    thumb: 'images/delish-sticky-orange-chicken.jpg'
+}]
 
-var japaneseMenus = [ {
-  description: 'cusine\'s name',
-  thumb: 'images/picwdbAiG.jpg'
+var japaneseMenus = [{
+    description: 'cusine\'s name',
+    thumb: 'images/picwdbAiG.jpg'
 }, {
-  description: 'cusine\'s name',
-  thumb: 'images/picwdbAiG.jpg'
-} ]
+    description: 'cusine\'s name',
+    thumb: 'images/picwdbAiG.jpg'
+}]
 
 /**
  * 绘制列表
@@ -21,74 +21,81 @@ var japaneseMenus = [ {
  * @param {Number|String} width
  * @param {Number|String} height
  */
-function _List( x, y, width, height ) {
-  _Coordinate.call( this, x, y )
+function _List(x, y, width, height) {
+    _Coordinate.call(this, x, y)
 
-  this.width = width
-  this.height = height
+    this.width = width
+    this.height = height
 }
 
-_List.createList = function ( x, y, width, height ) {
-  return new _List( x, y, width, height )
+_List.createList = function(x, y, width, height) {
+    return new _List(x, y, width, height)
 }
 
-_List.prototype.draw = function ( svg, radius, attr, isChina ) {
-  var self = this
-  var title = 'Japanese cusine menu'
-  var titleX = 21
-  var menus = japaneseMenus
+_List.prototype.draw = function(svg, radius, attr, isChina, useSelect) {
+    var self = this
+    var title = 'Japanese cusine menu'
+    var titleX = 44
+    var menus = japaneseMenus
 
-  var selectDom = createSelect( 'select' )
+    var selectDom = null
 
-  if ( isChina ) {
-    title = 'Chinese cusine menu'
-    titleX = 29
-    menus = chineseMenus
-  }
+    if (useSelect) selectDom = createSelect('select')
 
-  // 主体框架
-  _Rectangle.createRectangle( this.x, this.y, this.width, this.height ).draw( svg, radius, attr )
+    if (isChina) {
+        title = 'Chinese cusine menu'
+        titleX = 48
+        menus = chineseMenus
+    }
 
-  // 标题区
-  _Text.createText( titleX, 12, title ).draw( svg, {}, {
-    style: 'font-family: Knewave;'
-  } ).font( {
-    size: 24,
-    family: 'Knewave'
-  } )
+    // 主体框架
+    _Rectangle.createRectangle(this.x, this.y, this.width, this.height).draw(svg, radius, attr)
 
-  _Line.createLine( 10, 60, _Coordinate.width - 10, 60 ).draw( svg, {
-    'stroke-width': 2
-  } )
+    // 标题区
+    _Text.createText(titleX, 12, title).draw(svg, {}, {
+        style: 'font-family: Knewave;'
+    }).font({
+        size: 24,
+        family: 'Knewave'
+    })
 
-  // 列表区
-  var startY = 72
-  menus.forEach( function ( menu, index ) {
+    _Line.createLine(10, 60, _Coordinate.width - 10, 60).draw(svg, {
+        'stroke-width': 2
+    })
 
-    _Text.createText( 10, startY, menu.description ).draw( svg )
+    // 列表区
+    var startY = 72
+    menus.forEach(function(menu, index) {
 
-    _Image.createImage( _Coordinate.width - 130, startY, menu.thumb, 120, 90 ).draw( svg )
+        _Text.createText(10, startY, menu.description).draw(svg)
 
-    _Rectangle.createRectangle( 10, startY, _Coordinate.width - 20, 90 ).draw( svg, 0, {
-      fill: 'transparent',
-      style: 'cursor: pointer;'
-    } ).click( clickHandler )
+        _Image.createImage(_Coordinate.width - 130, startY, menu.thumb, 120, 90).draw(svg)
 
-    startY += 100
+        _Rectangle.createRectangle(10, startY, _Coordinate.width - 20, 90).draw(svg, 0, {
+            fill: 'transparent',
+            style: 'cursor: pointer;'
+        }).click(clickHandler)
 
-    _Line.createLine( 10, startY, _Coordinate.width - 10, startY ).draw( svg, {
-      'stroke-width': 2
-    } )
+        startY += 100
 
-    startY += 12
-  } )
+        _Line.createLine(10, startY, _Coordinate.width - 10, startY).draw(svg, {
+            'stroke-width': 2
+        })
 
-  function clickHandler( e ) {
-    var value = selectDom.value
+        startY += 12
+    })
 
-    selectDom.classList.add( 'hidden' )
+    function clickHandler(e) {
+        if (useSelect && selectDom) {
+            var value = selectDom.value
 
-    if ( value === 'cooking steps' ) _Step.createStep( self.x, self.y, self.width, self.height ).draw( svg, radius, attr, isChina )
-    else if ( value === 'nutrition info' ) _Nutrition.createNutrition( self.x, self.y, self.width, self.height ).draw( svg, radius, attr, isChina )
-  }
+            selectDom.classList.add('hidden')
+
+            if (value === 'cooking steps') _Step.createStep(self.x, self.y, self.width, self.height).draw(svg, radius, attr, isChina)
+            else if (value === 'nutrition info') _Nutrition.createNutrition(self.x, self.y, self.width, self.height).draw(svg, radius, attr, isChina)
+        } else {
+            _Detail.createDetail(self.x, self.y, self.width, self.height).draw(svg, radius, attr, isChina)
+        }
+
+    }
 }
