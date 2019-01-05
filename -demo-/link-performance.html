@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-  <!-- saved from url=(0014)about:internet -->
+<!-- saved from url=(0014)about:internet -->
 
-  <head>
+<head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
@@ -41,7 +41,7 @@
     <!-- 插件样式区 end -->
 
     <!-- 自定义样式区 start -->
-    <link rel="stylesheet" href="static/styles/common/lay-table.css">
+    <link rel="stylesheet" href="static/styles/venders/layui-form.css">
     <link rel="stylesheet" href="static/styles/pages/link-performance.css">
     <!-- 自定义样式区 end -->
 
@@ -54,12 +54,42 @@
       <script src="static/vendors/selectivizr.min.js"></script>
       <script src="static/vendors/html5shiv/html5shiv.min.js"></script>
     <![endif]-->
-  </head>
+</head>
 
-  <body>
+<body>
     <div class='custom-container '>
-      <div class='svg-wrapper' id='svgWrapper'></div>
+        <div class='custom-form-wrapper bg-primary'>
+            <form class='layui-form' lay-filter='custom-link-performance-form'>
+                <div class="layui-form-item">
+                    <div class='layui-inline'>
+                        <label class="layui-form-label">链路：</label>
+                        <div class="layui-input-inline">
+                            <select name="link" id="customLinkPerformanceSelectLink" lay-filter='custom-link-performance-select-link' lay-search></select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="custom-echarts-wrapper">
+            <div class='custom-echarts-top'>
+                <div class='custom-echarts-top-left' id='customEchartsTopLeft'></div>
+                <div class='custom-echarts-top-right' id='customEchartsTopRight'></div>
+            </div>
+            <div class='custom-echarts-bottom'>
+                <div class='custom-echarts-bottom-left' id='customEchartsBottomLeft'></div>
+                <div class='custom-echarts-bottom-right' id='customEchartsBottomRight'></div>
+            </div>
+        </div>
     </div>
+
+    <!-- 模板区 start-->
+    <script type='text/html' id='customLinkPerformanceSelectLinkTemplate'>
+        {{# layui.each(d.options, function(index, option){ }}
+        <option value="{{ option }}">{{ option }}</option>
+        {{# }); }}
+    </script>
+    <!-- 模板区 end -->
 
     <!-- 公共脚本区 start -->
     <!--[if lt IE 9]>
@@ -100,6 +130,6 @@
 
     <!-- built files will be auto injected -->
 
-  </body>
+</body>
 
 </html>
