@@ -1,0 +1,41 @@
+version: '3'
+
+networks:
+  dev-net:
+    driver: bridge
+
+services:
+  mysql:
+    image: mysql
+    container_name: mysql
+    volumes:
+      - /workspace/sirius-admin/docker/mysql/conf.d:/etc/mysql/conf.d
+#      - /workspace/sirius-admin/docker/mysql/data:/var/lib/mysql
+      - /workspace/sirius-admin/docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD:
+    networks:
+      - dev-net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - 8080:80
+    external_links:
+      - mysql:mysql
+    networks:
+      - dev-net
+
+  redis:
+    image: redis
+    container_name: redis
+    volumes:
+      - /workspace/sirius-admin/docker/redis/data:/data
+      - /workspace/sirius-admin/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - dev-net
