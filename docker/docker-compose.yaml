@@ -8,10 +8,12 @@ services:
   mysql:
     image: mysql
     container_name: mysql
+    ports:
+      - '3306:3306'
     volumes:
-      - /workspace/sirius-admin/docker/mysql/conf.d:/etc/mysql/conf.d
-#      - /workspace/sirius-admin/docker/mysql/data:/var/lib/mysql
-      - /workspace/sirius-admin/docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - /workspace/sirius-admin/docker/mysql/conf.d:/etc/mysql/conf.d:ro
+#      - /workspace/sirius-admin/docker/mysql/data:/var/lib/mysql:rw
+      - /workspace/sirius-admin/docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -34,8 +36,44 @@ services:
   redis:
     image: redis
     container_name: redis
+    ports:
+      - '6379:6379'
     volumes:
       - /workspace/sirius-admin/docker/redis/data:/data
       - /workspace/sirius-admin/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - dev-net
+
+  phpredisadmin:
+    image: erikdubbelboer/phpredisadmin
+    container_name: phpredisadmin
+    ports:
+      - "8081:80"
+    networks:
+      - dev-net
+    environment:
+      - REDIS_1_HOST=redis
+      - REDIS_1_PORT=6379
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - /workspace/sirius-admin/docker/mongo/data:/data/db
+      - /workspace/sirius-admin/docker/mongo/mongod.conf:/etc/mongo/mongod.conf
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8082:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
